@@ -27,7 +27,11 @@ import pandas as pd
 m = GEKKO(remote=True, server='http://xps.apmonitor.com') # alternative: server='http://xps.apmonitor.com'
 m.options.IMODE=6
 m.options.REDUCE=1
-m.time = np.linspace(0, 11, 12)
+m.time = np.linspace(0, 100, 101)
+
+# some starting values
+substrate=100
+photoinhib=5000
 
 # PARAMETERS -------------------------------------------------------
 
@@ -93,11 +97,13 @@ c = pd.Series(
     index=pro+metab+mem)
 
 
-# light is parameter giving the time-dependent _increase_ in hv
+# light is parameter giving the time-dependent change in hv
 # continuous increase: np.linspace(10,10,11)
 # stepwise increase: [10]+[0]*5+[50]+[0]*5
-light = m.Param(value=[0]+[10]+[0]*5+[40]+[0]*4)
+light = m.Param(value=np.zeros(101))
+light[1] = 30#; light[50] = 100
 hv = m.Var(value=0)
+ratechange = m.Var(value=0, lb=-1, ub=1, integer=True)
 
 # growth rate as variable that becomes the objective function
 mu = m.Var(value=1)
@@ -106,6 +112,7 @@ mu = m.Var(value=1)
 
 
 # EQUATIONS --------------------------------------------------------
+#
 # equations constrain the solution space using parameters;
 # they outline the topology of the model
 
@@ -124,6 +131,10 @@ eq1 = [m.Equation(a[i]*v['RIB'] - mu*c[i] == 0) for i in pro]
 # the respective enzyme, right side, growth rate times metabolite conc
 eq2 = [m.Equation(sum(stoich.loc[i]*v) - mu*c[i] == 0) for i in metab]
 
+# time-dependent differential equation for change in protein_conc
+#eq3 = m.Equation(c['RIB'].dt() == c['RIB']*ratechange*(a['RIB']-c['RIB']/10)/(a['RIB']+c['RIB']/10)) #
+eq3 = [m.Equation(c[i].dt() == c[i]*ratechange*(a[i]-c[i]/10)/(a[i]+c[i]/10)) for i in pro]
+
 
 # Michaelis-Menthen type enzyme kinetics
 m.Equation(v['LHC'] == kcat['LHC']*c['LHC']*hv**hc['LHC']/(Km['LHC']**hc['LHC'] + hv**hc['LHC'] + (hv**(2*hc['LHC']))/Ki))
@@ -136,7 +147,7 @@ m.Equation(v['RIB'] == kcat['RIB']*c['RIB']*c['pre']**hc['RIB']/(Km['RIB']**hc['
 # OPTIONAL CONSTRAINTS
 #
 # total intracellular protein concentration is constrained
-m.Equation(sum(c[pro]) == 1)
+m.Equation(sum(c[pro]) == 10)
 
 # membrane composition (c_protein should not exceed c_lipid)
 # and minimal amount of membrane is 0.1
@@ -145,6 +156,8 @@ m.Equation(sum(c[thyP])+0.1 <= c['thy'])
 
 # lipid balance: lipids are sum of cytoplasmic and thylakoid membrane
 m.Equation(sum(c[mem]) == c['lip'])
+
+# fix the mass fraction of maintenance proteins
 m.Equation(a['MAI'] == 0.3)
 
 # cell volume is determined by beta and the cytoplasmic 
@@ -187,8 +200,7 @@ df = pd.DataFrame([
 
 # add column names
 df.columns = ['time', 'substrate', 'light', 'mu', 'variable', 'component', 'concentration']
-# change type of column
-#df['concentration'] = df['concentration'].astype('float')
+
 
 
 # ITERATIVE SOLVING OF MODEL -------------------------------------------
@@ -196,4 +208,4 @@ df.columns = ['time', 'substrate', 'light', 'mu', 'variable', 'component', 'conc
 # execute model solving function
 #result = optim(substrate=100, light=100, photoinhib=5000)
 
-df.to_csv('/home/michael/Documents/SciLifeLab/Resources/Models/GEKKO/cyano/result.csv')
+df.to_csv('/home/micha/Documents/Code/models/GEKKO/cell-economy-models/results.csv')

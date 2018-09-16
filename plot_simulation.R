@@ -12,15 +12,15 @@ source("~/Documents/SciLifeLab/Resources/R_scripts/custom.panel.functions.R")
 # +++++++++++++ LOAD MODEL DATA ++++++++++++++++++++++++++++++++++++++++++++++++
 
 # load modeling data according to following names
-dat <- read.csv("result.csv") %>% subset(., mu > 0.01 & mu <1)
+dat <- read.csv("results.csv") %>% subset(., time >= 1)
 
 
 # +++++++++++++ PLOT FRACTIONS AND CONCENTRATIONS ++++++++++++++++++++++++++++++
 #
 # plot growth rates
 plots <- list(xyplot(light+mu*100 ~ time,
-  dat[1:9, ],
-  par.settings=custom.lattice, type="l", lwd=2,
+  subset(dat, X <= 100),
+  type="l", lwd=2,
   xlab="time", ylab="% max light / µ",
   panel=function(x, y, ...) {
     panel.grid(h=-1, v=-1, col=grey(0.9))
@@ -38,7 +38,6 @@ plots[2:4] <- lapply(c("a", "c", "v"), function(i) {
       xlab="time", ylab=paste0("[",i,"]"),
       type="l", lwd=2, 
       scales=list(alternating=FALSE),
-      par.settings=custom.lattice, 
       panel=function(x, y, ...) {
         panel.grid(h=-1, v=-1, col=grey(0.9))
         panel.xyplot(x, y, ...)
@@ -48,11 +47,11 @@ plots[2:4] <- lapply(c("a", "c", "v"), function(i) {
 })
   
 
-svg("plot_simulation.svg", width=6, height=5.8)
+#svg("plot_simulation_steadystate.svg", width=6, height=5.8)
 print(plots[[1]], split=c(1,1,2,2), more=TRUE)
 print(plots[[2]], split=c(1,2,2,2), more=TRUE)
 print(plots[[3]], split=c(2,1,2,2), more=TRUE)
 print(plots[[4]], split=c(2,2,2,2))
 #grid.text(c("A", "B", "C"), x=c(0.05, 0.5, 0.05), y=c(0.95, 0.95, 0.6), gp=gpar(fontsize=14))
-dev.off()
+#dev.off()
 
