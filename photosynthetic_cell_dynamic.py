@@ -24,10 +24,6 @@ import matplotlib.pyplot as plt
 # PARAMETERS -------------------------------------------------------
 #
 # Implicitly reuse all global parameters from steady state model
-# ...
-# and import the steady-state optimal proteome allocation
-# for alpha
-a_optim = a
 
 
 # VARIABLES --------------------------------------------------------
@@ -35,7 +31,7 @@ a_optim = a
 
 # initialize model
 m = GEKKO()
-m.time = np.linspace(0, 100, 101)
+m.time = time
 
 
 # list of catalytic rates v for all enzymes
@@ -57,8 +53,14 @@ c = pd.Series(
 # hv is the time-dependent light intensity
 hv = m.Param(value=light, name='hv')
 
+# growth rate, in this model equals rate of the ribosome
+mu = m.Var(value=1, name='mu')
+
 # optional parameter: ribosome translational capacity
-sigma = m.Param(value=0.2, name='sigma')
+sigma = m.Param(value=0.4, name='sigma')
+
+# biomass accumulated over time
+#bm = m.Var(value=1, name='bm')
 
 
 # EQUATIONS --------------------------------------------------------
@@ -68,10 +70,14 @@ sigma = m.Param(value=0.2, name='sigma')
 # for big differences between a and c, and 0 for small differences
 m.Equations([c[i].dt() == c[i]*sigma*(a[i]-c[i])/(a[i]+c[i]) for i in pro])
 
-# altered metabolite balance:
-# since mu equals rate of the ribosome v_RIB when a_pro = c_pro = 1,
-# we can replace mu with the v_RIB
-m.Equations([sum(stoich.loc[i]*v) - v['RIB']*c[i] == 0 for i in met])
+# metabolite mass balance
+m.Equations([sum(stoich.loc[i]*v) - mu*c[i] == 0 for i in met])
+
+# growth rate mu equals rate of the ribosome v_RIB when a_pro = c_pro = 1,
+m.Equation(mu == v['RIB'])
+
+# biomass accumulation over time with initial biomass concentration 0.1
+#m.Equation(bm.dt() == mu*bm)
 
 # Michaelis-Menthen type enzyme kinetics
 m.Equation(v['LHC'] == kcat['LHC']*c['LHC']*hv**hc['LHC']/(Km['LHC']**hc['LHC'] + hv**hc['LHC'] + (hv**(2*hc['LHC']))/Ki))
@@ -79,7 +85,6 @@ m.Equation(v['PSET'] == kcat['PSET']*c['PSET']*c['hvi']**hc['PSET']/(c['hvi']**h
 m.Equation(v['CBM'] == kcat['CBM']*c['CBM']*c['nadph']*sub**hc['CBM']*c['atp']/(c['nadph']*sub**hc['CBM']*c['atp'] + KmNADPH*c['atp'] + KmATP*c['nadph'] + KmATP*sub**hc['CBM'] + Km['CBM']**hc['CBM']*c['nadph']))
 m.Equation(v['LPB'] == kcat['LPB']*c['LPB']*c['pre']**hc['LPB']/(Km['LPB']**hc['LPB'] + c['pre']**hc['LPB']))
 m.Equation(v['RIB'] == kcat['RIB']*c['RIB']*c['pre']**hc['RIB']/(Km['RIB']**hc['RIB'] + c['pre']**hc['RIB']))
-
 
 
 # SOLVING ----------------------------------------------------------
@@ -97,4 +102,4 @@ m.solve()
 with open(m.path+'//results.json') as f:
     result = pd.DataFrame(json.load(f))
 
-result.to_csv('/home/michael/Documents/SciLifeLab/Resources/Models/GEKKO/cyano/result_dynamic.csv')
+result.to_csv('/home/michael/Documents/SciLifeLab/Resources/Models/GEKKO/cyano/result_dynamic_DN.csv')

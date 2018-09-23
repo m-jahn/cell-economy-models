@@ -62,8 +62,8 @@ stoich = pd.DataFrame([
 # define starting values
 sub = 100                 # initial substrate concentration, CO2/HCO3-
 Ki = 5000                 # light inhibition constant for photosystems
-light = np.array([5.0]*50+[50.0]*51)   # light as percent of maximum concentration
-
+light = np.array([5.0]*24+[50.0]*24+[5.0]*24+[50.0]*24+[5.0]*25)   # light as percent of maximum concentration
+time = np.linspace(0, 120, 121)
 
 # VARIABLES --------------------------------------------------------
 
@@ -72,7 +72,7 @@ light = np.array([5.0]*50+[50.0]*51)   # light as percent of maximum concentrati
 m = GEKKO(remote=True, server='http://xps.apmonitor.com') # alternative: server='http://xps.apmonitor.com'
 m.options.IMODE=5
 m.options.REDUCE=1
-m.time = np.linspace(0, 100, 101)
+m.time = time
 
 
 # variables calculated by solver to meet the constraints of 
@@ -165,9 +165,12 @@ m.solve()
 
 # COLLECTING RESULTS -----------------------------------------------
 #
+# assign new variable with optimal proteome mass fraction alpha
+# so that a can be reused by dynamic model
+a_optim = a
 # collect results in pandas data frame and save
 with open(m.path+'//results.json') as f:
     result = pd.DataFrame(json.load(f))
 
-result.to_csv('/home/michael/Documents/SciLifeLab/Resources/Models/GEKKO/cyano/result_steady_state.csv')
+result.to_csv('/home/michael/Documents/SciLifeLab/Resources/Models/GEKKO/cyano/result_steady_state_DN.csv')
 

@@ -75,7 +75,7 @@ variable, here the specific growth rate μ.
 
 ### Solving the model
 
-The model was ported from the GAMS language to Python using the GEKKO optimization toolbox. The model can be solved locally or using a remote server as described by the GEKKO auhtors, see:
+The model was ported from the GAMS language to Python using the GEKKO optimization toolbox. The model can be solved locally or using a remote server as described by the GEKKO authors, see:
 - GEKKO web page: http://apmonitor.com/wiki/index.php/Main/GekkoPythonOptimization
 - GEKKO documentation: https://gekko.readthedocs.io/en/latest/
 
