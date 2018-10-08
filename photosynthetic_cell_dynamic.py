@@ -30,13 +30,13 @@ import matplotlib.pyplot as plt
 
 
 # initialize model
-m = GEKKO()
+m = GEKKO(remote=True, server='http://xps.apmonitor.com')
 m.time = time
 
 
 # list of catalytic rates v for all enzymes
 v = pd.Series(
-    [m.Var(value=1, lb=0, ub=100, name='v_'+i) for i in enz],
+    [m.Var(value=1, lb=0, ub=500, name='v_'+i) for i in enz],
     index=enz)
 
 # list of alpha=fraction of ribosomes engaged in synthesis of protein    
@@ -46,22 +46,21 @@ a = pd.Series(
     
 # list of concentration of all components (enzymes and metabolites)
 c = pd.Series(
-    [m.Var(value=0.2, lb=0, ub=100, name='c_'+i) for i in pro+met],
+    [m.Var(value=0.2, lb=0, ub=500, name='c_'+i) for i in pro+met],
     index=pro+met)
 
 
 # hv is the time-dependent light intensity
 hv = m.Param(value=light, name='hv')
 
-# growth rate, in this model equals rate of the ribosome
+# growth rate, here simply equals rate of the ribosome
 mu = m.Var(value=1, name='mu')
 
 # optional parameter: ribosome translational capacity
 sigma = m.Param(value=0.4, name='sigma')
 
-# biomass accumulated over time
-#bm = m.Var(value=1, name='bm')
-
+# biomass accumulated over time with initial value
+bm = m.Var(value=1, name='bm')
 
 # EQUATIONS --------------------------------------------------------
 #
@@ -76,8 +75,8 @@ m.Equations([sum(stoich.loc[i]*v) - mu*c[i] == 0 for i in met])
 # growth rate mu equals rate of the ribosome v_RIB when a_pro = c_pro = 1,
 m.Equation(mu == v['RIB'])
 
-# biomass accumulation over time with initial biomass concentration 0.1
-#m.Equation(bm.dt() == mu*bm)
+# biomass accumulation over time
+m.Equation(bm.dt() == mu*bm)
 
 # Michaelis-Menthen type enzyme kinetics
 m.Equation(v['LHC'] == kcat['LHC']*c['LHC']*hv**hc['LHC']/(Km['LHC']**hc['LHC'] + hv**hc['LHC'] + (hv**(2*hc['LHC']))/Ki))
@@ -102,4 +101,4 @@ m.solve()
 with open(m.path+'//results.json') as f:
     result = pd.DataFrame(json.load(f))
 
-result.to_csv('/home/michael/Documents/SciLifeLab/Resources/Models/GEKKO/cyano/result_dynamic_DN.csv')
+result.to_csv('/home/michael/Documents/SciLifeLab/Resources/Models/GEKKO/cyano/result_dynamic_RIB_10.csv')

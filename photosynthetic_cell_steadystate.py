@@ -60,10 +60,11 @@ stoich = pd.DataFrame([
 
 
 # define starting values
-sub = 100                 # initial substrate concentration, CO2/HCO3-
-Ki = 5000                 # light inhibition constant for photosystems
-light = np.array([5.0]*24+[50.0]*24+[5.0]*24+[50.0]*24+[5.0]*25)   # light as percent of maximum concentration
-time = np.linspace(0, 120, 121)
+sub = 100                                                           # initial substrate concentration, CO2/HCO3-
+Ki = 5000                                                           # light inhibition constant for photosystems
+light = np.array([5.0]*24+[50.0]*24+[5.0]*24+[50.0]*24+[5.0]*25)    # light as percent of maximum concentration #np.array([5.0]*50+[50.0]*101)
+time = np.linspace(0, len(light)/2, len(light))                     # time as a function of light step number. Less steps is faster computation
+
 
 # VARIABLES --------------------------------------------------------
 
@@ -101,6 +102,9 @@ hv = m.Param(value=light, name='hv')
 # growth rate as variable that becomes the objective function
 mu = m.Var(value=1, name='mu')
 
+# biomass accumulated over time with initial value
+bm = m.Var(value=1, name='bm')
+
 # volume-to-surface ratio, increases with sphericity of a cell
 #beta = m.Var(value=1, lb=0.1, ub=10)
 
@@ -120,6 +124,9 @@ m.Equations([a[i]*v['RIB'] - mu*c[i] == 0 for i in pro])
 # metabolite mass balance: left side, production of metabolites by
 # the respective enzyme, right side, growth rate times metabolite conc
 m.Equations([sum(stoich.loc[i]*v) - mu*c[i] == 0 for i in met])
+
+# biomass accumulation over time
+m.Equation(bm.dt() == mu*bm)
 
 # Michaelis-Menthen type enzyme kinetics
 m.Equation(v['LHC'] == kcat['LHC']*c['LHC']*hv**hc['LHC']/(Km['LHC']**hc['LHC'] + hv**hc['LHC'] + (hv**(2*hc['LHC']))/Ki))
@@ -142,8 +149,9 @@ m.Equation(sum(c[thyP])+0.1 <= c['thy'])
 # lipid balance: lipids are sum of cytoplasmic and thylakoid membrane
 m.Equation(sum(c[mem]) == c['lip'])
 
-# fix the mass fraction of maintenance proteins
+# fix the mass fraction of maintenance proteins (or others)
 m.Equation(a['MAI'] == 0.3)
+m.Equation(a['RIB'] >= 0.156)
 
 # cell volume is determined by beta and the cytoplasmic 
 # membrane surface. The volume is a constant, bot not the surface
@@ -166,11 +174,11 @@ m.solve()
 # COLLECTING RESULTS -----------------------------------------------
 #
 # assign new variable with optimal proteome mass fraction alpha
-# so that a can be reused by dynamic model
+# so that it can be reused by dynamic model
 a_optim = a
 # collect results in pandas data frame and save
 with open(m.path+'//results.json') as f:
     result = pd.DataFrame(json.load(f))
 
-result.to_csv('/home/michael/Documents/SciLifeLab/Resources/Models/GEKKO/cyano/result_steady_state_DN.csv')
+result.to_csv('/home/michael/Documents/SciLifeLab/Resources/Models/GEKKO/cyano/result_steady_state.csv')
 
