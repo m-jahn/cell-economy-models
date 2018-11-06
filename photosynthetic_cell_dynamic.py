@@ -31,23 +31,34 @@ import matplotlib.pyplot as plt
 
 # initialize model
 m = GEKKO(remote=True, server='http://xps.apmonitor.com')
+m.options.IMODE=5
+m.options.REDUCE=1
+m.options.MAX_ITER=500
 m.time = time
 
 
 # list of catalytic rates v for all enzymes
 v = pd.Series(
-    [m.Var(value=1, lb=0, ub=500, name='v_'+i) for i in enz],
+    [m.Var(value=1, lb=0, ub=100, name='v_'+i) for i in enz],
     index=enz)
 
-# list of alpha=fraction of ribosomes engaged in synthesis of protein    
+# list of alpha = fraction of ribosomes engaged in synthesis of protein
 a = pd.Series(
     [m.Param(value=a_optim[i].value, name='a_'+i) for i in pro],
     index=pro)
     
 # list of concentration of all components (enzymes and metabolites)
 c = pd.Series(
-    [m.Var(value=0.2, lb=0, ub=500, name='c_'+i) for i in pro+met],
+    [m.Var(value=c_start[i][1], lb=0, ub=500, name='c_'+i) for i in pro+met],
     index=pro+met)
+
+# list of optional protein reserves (limited to e.g. 5% of proteome)
+#r = pd.Series(
+#    [m.MV(value=0, lb=-1, ub=1, name='r_'+i) for i in pro],
+#    index=pro)
+#for i in pro[0:5]:      # exclude MAI from having protein reserve
+#    r[i].STATUS = 1     # allow solver to change the MV
+#    r[i].DCOST = 0.01   # penalty on changes to MV to achieve global optimum
 
 
 # hv is the time-dependent light intensity
@@ -56,18 +67,16 @@ hv = m.Param(value=light, name='hv')
 # growth rate, here simply equals rate of the ribosome
 mu = m.Var(value=1, name='mu')
 
-# optional parameter: ribosome translational capacity
-sigma = m.Param(value=0.4, name='sigma')
-
 # biomass accumulated over time with initial value
 bm = m.Var(value=1, name='bm')
+
 
 # EQUATIONS --------------------------------------------------------
 #
 # time-dependent differential equation for change in protein_conc
 # with the 'error' being a logistic term approximating -1 and 1
 # for big differences between a and c, and 0 for small differences
-m.Equations([c[i].dt() == c[i]*sigma*(a[i]-c[i])/(a[i]+c[i]) for i in pro])
+m.Equations([c[i].dt() == v['RIB']*(a[i]-c[i])/(a[i]+c[i]) for i in pro])
 
 # metabolite mass balance
 m.Equations([sum(stoich.loc[i]*v) - mu*c[i] == 0 for i in met])
@@ -77,6 +86,7 @@ m.Equation(mu == v['RIB'])
 
 # biomass accumulation over time
 m.Equation(bm.dt() == mu*bm)
+
 
 # Michaelis-Menthen type enzyme kinetics
 m.Equation(v['LHC'] == kcat['LHC']*c['LHC']*hv**hc['LHC']/(Km['LHC']**hc['LHC'] + hv**hc['LHC'] + (hv**(2*hc['LHC']))/Ki))
@@ -88,10 +98,10 @@ m.Equation(v['RIB'] == kcat['RIB']*c['RIB']*c['pre']**hc['RIB']/(Km['RIB']**hc['
 
 # SOLVING ----------------------------------------------------------
 #
-# Solve using mode 4, which simulates a process using
-# the differential equations and parameters
-# no degrees of freedom allowed (no optimized variables)
-m.options.IMODE=4
+# solving maximizing specific growth rate; 
+# objective is always minimized, so that we have 
+# to state -1*obj to maximize it
+m.Obj(-mu)
 m.solve()
 
 
@@ -101,4 +111,4 @@ m.solve()
 with open(m.path+'//results.json') as f:
     result = pd.DataFrame(json.load(f))
 
-result.to_csv('/home/michael/Documents/SciLifeLab/Resources/Models/GEKKO/cyano/result_dynamic_RIB_10.csv')
+result.to_csv('/home/michael/Documents/SciLifeLab/Resources/Models/GEKKO/cyano/result_dynamic.csv')

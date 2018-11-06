@@ -62,8 +62,10 @@ stoich = pd.DataFrame([
 # define starting values
 sub = 100                                                           # initial substrate concentration, CO2/HCO3-
 Ki = 5000                                                           # light inhibition constant for photosystems
-light = np.array([5.0]*24+[50.0]*24+[5.0]*24+[50.0]*24+[5.0]*25)    # light as percent of maximum concentration #np.array([5.0]*50+[50.0]*101)
-time = np.linspace(0, len(light)/2, len(light))                     # time as a function of light step number. Less steps is faster computation
+light = np.array([5.0]*25+[50.0]*26)                                # light in % max intensity, log decrease
+#light = np.array([5.0]*25+[50.0]*26)                                # light in % max intensity, step
+#light = np.array([5.0]*24+[50.0]*24+[5.0]*24+[50.0]*24+[5.0]*25)    # light in % max intensity, pulse
+time = np.linspace(0, (len(light)-1)*2, len(light))                 # time as a function of light step number. Fewer steps is faster computation
 
 
 # VARIABLES --------------------------------------------------------
@@ -73,6 +75,7 @@ time = np.linspace(0, len(light)/2, len(light))                     # time as a 
 m = GEKKO(remote=True, server='http://xps.apmonitor.com') # alternative: server='http://xps.apmonitor.com'
 m.options.IMODE=5
 m.options.REDUCE=1
+m.options.MAX_ITER=500
 m.time = time
 
 
@@ -85,14 +88,14 @@ v = pd.Series(
     [m.Var(value=1, lb=0, ub=100, name='v_'+i) for i in enz],
     index=enz)
 
-# list of alpha=fraction of ribosomes engaged in synthesis of protein
+# list of alpha = fraction of ribosomes engaged in synthesis of protein
 a = pd.Series(
     [m.Var(value=1, lb=0, ub=1, name='a_'+i) for i in pro],
     index=pro)
     
 # list of concentration of all components (enzymes and metabolites)
 c = pd.Series(
-    [m.Var(value=1, lb=0, ub=100, name='c_'+i) for i in pro+met+mem],
+    [m.Var(value=1, lb=0, ub=200, name='c_'+i) for i in pro+met+mem],
     index=pro+met+mem)
 
 
@@ -151,34 +154,33 @@ m.Equation(sum(c[mem]) == c['lip'])
 
 # fix the mass fraction of maintenance proteins (or others)
 m.Equation(a['MAI'] == 0.3)
-m.Equation(a['RIB'] >= 0.156)
+m.Equation(a['LHC'] >= 0.256*1.2)
 
 # cell volume is determined by beta and the cytoplasmic 
 # membrane surface. The volume is a constant, bot not the surface
 #m.Equation(beta*(spA['cpm']*c['cpm']+spA['cpmP']*c['cpmP'])) == 1)
 
 
-# OBJECTIVE --------------------------------------------------------
-#
-# specific growth rate; objective is always minimized, so that we have 
-# to state -1*obj to maximize it
-m.Obj(-mu)
-
-
 # SOLVING ----------------------------------------------------------
 #
-# Solve simulation and obtain optimal resource allocation
+# solving maximizing specific growth rate; 
+# objective is always minimized, so that we have 
+# to state -1*obj to maximize it
+m.Obj(-mu)
 m.solve()
 
 
 # COLLECTING RESULTS -----------------------------------------------
 #
 # assign new variable with optimal proteome mass fraction alpha
-# so that it can be reused by dynamic model
+# and steday state starting concentrations 
+# that can be reused by dynamic model
 a_optim = a
+c_start = c
+
 # collect results in pandas data frame and save
 with open(m.path+'//results.json') as f:
     result = pd.DataFrame(json.load(f))
 
-result.to_csv('/home/michael/Documents/SciLifeLab/Resources/Models/GEKKO/cyano/result_steady_state.csv')
+#result.to_csv('/home/michael/Documents/SciLifeLab/Resources/Models/GEKKO/cyano/result_steady_state.csv')
 

@@ -12,13 +12,7 @@ source("~/Documents/SciLifeLab/Resources/R_scripts/custom.panel.functions.R")
 # +++++++++++++ LOAD MODEL DATA ++++++++++++++++++++++++++++++++++++++++++++++++
 
 # list of raw model result files to load
-files <- c(
-  "result_steady_state.csv",
-  "result_dynamic.csv",
-  "result_dynamic_RIB_10.csv",
-  "result_dynamic_RIB_20.csv",
-  "result_dynamic_RIB_40.csv"
-)
+files <- list.files() %>% grep("result_", ., value=TRUE) %>% .[c(7,6,1:5)]
 
 # Generalized function to load and combine data from multiple result tables
 dat <- lapply(files, function(filename) {
@@ -34,8 +28,10 @@ dat <- lapply(files, function(filename) {
 # +++++++++++++ PLOTTING +++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #
 # change default colors to gradual ones
-custom.lattice$superpose.line$col <- c(grey(0.5), heat.colors(7)[2:5])
-custom.lattice$superpose.polygon$col <- c(grey(0.5), heat.colors(7)[2:5])
+heat.custom <- c(grey(0.5), heat.colors(10)[2:length(files)-1])
+custom.lattice$superpose.line$col <- heat.custom
+custom.lattice$superpose.polygon$col <- heat.custom
+custom.lattice$superpose.symbol$col <- heat.custom
 
 
 # generalized function to create plots of different 'process' variables
@@ -48,7 +44,7 @@ plot.var <- function(dat, var, groups, draw.panel.key=FALSE,
     subset(dat, variable=="hv" & simulation=="steady_state"),
     par.settings=custom.lattice,
     col="#A6A6A641", border=0,
-    xlab="time", ylab="% light",
+    xlab="time [h]", ylab="% light",
     ylim=c(0, 100), panel=panel.polygon)
   
   # second part of the plot are all concentrations
@@ -62,10 +58,12 @@ plot.var <- function(dat, var, groups, draw.panel.key=FALSE,
     panel=function(x, y, ...) {
       panel.grid(h=-1, v=-1, col=grey(0.9))
       panel.xyplot(x, y, ...)
-      if (is.na(comp)) panel.text(0.9, 0.9, var) else
-        panel.text(0.9*max(x), 0.9*max(y), labels=toupper(comp))
+      if (!is.na(comp)) {
+        panel.text(1, 0.9*ylim[2], cex=1, col=grey(0.5), pos=4, 
+          labels=toupper(comp))
+      }
       if (draw.panel.key) {
-        panel.key(as.character(dat[[groups]]) %>% unique,
+        panel.key(as.character(dat[[groups]]) %>% unique, cex=0.6,
           points=FALSE, lines=TRUE, ...)
       }
     }
@@ -75,12 +73,39 @@ plot.var <- function(dat, var, groups, draw.panel.key=FALSE,
   doubleYScale(plot1, plot2, use.style=FALSE, add.axis=TRUE, add.ylab2=TRUE)
 }
 
-#svg("plot_simulation.svg", width=6, height=8)
-print(plot.var(dat, var="mu", comp=NA, groups="simulation", ylim=c(0,0.12)), split=c(1,1,2,3), more=TRUE)
-print(plot.var(dat, var="bm", comp=NA, groups="simulation", ylim=c(0,50)), split=c(2,1,2,3), more=TRUE)
-print(plot.var(dat, var="c", comp="rib", groups="simulation", ylim=c(0,0.5)), split=c(1,2,2,3), more=TRUE)
-print(plot.var(dat, var="c", comp="lhc", groups="simulation", ylim=c(0,0.5)), split=c(2,2,2,3), more=TRUE)
-print(plot.var(dat, var="c", comp="cbm", groups="simulation", ylim=c(0,0.5)), split=c(1,3,2,3), more=TRUE)
-print(plot.var(dat, var="c", comp="pset", groups="simulation", ylim=c(0,0.5), draw.panel.key=TRUE), split=c(2,3,2,3))
+# plot change in final biomass
+plot.bm <- doubleYScale(add.ylab2=TRUE,
+  xyplot(concentration ~ simulation, 
+    subset(dat, variable=="bm" & time == tail(unique(time), 1)),
+    groups=simulation,
+    scales=list(x=list(rot=25)),
+    par.settings=custom.lattice, 
+    panel=function(x, y, ...) {
+      panel.grid(h=-1, v=-1, col=grey(0.9))
+      panel.barplot(x, y, border=custom.lattice$superpose.symbol$col, 
+        ewidth=0.2, ...)
+    }
+  ),
+  xyplot(concentration/concentration[2] ~ simulation,
+    subset(dat, variable=="bm" & time == tail(unique(time), 1)),
+    type=NA, ylab="% bm increase")
+)
+  
+  
+
+  
+
+#svg("plot_simulation.svg", width=7, height=8)
+print(plot.var(dat, var="c", comp="rib", groups="simulation", ylim=c(0,0.5)), split=c(1,1,2,4), more=TRUE)
+print(plot.var(dat, var="c", comp="lhc", groups="simulation", ylim=c(0,0.5)), split=c(2,1,2,4), more=TRUE)
+print(plot.var(dat, var="c", comp="cbm", groups="simulation", ylim=c(0,0.5)), split=c(1,2,2,4), more=TRUE)
+print(plot.var(dat, var="c", comp="pset", groups="simulation", ylim=c(0,0.5)), split=c(2,2,2,4), more=TRUE)
+print(plot.var(dat, var="c", comp="lpb", groups="simulation", ylim=c(0,0.5)), split=c(1,3,2,4), more=TRUE)
+print(plot.var(dat, var="mu", comp=NA, groups="simulation", ylim=c(0,0.12)), split=c(2,3,2,4), more=TRUE)
+print(plot.var(dat, var="bm", comp=NA, groups="simulation", ylim=c(0,3500), draw.panel.key=TRUE), split=c(1,4,2,4), more=TRUE)
+print(plot.bm, split=c(2,4,2,4))
 #grid.text(c("steady state", "dynamic"), x=c(0.25, 0.75), y=c(0.98, 0.98), gp=gpar(fontsize=12))
 #dev.off()
+
+
+
