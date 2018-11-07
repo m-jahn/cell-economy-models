@@ -18,7 +18,6 @@ import re
 import math
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
 
 # PARAMETERS -------------------------------------------------------
@@ -62,7 +61,7 @@ stoich = pd.DataFrame([
 # define starting values
 sub = 100                                                           # initial substrate concentration, CO2/HCO3-
 Ki = 5000                                                           # light inhibition constant for photosystems
-light = np.array([5.0]*25+[50.0]*26)                                # light in % max intensity, log decrease
+light = 100.0/1.5**np.array(range(0,10))                            # light in % max intensity, log decrease
 #light = np.array([5.0]*25+[50.0]*26)                                # light in % max intensity, step
 #light = np.array([5.0]*24+[50.0]*24+[5.0]*24+[50.0]*24+[5.0]*25)    # light in % max intensity, pulse
 time = np.linspace(0, (len(light)-1)*2, len(light))                 # time as a function of light step number. Fewer steps is faster computation
@@ -73,9 +72,9 @@ time = np.linspace(0, (len(light)-1)*2, len(light))                 # time as a 
 
 # initialize model
 m = GEKKO(remote=True, server='http://xps.apmonitor.com') # alternative: server='http://xps.apmonitor.com'
-m.options.IMODE=5
-m.options.REDUCE=1
-m.options.MAX_ITER=500
+m.options.IMODE = 5
+m.options.REDUCE = 1
+m.options.MAX_ITER = 500
 m.time = time
 
 
@@ -95,7 +94,7 @@ a = pd.Series(
     
 # list of concentration of all components (enzymes and metabolites)
 c = pd.Series(
-    [m.Var(value=1, lb=0, ub=200, name='c_'+i) for i in pro+met+mem],
+    [m.Var(value=1, lb=0, ub=100, name='c_'+i) for i in pro+met+mem],
     index=pro+met+mem)
 
 
@@ -154,7 +153,7 @@ m.Equation(sum(c[mem]) == c['lip'])
 
 # fix the mass fraction of maintenance proteins (or others)
 m.Equation(a['MAI'] == 0.3)
-m.Equation(a['LHC'] >= 0.256*1.2)
+#m.Equation(a['LHC'] >= 0.256*1.2)
 
 # cell volume is determined by beta and the cytoplasmic 
 # membrane surface. The volume is a constant, bot not the surface
@@ -178,9 +177,9 @@ m.solve()
 a_optim = a
 c_start = c
 
-# collect results in pandas data frame and save
-with open(m.path+'//results.json') as f:
-    result = pd.DataFrame(json.load(f))
 
+# collect results in pandas data frame and save
+result = pd.DataFrame(m.load_results())
+result.to_csv('/home/micha/Documents/Code/models/GEKKO/cell-economy-models/result_steady_state.csv')
 #result.to_csv('/home/michael/Documents/SciLifeLab/Resources/Models/GEKKO/cyano/result_steady_state.csv')
 
