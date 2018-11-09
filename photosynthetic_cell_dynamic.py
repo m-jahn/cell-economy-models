@@ -18,12 +18,14 @@ import re
 import math
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
 
 # PARAMETERS -------------------------------------------------------
 #
 # Implicitly reuse all global parameters from steady state model
+# FOR MVs:
+#  .STATUS = 1     # allow solver to change the MV
+#  .DCOST = 0.01   # penalty on changes to MV to achieve global optimum
 
 
 # VARIABLES --------------------------------------------------------
@@ -33,7 +35,7 @@ import matplotlib.pyplot as plt
 m = GEKKO(remote=True, server='http://xps.apmonitor.com')
 m.options.IMODE=5
 m.options.REDUCE=1
-m.options.MAX_ITER=500
+m.options.MAX_ITER=100
 m.time = time
 
 
@@ -44,7 +46,7 @@ v = pd.Series(
 
 # list of alpha = fraction of ribosomes engaged in synthesis of protein
 a = pd.Series(
-    [m.Param(value=a_optim[i].value, name='a_'+i) for i in pro],
+    [m.Param(value=a_steady[i].value, name='a_'+i) for i in pro],
     index=pro)
     
 # list of concentration of all components (enzymes and metabolites)
@@ -52,15 +54,11 @@ c = pd.Series(
     [m.Var(value=c_start[i][1], lb=0, ub=500, name='c_'+i) for i in pro+met],
     index=pro+met)
 
-# list of optional protein reserves (limited to e.g. 5% of proteome)
-#r = pd.Series(
-#    [m.MV(value=0, lb=-1, ub=1, name='r_'+i) for i in pro],
-#    index=pro)
-#for i in pro[0:5]:      # exclude MAI from having protein reserve
-#    r[i].STATUS = 1     # allow solver to change the MV
-#    r[i].DCOST = 0.01   # penalty on changes to MV to achieve global optimum
-
-
+# fraction of ribosomes synthesizing the utilized protein fraction
+u = pd.Series(
+    [m.Param(value=u_steady[i].value, name='u_'+i) for i in enz],
+    index=enz)
+    
 # hv is the time-dependent light intensity
 hv = m.Param(value=light, name='hv')
 
@@ -79,7 +77,7 @@ bm = m.Var(value=1, name='bm')
 m.Equations([c[i].dt() == v['RIB']*(a[i]-c[i])/(a[i]+c[i]) for i in pro])
 
 # metabolite mass balance
-m.Equations([sum(stoich.loc[i]*v) - mu*c[i] == 0 for i in met])
+m.Equations([sum(stoich.loc[i]*v*u[enz]/a[enz]) - mu*c[i] == 0 for i in met])
 
 # growth rate mu equals rate of the ribosome v_RIB when a_pro = c_pro = 1,
 m.Equation(mu == v['RIB'])
@@ -108,7 +106,5 @@ m.solve()
 # COLLECTING RESULTS -----------------------------------------------
 #
 # collect results in pandas data frame and save
-with open(m.path+'//results.json') as f:
-    result = pd.DataFrame(json.load(f))
-
+result = pd.DataFrame(m.load_results())
 result.to_csv('/home/michael/Documents/SciLifeLab/Resources/Models/GEKKO/cyano/result_dynamic.csv')
