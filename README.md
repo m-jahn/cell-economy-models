@@ -3,9 +3,9 @@ Cellular economy models for simulation of biological optimization problems
 
 ### Related publications
 
-- Jahn et al., 2018, Cell Reports: manuscript accepted
-- R. Burnap, 2015, Frontiers Bioeng Biotech: http://journal.frontiersin.org/article/10.3389/fbioe.2015.00001/abstract
-- Molenaar et al., 2009, Mol Systems Biology: http://www.pubmedcentral.nih.gov/articlerender.fcgi?artid=2795476&tool=pmcentrez&rendertype=abstract
+- *Jahn et al., 2018, Cell Reports*  https://www.cell.com/cell-reports/fulltext/S2211-1247(18)31485-2
+- R. Burnap, 2015, Frontiers Bioeng Biotech  http://journal.frontiersin.org/article/10.3389/fbioe.2015.00001/abstract
+- Molenaar et al., 2009, Mol Systems Biology  http://www.pubmedcentral.nih.gov/articlerender.fcgi?artid=2795476&tool=pmcentrez&rendertype=abstract
 
 ### Basic assumptions
 
@@ -35,7 +35,7 @@ The model is defined by sets of components that are organized in subsets. An exa
 
 The fundamental equations are similar to the models published by Molenaar et al. (2009) and R. Burnap (2015). A detailed description of model components and equations can be found in our publication:
 
-xxxxxx
+*Jahn et al., 2018, Cell Reports*  https://www.cell.com/cell-reports/fulltext/S2211-1247(18)31485-2
 
 - The cell volume is, unlike in the previous models, not defined by the sum of all membrane component's area but only based on cytoplasmic membrane components. The volume is fixed to 1, but cell surface area is variable, yielding a variable volume to surface ratio β. Surface area is the sum of cytoplasmic membrane area Acpm and specific area sA times concentration c of each membrane protein cpmP. Lower β means a higher convoluted cell shape, higher β a more round shape.
 

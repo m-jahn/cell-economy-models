@@ -12,7 +12,7 @@ source("~/Documents/SciLifeLab/Resources/R_scripts/custom.panel.functions.R")
 # +++++++++++++ LOAD MODEL DATA ++++++++++++++++++++++++++++++++++++++++++++++++
 
 # list of raw model result files to load
-files <- list.files() %>% grep("result_", ., value=TRUE) %>% .[c(7,6,1:5)]
+files <- list.files() %>% grep("result_", ., value=TRUE) %>% .[c(1:4)]
 
 # Generalized function to load and combine data from multiple result tables
 dat <- lapply(files, function(filename) {
@@ -42,7 +42,7 @@ plot.var <- function(dat, yvar, xvar="time", groups, draw.panel.key=FALSE,
   
   # first part of the plot is light intensity
   plot1 <- xyplot(c(0, concentration, 0) ~ c(get(xvar)[1], get(xvar), tail(get(xvar),1)), 
-    subset(dat, variable=="hv" & simulation=="steady_state"),
+    subset(dat, variable=="hv" & simulation==simulation[1]),
     par.settings=custom.lattice,
     col="#A6A6A641", border=0,
     ylab="% light", xlab=xvar,
@@ -94,15 +94,16 @@ plot.bm <- doubleYScale(add.ylab2=TRUE,
 
 
 #svg("plot_simulation.svg", width=7, height=10)
-print(plot.var(dat, yvar="v", xvar="time", comp="rib", groups="simulation", ylim=c(0,0.5)), split=c(1,1,2,4), more=TRUE)
+print(plot.var(dat, yvar="c", xvar="time", comp="rib", groups="simulation", ylim=c(0,0.5)), split=c(1,1,2,4), more=TRUE)
 print(plot.var(dat, yvar="c", xvar="time", comp="lhc", groups="simulation", ylim=c(0,0.5)), split=c(2,1,2,4), more=TRUE)
 print(plot.var(dat, yvar="c", xvar="time", comp="cbm", groups="simulation", ylim=c(0,0.5)), split=c(1,2,2,4), more=TRUE)
 print(plot.var(dat, yvar="c", xvar="time", comp="pset", groups="simulation", ylim=c(0,0.5)), split=c(2,2,2,4), more=TRUE)
-print(plot.var(dat, yvar="c", xvar="time", comp="lpb", groups="simulation", ylim=c(0,0.5)), split=c(1,3,2,4), more=TRUE)
+print(plot.var(dat, yvar="u", xvar="time", comp="rib", groups="simulation", ylim=c(0,0.5)), split=c(1,3,2,4), more=TRUE)
 print(plot.var(dat, yvar="mu", xvar="time", comp=NA, groups="simulation", ylim=c(0,0.15)), split=c(2,3,2,4), more=TRUE)
-print(plot.var(dat, yvar="bm", xvar="time", comp=NA, groups="simulation", ylim=c(0,3500), draw.panel.key=TRUE), split=c(1,4,2,4), more=TRUE)
+print(plot.var(dat, yvar="bm", xvar="time", comp=NA, groups="simulation", ylim=c(1,10^4), draw.panel.key=TRUE, ylog=10), split=c(1,4,2,4), more=TRUE)
 print(plot.bm, split=c(2,4,2,4))
 #dev.off()
 
 
-
+plot(subset(dat, simulation=="dynamic_RIB05" & variable=="mu")$concentration/
+subset(dat, simulation=="dynamic_RIB00" & variable=="mu")$concentration)

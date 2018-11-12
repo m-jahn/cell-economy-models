@@ -62,30 +62,34 @@ stoich = pd.DataFrame([
 sub = 100                                                           # initial substrate concentration, CO2/HCO3-
 Ki = 5000                                                           # light inhibition constant for photosystems
 #light = 100.0/1.5**np.array(range(0,12))                            # light in % max intensity, log decrease
-light = np.array([5.0]*25+[50.0]*26)                                # light in % max intensity, step
-#light = np.array([5.0]*24+[50.0]*24+[5.0]*24+[50.0]*24+[5.0]*25)    # light in % max intensity, pulse
+#light = np.array([5.0]*25+[50.0]*26)                                # light in % max intensity, step
+light = np.array([2.0]*6+[50.0]*6+[2.0]*6+[50.0]*6+[2.0]*6+[50.0]*6+[2.0]*7)    # light in % max intensity, pulse
 time = np.linspace(0, (len(light)-1)*2, len(light))                 # time as a function of light step number. Fewer steps is faster computation
 # protein reserve in absolute number
-rs = pd.Series([0.0, 0.0, 0.0, 0.0, 0.0], index=enz)
+rs = pd.Series([0.0, 0.0, 0.0, 0.0, 0.10], index=enz)
+# optional list of concentration upper bounds
+c_uplim = pd.Series([1,1,1,1,1,1,80,20,20,5,1,1,1], index=pro+met+mem)
 
-# VARIABLES --------------------------------------------------------
 
+# INITIALIZE STEADY STATE MODEL ------------------------------------
+# alternative: server='http://xps.apmonitor.com'
 
-# initialize model
-m = GEKKO(remote=True, server='http://xps.apmonitor.com') # alternative: server='http://xps.apmonitor.com'
+m = GEKKO(remote=True, server='http://xps.apmonitor.com')
 m.options.IMODE = 5
 m.options.REDUCE = 1
 m.options.MAX_ITER = 300
 m.time = time
 
 
+# VARIABLES --------------------------------------------------------
+#
 # variables calculated by solver to meet the constraints of 
 # equations and parameters
 # syntax: v = m.Var([starting value], [lb], [ub], [integer], [name]):
 
 # list of catalytic rates v for all enzymes
 v = pd.Series(
-    [m.Var(value=1, lb=0, ub=300, name='v_'+i) for i in enz],
+    [m.Var(value=1, lb=0, ub=10, name='v_'+i) for i in enz],
     index=enz)
 
 # list of alpha = fraction of ribosomes engaged in synthesis of protein
@@ -95,13 +99,12 @@ a = pd.Series(
     
 # list of concentration of all components (enzymes and metabolites)
 c = pd.Series(
-    [m.Var(value=1, lb=0, ub=300, name='c_'+i) for i in pro+met+mem],
+    [m.Var(value=1, lb=0, ub=c_uplim[i], name='c_'+i) for i in pro+met+mem],
     index=pro+met+mem)
 
-# optional protein utilization for alpha, µ dependent
-# utilized protein u is a - reserve rs
+# optional protein utilization, µ dependent: u = c - reserve rs
 u = pd.Series(
-    [m.Intermediate(a[i]-rs[i]*(1-mu/0.12), name='u_'+i) for i in enz],
+    [m.Var(value=1, lb=0, ub=1, name='u_'+i) for i in enz],
     index=enz)
 
 
@@ -132,18 +135,20 @@ m.Equations([a[i]*v['RIB'] - mu*c[i] == 0 for i in pro])
 
 # metabolite mass balance: left side, production of metabolites by
 # the respective enzyme, right side, growth rate times metabolite conc
-# includes also term for protein utilization (u/a)
-m.Equations([sum(stoich.loc[i]*v*u[enz]/a[enz]) - mu*c[i] == 0 for i in met])
+m.Equations([sum(stoich.loc[i]*v) - mu*c[i] == 0 for i in met])
+
+# utilized enzyme fraction = total enzyme - reserve
+m.Equations([u[i] == c[i]-rs[i]*(1-mu/0.11) for i in enz])
 
 # biomass accumulation over time
 m.Equation(bm.dt() == mu*bm)
 
 # Michaelis-Menthen type enzyme kinetics
-m.Equation(v['LHC'] == kcat['LHC']*c['LHC']*hv**hc['LHC']/(Km['LHC']**hc['LHC'] + hv**hc['LHC'] + (hv**(2*hc['LHC']))/Ki))
-m.Equation(v['PSET'] == kcat['PSET']*c['PSET']*c['hvi']**hc['PSET']/(c['hvi']**hc['PSET'] + Km['PSET']**hc['PSET']))
-m.Equation(v['CBM'] == kcat['CBM']*c['CBM']*c['nadph']*sub**hc['CBM']*c['atp']/(c['nadph']*sub**hc['CBM']*c['atp'] + KmNADPH*c['atp'] + KmATP*c['nadph'] + KmATP*sub**hc['CBM'] + Km['CBM']**hc['CBM']*c['nadph']))
-m.Equation(v['LPB'] == kcat['LPB']*c['LPB']*c['pre']**hc['LPB']/(Km['LPB']**hc['LPB'] + c['pre']**hc['LPB']))
-m.Equation(v['RIB'] == kcat['RIB']*c['RIB']*c['pre']**hc['RIB']/(Km['RIB']**hc['RIB'] + c['pre']**hc['RIB']))
+m.Equation(v['LHC'] == kcat['LHC']*u['LHC']*hv**hc['LHC']/(Km['LHC']**hc['LHC'] + hv**hc['LHC'] + (hv**(2*hc['LHC']))/Ki))
+m.Equation(v['PSET'] == kcat['PSET']*u['PSET']*c['hvi']**hc['PSET']/(c['hvi']**hc['PSET'] + Km['PSET']**hc['PSET']))
+m.Equation(v['CBM'] == kcat['CBM']*u['CBM']*c['nadph']*sub**hc['CBM']*c['atp']/(c['nadph']*sub**hc['CBM']*c['atp'] + KmNADPH*c['atp'] + KmATP*c['nadph'] + KmATP*sub**hc['CBM'] + Km['CBM']**hc['CBM']*c['nadph']))
+m.Equation(v['LPB'] == kcat['LPB']*u['LPB']*c['pre']**hc['LPB']/(Km['LPB']**hc['LPB'] + c['pre']**hc['LPB']))
+m.Equation(v['RIB'] == kcat['RIB']*u['RIB']*c['pre']**hc['RIB']/(Km['RIB']**hc['RIB'] + c['pre']**hc['RIB']))
 
 
 # OPTIONAL CONSTRAINTS
@@ -179,16 +184,6 @@ m.solve()
 
 # COLLECTING RESULTS -----------------------------------------------
 #
-# assign new variable with optimal proteome mass fraction alpha
-# and steday state starting concentrations 
-# that can be reused by dynamic model
-a_steady = a
-u_steady = u
-c_start = c
-
-
-
 # collect results in pandas data frame and save
 result = pd.DataFrame(m.load_results())
-#result.to_csv('/home/michael/Documents/SciLifeLab/Resources/Models/GEKKO/cyano/result_steady_state.csv')
-
+result.to_csv('/home/michael/Documents/SciLifeLab/Resources/Models/GEKKO/cyano/result_steady_state_RIB10.csv')
