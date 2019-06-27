@@ -12,7 +12,7 @@ source("~/Documents/SciLifeLab/Resources/R_scripts/custom.panel.functions.R")
 # +++++++++++++ LOAD MODEL DATA ++++++++++++++++++++++++++++++++++++++++++++++++
 
 # list of raw model result files to load
-files <- list.files() %>% grep("result_", ., value=TRUE) %>% .[c(1:4)]
+files <- list.files() %>% grep("result_", ., value=TRUE) %>% .[c(1:5)]
 
 # Generalized function to load and combine data from multiple result tables
 dat <- lapply(files, function(filename) {
@@ -105,5 +105,5 @@ print(plot.bm, split=c(2,4,2,4))
 #dev.off()
 
 
-plot(subset(dat, simulation=="dynamic_RIB05" & variable=="mu")$concentration/
-subset(dat, simulation=="dynamic_RIB00" & variable=="mu")$concentration)
+plot(subset(dat, simulation=="dynamic_RIB0.025" & variable=="mu")$concentration/
+subset(dat, simulation=="dynamic_RIB0.0" & variable=="mu")$concentration)
