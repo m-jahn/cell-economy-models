@@ -3,7 +3,7 @@ Cellular economy models for simulation of biological optimization problems
 
 ### Related publications
 
-- *Jahn et al., 2018, Cell Reports*  https://www.cell.com/cell-reports/fulltext/S2211-1247(18)31485-2
+- **Jahn et al., 2018, Cell Reports**  https://www.cell.com/cell-reports/fulltext/S2211-1247(18)31485-2
 - R. Burnap, 2015, Frontiers Bioeng Biotech  http://journal.frontiersin.org/article/10.3389/fbioe.2015.00001/abstract
 - Molenaar et al., 2009, Mol Systems Biology  http://www.pubmedcentral.nih.gov/articlerender.fcgi?artid=2795476&tool=pmcentrez&rendertype=abstract
 
