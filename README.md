@@ -7,10 +7,31 @@ Cellular economy models for simulation of biological optimization problems
 - R. Burnap, 2015, Frontiers Bioeng Biotech  http://journal.frontiersin.org/article/10.3389/fbioe.2015.00001/abstract
 - Molenaar et al., 2009, Mol Systems Biology  http://www.pubmedcentral.nih.gov/articlerender.fcgi?artid=2795476&tool=pmcentrez&rendertype=abstract
 
+### Getting started
+
+The structure and programmatic details of the model are outlined below. However, if you just want to get started and play around with the model, you need a working python installation and install the [GEKKO optimization framework](https://gekko.readthedocs.io/en/latest/).
+
+```{b}
+# for linux, run the following line in terminal
+sudo apt install python-pip
+pip install gekko
+```
+
+Change to python and execute the model line by line, or run the complete script. The dynamic model script should be read before the steady state model because the default is that both simulations are executed from the steady state model script. You can outcomment the dynamic simulation if you like.
+
+```{b}
+python photosynthetic_cell_dynamic.py
+python photosynthetic_cell_steadystate.py
+
+```
+
+The results are saved as ```*.csv``` table and can be visualized e.g. with R or Excel. This plot shows how a step chnage in light intensity (grey area) affects size/expression of different proteome sectors over time (RIB, ribosome, LHC, light harvesting complex, CBM, carbon metabolism, PSET, photosynthesis and electron transport). You can see different dynamic simulations and the steady state optimal protein allocation (yellow line).
+
+![](example_simulation.svg "simulation example")
+
 ### Basic assumptions
 
-The cellular economy models deposited here are 'coarse-grained' metabolic models for the simulation of fundamental cell processes. The purpose of these models is not to reflect cellular behavior in its entire
-complexity, but rather to reduce complexity to an amount that still allows drawing significant conclusions while keeping the number of components and reactions as small as possible. Following this assumption, a cellular economy model may not contain all known metabolic pathways, enzymes or known kinetic parameters thereof. It rather bundles fundamental cellular processes in 'super-enzymes', single catalytic units that serve as proxies for several similar or related pathways. However, the output from a coarse-grain model is still very useful as it illustrates metabolic tradeoffs under different conditions, without getting lost in details. The models are generally mixed-integer non-linear optimization (MINLP) problems. The models are formulated to optimize growth of a cell, but different aspects of cellular behaviour can be probed as well.
+The cellular economy models deposited here are 'coarse-grained' metabolic models for the simulation of fundamental cell processes. The purpose of these models is not to reflect cellular behavior in its entire complexity, but rather to reduce complexity to an amount that still allows drawing significant conclusions while keeping the number of components and reactions as small as possible. Following this assumption, a cellular economy model may not contain all known metabolic pathways, enzymes or known kinetic parameters thereof. It rather bundles fundamental cellular processes in 'super-enzymes', single catalytic units that serve as proxies for several similar or related pathways. However, the output from a coarse-grain model is still very useful as it illustrates metabolic tradeoffs under different conditions, without getting lost in details. The models are generally mixed-integer non-linear optimization (MINLP) problems. The models are formulated to optimize growth of a cell, but different aspects of cellular behaviour can be probed as well.
 
 ### Previous models by Molenaar et al., 2009, and Burnap, 2015
 

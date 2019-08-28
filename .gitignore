@@ -3,6 +3,7 @@ ODE_test.py
 pulse/
 reserve_lightlim/
 stepchange/
+daynight/
 *.svg
 *.csv
 

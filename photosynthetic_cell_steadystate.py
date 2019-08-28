@@ -59,19 +59,35 @@ stoich = pd.DataFrame([
 
 
 # define starting values
-sub = 100                                                           # initial substrate concentration, CO2/HCO3-
-Ki = 5000                                                           # light inhibition constant for photosystems
-mumax = 0.11                                                        # maximum growth rate, used to calculate protein reserve
-#light = 100.0/1.5**np.array(range(0,12))                            # light in % max intensity, log decrease
-#light = np.array([5.0]*25+[50.0]*26)                                # light in % max intensity, step
-light = np.array([3.0]*12+[50.0]*6+[3.0]*12+[50.0]*6+[3.0]*13)      # light in % max intensity, pulse
-time = np.linspace(0, (len(light)-1)*3, len(light))                 # time as a function of light step number
-rs = pd.Series([0.0, 0.0, 0.0, 0.0, 0.0], index = enz)              # protein reserve in absolute number
-# optional list of concentration upper bounds
-c_uplim = pd.Series([1,1,1,1,1,1,90,25,25,5,1,1,1], 
+sub = 100                                                               # initial substrate concentration, CO2/HCO3-
+Ki = 5000                                                               # light inhibition constant for photosystems
+mumax = 0.11                                                            # maximum growth rate, used to calculate protein reserve
+rs = pd.Series([0.0, 0.0, 0.0, 0.0, 0.0], index = enz)                  # protein reserve in absolute number
+c_uplim = pd.Series([1,1,1,1,1,1,90,25,25,5,1,1,1],                     # optional list of concentration upper bounds
     index = pro + met + mem)
-# working directory
-wd = '/home/michael/Documents/SciLifeLab/Resources/Models/GEKKO/cyano/'
+wd = '/home/michael/Documents/SciLifeLab/Resources/Models/GEKKO/cyano/' # working directory for saving results
+
+
+# simulation of different light conditions
+# ----------------------------------------
+
+# (A) light in % max intensity, log decrease
+#light = 100.0/1.5**np.array(range(0,12))
+
+# (B) light as step change
+#light = np.array([5.0]*25+[50.0]*26)
+
+# (C) light coming in pulses
+#light = np.array([3.0]*12+[50.0]*6+[3.0]*12+[50.0]*6+[3.0]*13)
+
+# (D) light as smooth day night cycle
+# use sine function to simulate one full day at length 2*pi = 6.283,
+# so 2 days is 4*pi, and step width = 4*pi/96,
+# since sine(x) is between -1 and 1, we rescale by (sine(x)+1)*50 (0 to 100)
+light = np.round((np.sin(np.arange(0, 4*3.1415, 4*3.1415/96))+1)*50)+1
+
+# time as a function of light step number, in hours
+time = np.arange(0, len(light)/2, 0.5)
 
 
 # define class result where model results are collected
@@ -206,7 +222,7 @@ def steady_state(rs):
 #
 # run model simulations, e.g.
 # loop through different values of protein reserves
-for i in [0.0]:
+for i in [0.0, 0.05, 0.1, 0.15]:
     
     rs['RIB'] = i
     result_ss = steady_state(rs)
