@@ -1,46 +1,74 @@
 # cell-economy-models
+
+![Platform](https://img.shields.io/badge/platform-all-green)
+![gekko](https://img.shields.io/badge/python-gekko-blue)
+![GitHub last commit](https://img.shields.io/github/last-commit/m-jahn/cell-economy-models)
+![GitHub issues](https://img.shields.io/github/issues/m-jahn/cell-economy-models)
+
+
 Cellular economy models for simulation of biological optimization problems
 
-### Related publications
+## Related publications
 
 - **Jahn et al., 2018, Cell Reports**  https://www.cell.com/cell-reports/fulltext/S2211-1247(18)31485-2
 - R. Burnap, 2015, Frontiers Bioeng Biotech  http://journal.frontiersin.org/article/10.3389/fbioe.2015.00001/abstract
 - Molenaar et al., 2009, Mol Systems Biology  http://www.pubmedcentral.nih.gov/articlerender.fcgi?artid=2795476&tool=pmcentrez&rendertype=abstract
 
-### Getting started
+## Getting started
 
 The structure and programmatic details of the model are outlined below. However, if you just want to get started and play around with the model, you need a working python installation and install the [GEKKO optimization framework](https://gekko.readthedocs.io/en/latest/).
 
-```{b}
-# for linux, run the following line in terminal
+In a linux terminal, run:
+
+```bash
 sudo apt install python-pip
 pip install gekko
 ```
 
-Change to python and execute the model line by line, or run the complete script. The dynamic model script should be read before the steady state model because the default is that both simulations are executed from the steady state model script. You can outcomment the dynamic simulation if you like.
+The different models of this repository can be found in the `models/` dir. Currently available models are:
 
-```{b}
-python photosynthetic_cell_dynamic.py
-python photosynthetic_cell_steadystate.py
+- *Synechocystis* sp. PCC6803
+  - steady state resource allocation model (7 components)
+  - dynamic, time-dependent variant of the resource allocation model
 
+To run a simulation, open `run_model.py` and execute the desired sections to import and start the model.
+A basic example looks like this:
+
+```python
+# libraries
+import numpy as np
+from models import synechocystis_steadystate
+
+# parameters
+light = np.round((np.sin(np.arange(0, 4*3.1415, 4*3.1415/96))+1)*50)+1
+time = np.arange(0, len(light)/2, 0.5)
+sub = 100                                       # initial substrate concentration, CO2/HCO3-
+c_upper = [1,1,1,1,1,1,90,25,25,5,1,1,1]        # optional list of concentration upper bounds
+reserve = [0.0, 0.0, 0.0, 0.0, 0.0]             # fraction of enzyme reserve in total
+mumax = 0.11                                    # maximum growth rate, used to calculate protein utilization
+Ki = 5000                                       # light inhibition constant for photosystems
+
+# start model
+result = synechocystis_steadystate.simulate(time, light, sub, c_upper, reserve, mumax, Ki)
 ```
 
-The results are saved as ```*.csv``` table and can be visualized e.g. with R or Excel. This plot shows how a step chnage in light intensity (grey area) affects size/expression of different proteome sectors over time (RIB, ribosome, LHC, light harvesting complex, CBM, carbon metabolism, PSET, photosynthesis and electron transport). You can see different dynamic simulations and the steady state optimal protein allocation (yellow line).
+The results can be exported as `*.csv` table and can be visualized e.g. with R or python. This plot shows how a step change in light intensity (grey area) affects size/expression of different proteome sectors over time (RIB, ribosome, LHC, light harvesting complex, CBM, carbon metabolism, PSET, photosynthesis and electron transport). You can see different dynamic simulations and the steady state optimal protein allocation (yellow line).
 
 ![](example_simulation.svg "simulation example")
 
-### Basic assumptions
+## Basic assumptions
 
 The cellular economy models deposited here are 'coarse-grained' metabolic models for the simulation of fundamental cell processes. The purpose of these models is not to reflect cellular behavior in its entire complexity, but rather to reduce complexity to an amount that still allows drawing significant conclusions while keeping the number of components and reactions as small as possible. Following this assumption, a cellular economy model may not contain all known metabolic pathways, enzymes or known kinetic parameters thereof. It rather bundles fundamental cellular processes in 'super-enzymes', single catalytic units that serve as proxies for several similar or related pathways. However, the output from a coarse-grain model is still very useful as it illustrates metabolic tradeoffs under different conditions, without getting lost in details. The models are generally mixed-integer non-linear optimization (MINLP) problems. The models are formulated to optimize growth of a cell, but different aspects of cellular behaviour can be probed as well.
 
-### Previous models by Molenaar et al., 2009, and Burnap, 2015
+## Previous models
 
 These models are based on previous work by Molenaar et al. (2009) and Burnap (2015). Molenaar and co-authors initially established equations for simple optimization models and implemented it programmatically in GAMS. The original model simulates a simple heterotrophic cell with only four components ('super-enzymes'): A substrate transporter, a metabolic enzyme turning substrate into precursors, a lipid biosynthesis enzyme consuming precursors and producing lipids, and a ribosome consuming precursors and synthesizing all proteins including itself. The model, its features and behavior under different nutrient conditions are excellently described in the original publication. A similar implementation by R. Burnap (2015) extended the model towards the simulation of a photoautotrophic cell. Instead of a single carbon and energy source, it contained one substrate as the carbon source (e.g. CO2) and another, light, as the energy source.
 
+## The *Synechocystis* model
+
 ### Changes to preceding models
 
-This implementation of a autotrophic cell model is a direct continuation of the previous two models, particularly the one from Burnap (2015). However, it was modified and extended to make it fit for
-experimental proteomics data and reflect more realistic properties of a cyanobacterial cell. Programmatically, the model was ported from the commercial _GAMS platform_ to open source _python_ using the GEKKO optimization toolbox. The model comes in two flavors, a steady state optimization of all cell compounds, or a dynamic simulation to follow time- and input parameter-dependent changes.
+This implementation of a autotrophic cell model is a direct continuation of the previous two models, particularly the one from Burnap (2015). However, it was modified and extended to make it fit for experimental proteomics data and reflect more realistic properties of a cyanobacterial cell. Programmatically, the model was ported from the commercial `GAMS` language to open source `python` using the GEKKO optimization toolbox. The model comes in two flavors, a steady state optimization of all cell compounds, or a dynamic simulation to follow time- and input parameter-dependent changes.
 
 -----
 
@@ -91,8 +119,7 @@ The following variables are optimized by the solver to maximize the objective fu
 
 ### Objective function
 
-The objective function of the model is a variable similar to other variables that are optimized by the solver. However, when solving the model the prime target of the algorithm is to maximize this
-variable, here the specific growth rate μ.
+The objective function of the model is a variable similar to other variables that are optimized by the solver. However, when solving the model the prime target of the algorithm is to maximize this variable, here the specific growth rate *μ*.
 
 ### Solving the model
 
@@ -100,5 +127,9 @@ The model was ported from the GAMS language to Python using the GEKKO optimizati
 - GEKKO web page: http://apmonitor.com/wiki/index.php/Main/GekkoPythonOptimization
 - GEKKO documentation: https://gekko.readthedocs.io/en/latest/
 
+## Author
 
-
+- Dr. Michael Jahn
+  - Affiliation: [Max-Planck-Unit for the Science of Pathogens](https://www.mpusp.mpg.de/) (MPUSP), Berlin, Germany
+  - ORCID profile: https://orcid.org/0000-0002-3913-153X
+  - github page: https://github.com/m-jahn

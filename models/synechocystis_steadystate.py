@@ -13,112 +13,60 @@
 # LIBRARIES ------------------------------------------------------------
 
 from gekko import GEKKO
-import json
-import re
-import math
-import numpy as np
 import pandas as pd
-
-
-# PARAMETERS -----------------------------------------------------------
-
-# organize variables in sets to simplify indexing
-enz = ['LHC', 'PSET', 'CBM', 'LPB', 'RIB']      # enzymes
-pro = enz+['MAI']                               # proteins
-met = ['hvi', 'atp', 'nadph', 'pre', 'lip']     # metabolites
-mem = ['cpm', 'thy']                            # membrane lipids
-thyP = ['LHC', 'PSET']                          # thylakoid membrane located proteins
-#cmpP = []                                      # cytoplasmic membrane located proteins
-
-
-# enzyme kinetic parameters as pandas series 
-# (kcat, Km, Hill coefficient)
-kcat = pd.Series([172, 35, 6, 6, 11], index = enz)
-Km = pd.Series([58, 108, 229, 13, 128], index = enz)
-hc = pd.Series([2.0043, 1.3989, 2.2477, 0.6744, 0.8659], index = enz)
-
-
-KmATP = 1   # affinity constant of CBM for ATP
-KmNADPH = 1 # affinity constant of CBM for NADPH
-
-
-# specific surface area of membrane located components
-#spA = pd.Series([1, 1, 1, 1], index=mem)
-
-
-# reaction stoichiometry matrix of met x enz
-# as pandas data frame
-stoich = pd.DataFrame([
-    [1, -1,  0,  0,  0], 
-    [0,  1, -1,  0,  0],
-    [0,  1, -1,  0,  0],
-    [0,  0,  1, -1, -1],
-    [0,  0,  0,  1,  0]],
-    index = met,
-    columns = enz)
-
-
-# define starting values
-sub = 100                                                               # initial substrate concentration, CO2/HCO3-
-Ki = 5000                                                               # light inhibition constant for photosystems
-mumax = 0.11                                                            # maximum growth rate, used to calculate protein reserve
-rs = pd.Series([0.0, 0.0, 0.0, 0.0, 0.0], index = enz)                  # protein reserve in absolute number
-c_uplim = pd.Series([1,1,1,1,1,1,90,25,25,5,1,1,1],                     # optional list of concentration upper bounds
-    index = pro + met + mem)
-wd = '/home/michael/Documents/SciLifeLab/Resources/Models/GEKKO/cyano/' # working directory for saving results
-
-
-# simulation of different light conditions
-# ----------------------------------------
-
-# (A) light in % max intensity, log decrease
-#light = 100.0/1.5**np.array(range(0,12))
-
-# (B) light as step change
-#light = np.array([5.0]*25+[50.0]*26)
-
-# (C) light coming in pulses
-#light = np.array([3.0]*12+[50.0]*6+[3.0]*12+[50.0]*6+[3.0]*13)
-
-# (D) light as smooth day night cycle
-# use sine function to simulate one full day at length 2*pi = 6.283,
-# so 2 days is 4*pi, and step width = 4*pi/96,
-# since sine(x) is between -1 and 1, we rescale by (sine(x)+1)*50 (0 to 100)
-light = np.round((np.sin(np.arange(0, 4*3.1415, 4*3.1415/96))+1)*50)+1
-
-# time as a function of light step number, in hours
-time = np.arange(0, len(light)/2, 0.5)
-
-
-# define class result where model results are collected
-class result:
-    def __init__(self, name, model, v, a, c, u):
-        self.name = name
-        self.model = model
-        self.table = pd.DataFrame(model.load_results())
-        self.v = v
-        self.a = a
-        self.c = c
-        self.u = u
+from models import common
 
 
 # INITIALIZE STEADY STATE MODEL ----------------------------------------
-def steady_state(rs):
+def simulate(time, light, sub, c_upper, reserve, mumax, Ki):
     
-    # alternative: server='http://xps.apmonitor.com'
-    m = GEKKO(remote = True, server = 'http://xps.apmonitor.com')
+    #m = GEKKO(remote = True, server = 'http://xps.apmonitor.com')
+    m = GEKKO(remote = False)
     m.options.IMODE = 5
     m.options.REDUCE = 1
     m.options.MAX_ITER = 300
     m.time = time
     
-    
+
+    # organize variables in sets to simplify indexing
+    enz = ['LHC', 'PSET', 'CBM', 'LPB', 'RIB']      # enzymes
+    pro = enz+['MAI']                               # proteins
+    met = ['hvi', 'atp', 'nadph', 'pre', 'lip']     # metabolites
+    mem = ['cpm', 'thy']                            # membrane lipids
+    thyP = ['LHC', 'PSET']                          # thylakoid membrane located proteins
+    #cmpP = []                                      # cytoplasmic membrane located proteins
+
+
+    # PARAMETERS --------------------------------------------------------
+    #
+    # enzyme kinetic parameters as pandas series 
+    # (kcat, Km, Hill coefficient)
+    kcat = pd.Series([172, 35, 6, 6, 11], index = enz)
+    Km = pd.Series([58, 108, 229, 13, 128], index = enz)
+    hc = pd.Series([2.0043, 1.3989, 2.2477, 0.6744, 0.8659], index = enz)
+    ub = pd.Series(c_upper, index = pro + met + mem)
+    reserve = pd.Series(reserve, index = enz)
+
+    KmATP = 1   # affinity constant of CBM for ATP
+    KmNADPH = 1 # affinity constant of CBM for NADPH
+
+    # specific surface area of membrane located components
+    #spA = pd.Series([1, 1, 1, 1], index=mem)
+
+
+    # reaction stoichiometry matrix of met x enz
+    # as pandas data frame
+    stoich = pd.DataFrame([
+        [1, -1,  0,  0,  0], 
+        [0,  1, -1,  0,  0],
+        [0,  1, -1,  0,  0],
+        [0,  0,  1, -1, -1],
+        [0,  0,  0,  1,  0]],
+        index = met,
+        columns = enz)
+
     # VARIABLES --------------------------------------------------------
     #
-    # variables calculated by solver to meet the constraints of 
-    # equations and parameters
-    # syntax: v = m.Var([starting value], [lb], [ub], [integer], [name]):
-    
     # list of catalytic rates v for all enzymes
     v = pd.Series(
         [m.Var(value = 1, lb = 0, ub = 10, name = 'v_'+i) for i in enz],
@@ -131,15 +79,14 @@ def steady_state(rs):
         
     # list of concentration of all components (enzymes and metabolites)
     c = pd.Series(
-        [m.Var(value = 1, lb = 0, ub = c_uplim[i], name = 'c_'+i) for i in pro + met + mem],
+        [m.Var(value = 1, lb = 0, ub = ub[i], name = 'c_'+i) for i in pro + met + mem],
         index = pro + met + mem)
     
     # optional protein utilization, µ dependent: u = c - reserve rs
     u = pd.Series(
         [m.Var(value = 1, lb = 0, ub = 1, name = 'u_'+i) for i in enz],
         index = enz)
-    
-    
+        
     # hv is the time-dependent light intensity
     hv = m.Param(value = light, name = 'hv')
     
@@ -170,7 +117,7 @@ def steady_state(rs):
     m.Equations([sum(stoich.loc[i]*v) - mu*c[i] == 0 for i in met])
     
     # utilized enzyme fraction = total enzyme - reserve
-    m.Equations([u[i] == c[i]-rs[i]*(1-mu/mumax) for i in enz])
+    m.Equations([u[i] == c[i]-reserve[i]*(1-mu/mumax) for i in enz])
     
     # biomass accumulation over time
     m.Equation(bm.dt() == mu*bm)
@@ -199,7 +146,6 @@ def steady_state(rs):
     # fix the mass fraction of maintenance proteins (or others)
     m.Equation(a['MAI'] == 0.3)
     
-    
     # cell volume is determined by beta and the cytoplasmic 
     # membrane surface. The volume is a constant, bot not the surface
     #m.Equation(beta*(spA['cpm']*c['cpm']+spA['cpmP']*c['cpmP'])) == 1)
@@ -214,22 +160,4 @@ def steady_state(rs):
     m.solve()
     
     # collect results and return
-    return(result("steady_state", m, v, a, c, u))
-
-
-
-# EXECUTE FUNCTIONS AND SAVE RESULTS -----------------------------------
-#
-# run model simulations, e.g.
-# loop through different values of protein reserves
-for i in [0.0, 0.05, 0.1, 0.15]:
-    
-    rs['RIB'] = i
-    result_ss = steady_state(rs)
-    result_dy = dynamic(rs, a = result_ss.a, c = result_ss.c)
-    
-    # save result from pandas data frame to hdd
-    
-    result_ss.table.to_csv(wd + 'result_steady_state_RIB' + str(i) + '.csv')
-    result_dy.table.to_csv(wd + 'result_dynamic_RIB' + str(i) + '.csv')
-
+    return(common.result("steady_state", m, v, a, c, u))

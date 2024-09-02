@@ -13,29 +13,57 @@
 # LIBRARIES ------------------------------------------------------------
 
 from gekko import GEKKO
-import json
-import re
-import math
-import numpy as np
 import pandas as pd
-
-
-# PARAMETERS -----------------------------------------------------------
-#
-# Implicitly reuse all global parameters from steady state model
-# Explicitly use optimal alpha mass fractions and starting concentrations
+from models import common
 
 
 # INITIALIZE DYNAMIC MODEL ---------------------------------------------
-# alternative: server='http://xps.apmonitor.com'
-def dynamic(rs, a ,c):
-    
-    m = GEKKO(remote = True, server = 'http://xps.apmonitor.com')
+def synechocystis_dynamic(time, light, sub, c_upper, reserve, mumax, Ki, a ,c):
+
+    #m = GEKKO(remote = True, server = 'http://xps.apmonitor.com')
+    m = GEKKO(remote = False)
     m.options.IMODE = 5
     m.options.REDUCE = 1
     m.options.MAX_ITER = 100
     m.time = time
     
+    
+    # organize variables in sets to simplify indexing
+    enz = ['LHC', 'PSET', 'CBM', 'LPB', 'RIB']      # enzymes
+    pro = enz+['MAI']                               # proteins
+    met = ['hvi', 'atp', 'nadph', 'pre', 'lip']     # metabolites
+    mem = ['cpm', 'thy']                            # membrane lipids
+    thyP = ['LHC', 'PSET']                          # thylakoid membrane located proteins
+    #cmpP = []                                      # cytoplasmic membrane located proteins
+
+
+    # PARAMETERS --------------------------------------------------------
+    #
+    # enzyme kinetic parameters as pandas series 
+    # (kcat, Km, Hill coefficient)
+    kcat = pd.Series([172, 35, 6, 6, 11], index = enz)
+    Km = pd.Series([58, 108, 229, 13, 128], index = enz)
+    hc = pd.Series([2.0043, 1.3989, 2.2477, 0.6744, 0.8659], index = enz)
+    ub = pd.Series(c_upper, index = pro + met + mem)
+    reserve = pd.Series(reserve, index = enz)
+
+    KmATP = 1   # affinity constant of CBM for ATP
+    KmNADPH = 1 # affinity constant of CBM for NADPH
+
+    # specific surface area of membrane located components
+    #spA = pd.Series([1, 1, 1, 1], index=mem)
+
+
+    # reaction stoichiometry matrix of met x enz
+    # as pandas data frame
+    stoich = pd.DataFrame([
+        [1, -1,  0,  0,  0], 
+        [0,  1, -1,  0,  0],
+        [0,  1, -1,  0,  0],
+        [0,  0,  1, -1, -1],
+        [0,  0,  0,  1,  0]],
+        index = met,
+        columns = enz)
     
     # VARIABLES --------------------------------------------------------
     #
@@ -67,8 +95,11 @@ def dynamic(rs, a ,c):
     
     # biomass accumulated over time with initial value
     bm = m.Var(value = 1, name = 'bm')
+        
+    # volume-to-surface ratio, increases with sphericity of a cell
+    #beta = m.Var(value=1, lb=0.1, ub=10)
     
-    
+
     # EQUATIONS --------------------------------------------------------
     #
     # time-dependent differential equation for change in protein_conc
@@ -83,7 +114,7 @@ def dynamic(rs, a ,c):
     m.Equation(mu == v['RIB'])
     
     # utilized enzyme fraction = total enzyme - reserve
-    m.Equations([u[i] == c[i]-rs[i]*(1-mu/mumax) for i in enz])
+    m.Equations([u[i] == c[i]-reserve[i]*(1-mu/mumax) for i in enz])
     
     # biomass accumulation over time
     m.Equation(bm.dt() == mu*bm)
@@ -105,5 +136,5 @@ def dynamic(rs, a ,c):
     m.Obj(-mu)
     m.solve()
     
-    # collect results and
-    return(result("dynamic", m, v, a, c, u))
+    # collect results and return
+    return(common.result("dynamic", m, v, a, c, u))
