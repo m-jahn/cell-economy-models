@@ -1,8 +1,6 @@
 # ----------------------------------------------------------
-# Examples to import and run various cellular economy models
-# ----------------------------------------------------------
-#
-# Model 1: Synechocystis sp. PCC6803 (cyanobacterium, photosynthetic)
+# Run cell economy model for Synechocystis sp. PCC6803
+# (cyanobacterium, photosynthetic)
 # ----------------------------------------------------------
 
 
@@ -13,8 +11,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import re
 from glob import glob
-from models import synechocystis_steadystate
-from models import synechocystis_dynamic
+from models.synechocystis import steadystate
+from models.synechocystis import dynamic
 
 
 # 2. define initial parameters
@@ -60,11 +58,11 @@ outdir = "results/synechocystis/daynight/"
 for i in [0.0, 0.05, 0.1, 0.15]:
     reserve[4] = i
     res = "{0:02.2f}".format(i)
-    result_ss = synechocystis_steadystate.simulate(
+    result_ss = steadystate.simulate(
         time, light, sub, ub, reserve, mumax, Ki, remote=True
     )
     result_ss.table.to_csv(outdir + "steady_state_RIB_" + res + ".csv")
-    result_dy = synechocystis_dynamic.simulate(
+    result_dy = dynamic.simulate(
         time, light, sub, reserve, mumax, Ki, a=result_ss.a, c=result_ss.c
     )
     result_dy.table.to_csv(outdir + "dynamic_RIB_" + res + ".csv")
