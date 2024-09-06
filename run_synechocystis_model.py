@@ -20,9 +20,7 @@ sub = 100  # initial substrate concentration, CO2/HCO3-
 Ki = 5000  # light inhibition constant for photosystems
 mumax = 0.11  # maximum growth rate, used to calculate protein utilization
 # optional list of concentration upper bounds
-ub_pro = pd.Series(
-    [1, 1, 1, 1, 1, 1], index=["LHC", "PSET", "CBM", "LPB", "RIB", "MAI"]
-)
+ub_pro = pd.Series([1, 1, 1, 1, 1, 1], index=["LHC", "PSET", "CBM", "LPB", "RIB", "MAI"])
 ub_met = pd.Series([90, 25, 25, 5, 1], index=["hvi", "atp", "nadph", "pre", "lip"])
 ub_mem = pd.Series([1, 1], index=["cpm", "thy"])
 ub = pd.concat([ub_pro, ub_met, ub_mem])
