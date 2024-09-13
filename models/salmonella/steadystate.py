@@ -85,6 +85,12 @@ def simulate(time, c_ex, c_ub, remote = False):
     # phospholipid = 1 nm^2 (1e-6), transporter = 50 nm^2 (5e-5), ETC complexes xx nm^2, flagellum = 500 nm^2 (5e-4)
     spA = pd.Series([1e-3, 5e-5, 1e-4, 5e-4], index = mem + memP)
 
+    # area of membrane proteins as fraction of total surface
+    surface_pro = m.Var(value=0.5, lb=0, ub=1, name = "surface_pro")
+
+    # area of membrane lipids as fraction of total surface
+    surface_lip = m.Var(value=0.5, lb=0, ub=1, name = "surface_lip")
+
     # list of catalytic rates v for all enzymes
     v = pd.Series(
         [m.Var(value = 1, lb = 0, ub = 1e6, name = "v_" + i) for i in enz],
@@ -108,6 +114,9 @@ def simulate(time, c_ex, c_ub, remote = False):
 
     # biomass accumulated over time with initial value [fold change]
     bm = m.Var(value = 1, name = "bm")
+
+    # fraction of utilized protein space (total aa content / allowed aa content)
+    utilization = m.Var(value=0.1, lb=0, ub=1, name = "utilization")
 
 
     # EQUATIONS --------------------------------------------------------
@@ -148,14 +157,23 @@ def simulate(time, c_ex, c_ub, remote = False):
     # cell surface [µm2] of the rod is determined by length and radius
     m.Equation(2 * np.pi * radius * (radius + length) == surface)
 
+    # fraction of utilized protein space (total aa content / allowed aa content)
+    m.Equation(utilization == sum(c[cytP] * pro_size[cytP]) / (volume * density))
+
     # total intracellular protein mass is constrained by volume and density
     m.Equation(sum(c[cytP] * pro_size[cytP]) <= volume * density)
 
+    # area of membrane proteins as fraction of total surface
+    m.Equation(surface_pro == sum(c[memP] * spA[memP]) / surface)
+
+    # area of membrane lipids as fraction of total surface
+    m.Equation(surface_lip == sum(c[mem] * spA[mem]) / surface)
+    
     # membrane composition is constrained by total membrane surface area
     m.Equation(sum(c[mem + memP] * spA) == surface)
 
     # membrane proteins shall shall not exceed a certain fraction of total membrane components
-    m.Equation(sum(c[memP] * spA[memP]) <= sum(c[mem] * spA[mem]))
+    m.Equation(surface_pro <= surface_lip)
 
     # lipid balance: lipids are sum of cytoplasmic and other membranes
     m.Equation(sum(c[mem]) == c["lip"])
