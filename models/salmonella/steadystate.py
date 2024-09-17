@@ -19,14 +19,13 @@ from models import common
 
 
 # INITIALIZE STEADY STATE MODEL ----------------------------------------
-def simulate(time, c_ex, c_ub, remote = False):
+def simulate(time, c_ex, c_ub, n_flag, kcat=None, Km=None, hc=None, remote=False):
 
     m = GEKKO(remote = remote)
     m.options.IMODE = 5
     m.options.REDUCE = 1
     m.options.MAX_ITER = 1000
     m.time = time
-
 
     # organize variables in sets to simplify indexing
     enz = ["Tra", "Cbn", "Etc", "Aab", "Rib", "Lpb", "Fla"]     # enzymes
@@ -36,24 +35,26 @@ def simulate(time, c_ex, c_ub, remote = False):
     memP = ["Tra", "Etc", "Fla"]                                # membrane located proteins
     cytP = ["Cbn", "Aab", "Rib", "Lpb", "Oth"]                  # cytoplasm located proteins
 
-
     # PARAMETERS --------------------------------------------------------
     #
+    # NOTE: details on all parameter estimates in table 'parameters.csv'
+    #
     # enzyme kinetic parameters as pandas series
-    # kcat [molec/s], Km [µM], Hill coefficient [dimensionless]
-    kcat = pd.Series([50, 10, 50, 10, 20, 50, 50], index = enz)
-    Km = pd.Series([25, 20, 20, 100, 15, 35, 10], index = enz)
-    hc = pd.Series([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], index = enz)
+    # kcat [molec/s], Km [mM], Hill coefficient [dimensionless]
+    if not kcat:
+        kcat = pd.Series([200, 500, 100, 10, 22, 20, 400], index = enz)
+    if not Km:
+        Km = pd.Series([20, 0.05, 0.03, 1, 1, 0.5, 1], index = enz)
+    if not hc:
+        hc = pd.Series([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], index = enz)
 
-    # protein size [aa]; more details about size estimation in suppl. tables
-    pro_size = pd.Series([1500, 2000, 10000, 20000, 7500, 2000, 4e6, 1000], index = pro)
+    # protein size [1000 aa]
+    pro_size = pd.Series([1, 5, 10, 20, 7.5, 2, 4e3, 0.35], index = pro)
 
     # protein reserve (inactive proteins) [molec]
     reserve = pd.Series([0, 0, 0, 0, 0, 0, 0], index = enz)
 
     # reaction stoichiometry matrix of met x enz
-    # more details on stoichiometry estimates in suppl. table
-    # 1 rotation of flagellum costs ~1200 protons equivalent to 400 ATP (PMID: 35881430)
     stoich = pd.DataFrame([
         # Tra  Cbn  Etc  Aab  Rib  Lpb  Fla    #
         [ 1,  -1,   0,   0,   0,   0,   0 ],   # cin
@@ -78,12 +79,11 @@ def simulate(time, c_ex, c_ub, remote = False):
     # surface area of cylindrical cell  [µm^2]
     surface = m.Var(value=10, lb=0, ub=100, name = "surface")
 
-    # density of the cell in aa / µm3 (PMID: 31690234)
-    density = m.Param(value=8e9, name = "density")
+    # density of the cell in 1000 aa / µm3 (PMID: 31690234)
+    density = m.Param(value=8e6, name = "density")
 
     # specific surface area of membrane located components [µm^2]
-    # phospholipid = 1 nm^2 (1e-6), transporter = 50 nm^2 (5e-5), ETC complexes xx nm^2, flagellum = 500 nm^2 (5e-4)
-    spA = pd.Series([1e-3, 5e-5, 1e-4, 5e-4], index = mem + memP)
+    spA = pd.Series([1e-4, 5e-5, 1e-4, 5e-4], index = mem + memP)
 
     # area of membrane proteins as fraction of total surface
     surface_pro = m.Var(value=0.5, lb=0, ub=1, name = "surface_pro")
@@ -93,7 +93,7 @@ def simulate(time, c_ex, c_ub, remote = False):
 
     # list of catalytic rates v for all enzymes
     v = pd.Series(
-        [m.Var(value = 1, lb = 0, ub = 1e6, name = "v_" + i) for i in enz],
+        [m.Var(value = 1, lb = 0, ub = 2e7, name = "v_" + i) for i in enz],
         index = enz)
 
     # list of alpha = fraction of ribosomes engaged in synthesis of protein
@@ -106,7 +106,7 @@ def simulate(time, c_ex, c_ub, remote = False):
         [m.Var(value = 1, lb = 0, ub = c_ub[i], name = "c_" + i) for i in pro + met + mem],
         index = pro + met + mem)
 
-    # cex is (time dependent) substrate concentration [µM]
+    # cex is (time dependent) substrate concentration [mM]
     cex = m.Param(value = c_ex, name = "cex")
 
     # growth rate as variable that is to be maximized [h^-1]
@@ -117,7 +117,6 @@ def simulate(time, c_ex, c_ub, remote = False):
 
     # fraction of utilized protein space (total aa content / allowed aa content)
     utilization = m.Var(value=0.1, lb=0, ub=1, name = "utilization")
-
 
     # EQUATIONS --------------------------------------------------------
     #
@@ -136,7 +135,7 @@ def simulate(time, c_ex, c_ub, remote = False):
     m.Equations([sum(stoich.loc[i] * v) - mu * c[i] == 0 for i in met])
 
     # biomass accumulation over time
-    m.Equation(bm.dt() == mu*bm)
+    m.Equation(bm.dt() == mu * 3.6 * bm)
 
     # Michaelis-Menthen type enzyme kinetics (V in molec s^-1 enz^-1)
     m.Equation(v["Tra"] == kcat["Tra"]*c["Tra"]*cex**hc["Tra"]/(Km["Tra"]**hc["Tra"] + cex**hc["Tra"]))
@@ -146,7 +145,6 @@ def simulate(time, c_ex, c_ub, remote = False):
     m.Equation(v["Rib"] == kcat["Rib"]*c["Rib"]*c["aa"]**hc["Rib"]/(Km["Rib"]**hc["Rib"] + c["aa"]**hc["Rib"]))
     m.Equation(v["Lpb"] == kcat["Lpb"]*c["Lpb"]*c["cpre"]**hc["Lpb"]/(Km["Lpb"]**hc["Lpb"] + c["cpre"]**hc["Lpb"]))
     m.Equation(v["Fla"] == kcat["Fla"]*c["Fla"]*c["cpre"]**hc["Fla"]/(Km["Fla"]**hc["Fla"] + c["cpre"]**hc["Fla"]))
-
 
     # CELLULAR CONSTRAINTS
     #
@@ -168,7 +166,7 @@ def simulate(time, c_ex, c_ub, remote = False):
 
     # area of membrane lipids as fraction of total surface
     m.Equation(surface_lip == sum(c[mem] * spA[mem]) / surface)
-    
+
     # membrane composition is constrained by total membrane surface area
     m.Equation(sum(c[mem + memP] * spA) == surface)
 
@@ -179,8 +177,10 @@ def simulate(time, c_ex, c_ub, remote = False):
     m.Equation(sum(c[mem]) == c["lip"])
 
     # fix the mass fraction of maintenance proteins (or others)
-    m.Equation(a["Oth"] == 0.25)
+    m.Equation(a["Oth"] == 0.5)
 
+    # force production of flagella
+    m.Equation(c["Fla"] <= n_flag)
 
     # SOLVING ----------------------------------------------------------
     #
@@ -190,5 +190,10 @@ def simulate(time, c_ex, c_ub, remote = False):
     m.Obj(-mu)
     m.solve()
 
-    # collect results and return
-    return(common.result("steady_state", m, v, a, c, c[pro]))
+    # convert rates from [1000 s^-1] to [h^-1]
+    result = common.result("steady_state", m, v, a, c, c[pro])
+    rate_cols = [i for i in list(result.table.columns) if i.startswith("v_")]
+    result.table[["mu"] + rate_cols] = result.table[["mu"] + rate_cols].apply(lambda x: x * 3.6)
+
+    # return results
+    return(result)
