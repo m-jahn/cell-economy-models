@@ -29,7 +29,8 @@ def simulate(time, c_ex, c_ub, n_flag, kcat=None, Km=None, hc=None, remote=False
 
     # organize variables in sets to simplify indexing
     enz = ["Tra", "Cbn", "Etc", "Aab", "Rib", "Lpb", "Fla"]     # enzymes
-    pro = enz + ["Oth"]                                           # proteins
+    exc = ["ex_e", "ex_a"]                                      # exchange reactions "ex_c", "ex_l",
+    pro = enz + ["Oth"]                                         # proteins
     met = ["cin", "cpre", "aa", "lip", "e"]                     # metabolites
     mem = ["cpm"]                                               # membrane compartment(s)
     memP = ["Tra", "Etc", "Fla"]                                # membrane located proteins
@@ -41,11 +42,11 @@ def simulate(time, c_ex, c_ub, n_flag, kcat=None, Km=None, hc=None, remote=False
     #
     # enzyme kinetic parameters as pandas series
     # kcat [molec/s], Km [mM], Hill coefficient [dimensionless]
-    if not kcat:
+    if kcat is None:
         kcat = pd.Series([200, 500, 100, 10, 22, 20, 400], index = enz)
-    if not Km:
+    if Km is None:
         Km = pd.Series([20, 0.05, 0.03, 1, 1, 0.5, 1], index = enz)
-    if not hc:
+    if hc is None:
         hc = pd.Series([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], index = enz)
 
     # protein size [1000 aa]
@@ -56,14 +57,14 @@ def simulate(time, c_ex, c_ub, n_flag, kcat=None, Km=None, hc=None, remote=False
 
     # reaction stoichiometry matrix of met x enz
     stoich = pd.DataFrame([
-        # Tra  Cbn  Etc  Aab  Rib  Lpb  Fla    #
-        [ 1,  -1,   0,   0,   0,   0,   0 ],   # cin
-        [ 0,   2,  -1,  -2,   0,  -8,   0 ],   # cpre
-        [ 0,   0,   0,   1,  -1,   0,   0 ],   # aa
-        [ 0,   0,   0,   0,   0,   1,   0 ],   # lip
-        [ 0,   2,  30,  -2,  -3,  -8,   0 ]],  # e
+        # Tra  Cbn  Etc  Aab  Rib  Lpb  Fla  ex_e ex_a  #
+        [ 1,  -1,   0,   0,   0,   0,   0,   0,   0 ],   # cin
+        [ 0,   2,  -1,  -2,   0,  -8,   0,   0,   0 ],   # cpre
+        [ 0,   0,   0,   1,  -1,   0,   0,   0,  -1 ],   # aa
+        [ 0,   0,   0,   0,   0,   1,   0,   0,   0 ],   # lip
+        [ 0,   2,  30,  -2,  -3,  -8,   0,  -1,   0 ]],  # e
         index = met,
-        columns = enz)
+        columns = enz + exc)
 
     # VARIABLES --------------------------------------------------------
     #
@@ -93,8 +94,8 @@ def simulate(time, c_ex, c_ub, n_flag, kcat=None, Km=None, hc=None, remote=False
 
     # list of catalytic rates v for all enzymes
     v = pd.Series(
-        [m.Var(value = 1, lb = 0, ub = 2e7, name = "v_" + i) for i in enz],
-        index = enz)
+        [m.Var(value = 1, lb = 0, ub = 2e7, name = "v_" + i) for i in enz + exc],
+        index = enz + exc)
 
     # list of alpha = fraction of ribosomes engaged in synthesis of protein
     a = pd.Series(
@@ -170,7 +171,7 @@ def simulate(time, c_ex, c_ub, n_flag, kcat=None, Km=None, hc=None, remote=False
     # membrane composition is constrained by total membrane surface area
     m.Equation(sum(c[mem + memP] * spA) == surface)
 
-    # membrane proteins shall shall not exceed a certain fraction of total membrane components
+    # membrane proteins shall not exceed a certain fraction of total membrane components
     m.Equation(surface_pro <= surface_lip)
 
     # lipid balance: lipids are sum of cytoplasmic and other membranes
@@ -180,14 +181,12 @@ def simulate(time, c_ex, c_ub, n_flag, kcat=None, Km=None, hc=None, remote=False
     m.Equation(a["Oth"] == 0.5)
 
     # force production of flagella
-    m.Equation(c["Fla"] <= n_flag)
+    #m.Equation(c["Fla"] == n_flag)
 
     # SOLVING ----------------------------------------------------------
     #
-    # solving maximizing specific growth rate;
-    # objective is always minimized, so that we have
-    # to state -1*obj to maximize it
-    m.Obj(-mu)
+    # objective: maximize specific growth rate
+    m.Maximize(mu)
     m.solve()
 
     # convert rates from [1000 s^-1] to [h^-1]

@@ -25,7 +25,7 @@ time = np.arange(0, len(c_ex), 1)
 
 # upper boundaries improve solve speed and success rate
 enz = ["Tra", "Cbn", "Etc", "Aab", "Rib", "Lpb", "Fla"]
-c_ub_pro = pd.Series([1e6, 1e6, 1e6, 1e6, 1e6, 1e6, 0, 1e7], index=enz + ["Oth"])
+c_ub_pro = pd.Series([1e6, 1e6, 1e6, 1e6, 1e6, 1e6, 10, 1e7], index=enz + ["Oth"])
 c_ub_met = pd.Series([1e5, 1e5, 1e5, 1e6, 1e6], index=["cin", "cpre", "aa", "lip", "e"])
 c_ub_mem = pd.Series([1e6], index=["cpm"])
 c_ub = pd.concat([c_ub_pro, c_ub_met, c_ub_mem])
@@ -37,20 +37,22 @@ c_ub = pd.concat([c_ub_pro, c_ub_met, c_ub_mem])
 # improve solver performance (typical problem is over-constrainment)
 n_iterations = 0
 n_solves = 0
-n_flag = 0
 outdir = "results/salmonella/sampling/"
 
 
-while n_solves < 1 or n_iterations <= 20:
+while n_solves < 1 and n_iterations <= 100:
     n_iterations += 1
+    iter = "{0:03d}".format(n_iterations)  # "{0:02.1f}".format(n_iterations)
+    kcat = pd.Series(common.randomize([200, 500, 100, 10, 22, 20, 400]), index=enz)
+    Km = pd.Series(common.randomize([20, 0.05, 0.03, 1, 1, 0.5, 1]), index=enz)
+    hc = pd.Series([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], index=enz)
     try:
-        iter = "{0:03d}".format(n_iterations) # "{0:02.1f}".format(n_iterations)
-        kcat = pd.Series(common.randomize([200, 500, 100, 10, 22, 20, 400]), index=enz)
-        Km = pd.Series(common.randomize([20, 0.05, 0.03, 1, 1, 0.5, 1]), index=enz)
-        hc = pd.Series([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], index=enz)
-        result_ss = steadystate.simulate(time, c_ex, c_ub, n_flag, kcat, Km, hc,remote)
-        result_ss.table.to_csv(outdir + "steady_state_iter_" + iter + ".csv")
-        kinetic_params = pd.DataFrame({"kcat" : kcat, "Km" : Km, "hc" : hc})
+        for n_flag in [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]:
+            result_ss = steadystate.simulate(
+                time, c_ex, c_ub, n_flag, kcat, Km, hc, remote
+            )
+            result_ss.table.to_csv(outdir + "steady_state_iter_" + iter + "_flag_" + str(n_flag) + ".csv")
+        kinetic_params = pd.DataFrame({"kcat": kcat, "Km": Km, "hc": hc})
         kinetic_params.to_csv(outdir + "kinetic_params_iter_" + iter + ".csv")
         n_solves += 1
     except:
@@ -61,14 +63,14 @@ while n_solves < 1 or n_iterations <= 20:
 # ------------------------
 #
 # import desired parameter set
-df_top_params = pd.read_csv("results/salmonella/sampling/top/kinetic_params_iter_019.csv", index_col=0)
+df_top_params = pd.read_csv("results/salmonella/sampling/top/kinetic_params_iter_020.csv", index_col=0)
 kcat = df_top_params.kcat
 Km = df_top_params.Km
 hc = df_top_params.hc
 
 # loop through different values of a variable
 outdir = "results/salmonella/flagella/"
-for n_flag in [0, 1, 2, 3, 4]:
+for n_flag in [0.0]:
     try:
         result_ss = steadystate.simulate(time, c_ex, c_ub, n_flag, kcat, Km, hc, remote)
         result_ss.table.to_csv(outdir + "steady_state_flag_" + str(n_flag) + ".csv")
@@ -83,7 +85,7 @@ df_steadystate = []
 for file in glob(outdir + "steady*.csv"):
     df = pd.read_csv(file)
     df["type"] = "steady_state"
-    df["iteration"] = re.findall("flag_[0-9]+", file)[0]
+    df["iteration"] = re.findall("flag_[0-9]+", file)[0] # iter, flag
     df = df.query("time != 0")
     df_steadystate.append(df)
 
