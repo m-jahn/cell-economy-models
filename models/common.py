@@ -29,12 +29,14 @@ def randomize(n, lb=0.5, ub=2.0):
 
 # generalized plotting function
 def subplots(df, xvar="time", yvar="mu", rows=4, cols=2, pos=1, ylim=[0, 1], title=""):
+    df_sub = df[df["iteration"] == df["iteration"][0]]
+    print(df_sub)
     plt.subplot(rows, cols, pos)
     plt.axis([0, max(df[xvar]), ylim[0], ylim[1]])
     plt.title(title, loc="left", fontsize=10)
     plt.fill_between(
-        x=df["time"],
-        y1=ylim[0] + df["cex"] / max(df["cex"]) * np.diff(ylim),
+        x=df_sub["time"],
+        y1=ylim[0] + df_sub["cex"] / max(df_sub["cex"]) * np.diff(ylim),
         color="grey",
         alpha=0.2,
         linewidth=0,
