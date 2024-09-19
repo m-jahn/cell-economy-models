@@ -19,7 +19,7 @@ from models import common
 
 
 # INITIALIZE STEADY STATE MODEL ----------------------------------------
-def simulate(time, c_ex, c_ub, n_flag, kcat=None, Km=None, hc=None, remote=False):
+def simulate(time, c_ex, c_ub, a_fla, kcat=None, Km=None, hc=None, remote=False):
 
     m = GEKKO(remote = remote)
     m.options.IMODE = 5
@@ -28,9 +28,9 @@ def simulate(time, c_ex, c_ub, n_flag, kcat=None, Km=None, hc=None, remote=False
     m.time = time
 
     # organize variables in sets to simplify indexing
-    enz = ["Tra", "Cbn", "Etc", "Aab", "Rib", "Lpb", "Fla"]     # enzymes
+    enz = ["Tra", "Cbn", "Etc", "Aab", "Rib", "Lpb"]            # enzymes
     exc = ["ex_e", "ex_a"]                                      # exchange reactions "ex_c", "ex_l",
-    pro = enz + ["Oth"]                                         # proteins
+    pro = enz + ["Fla", "Oth"]                                  # proteins
     met = ["cin", "cpre", "aa", "lip", "e"]                     # metabolites
     mem = ["cpm"]                                               # membrane compartment(s)
     memP = ["Tra", "Etc", "Fla"]                                # membrane located proteins
@@ -43,26 +43,23 @@ def simulate(time, c_ex, c_ub, n_flag, kcat=None, Km=None, hc=None, remote=False
     # enzyme kinetic parameters as pandas series
     # kcat [molec/s], Km [mM], Hill coefficient [dimensionless]
     if kcat is None:
-        kcat = pd.Series([200, 500, 100, 10, 22, 20, 400], index = enz)
+        kcat = pd.Series([200, 500, 100, 10, 22, 20], index = enz)
     if Km is None:
-        Km = pd.Series([20, 0.05, 0.03, 1, 1, 0.5, 1], index = enz)
+        Km = pd.Series([20, 0.05, 0.03, 1, 1, 0.5], index = enz)
     if hc is None:
-        hc = pd.Series([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], index = enz)
+        hc = pd.Series([1.0, 1.0, 1.0, 1.0, 1.0, 1.0], index = enz)
 
     # protein size [1000 aa]
     pro_size = pd.Series([1, 5, 10, 20, 7.5, 2, 4e3, 0.35], index = pro)
 
-    # protein reserve (inactive proteins) [molec]
-    reserve = pd.Series([0, 0, 0, 0, 0, 0, 0], index = enz)
-
     # reaction stoichiometry matrix of met x enz
     stoich = pd.DataFrame([
-        # Tra  Cbn  Etc  Aab  Rib  Lpb  Fla  ex_e ex_a  #
-        [ 1,  -1,   0,   0,   0,   0,   0,   0,   0 ],   # cin
-        [ 0,   2,  -1,  -2,   0,  -8,   0,   0,   0 ],   # cpre
-        [ 0,   0,   0,   1,  -1,   0,   0,   0,  -1 ],   # aa
-        [ 0,   0,   0,   0,   0,   1,   0,   0,   0 ],   # lip
-        [ 0,   2,  30,  -2,  -3,  -8,   0,  -1,   0 ]],  # e
+        # Tra  Cbn  Etc  Aab  Rib  Lpb  ex_e ex_a   #
+        [ 1,  -1,   0,   0,   0,   0,   0,   0 ],   # cin
+        [ 0,   2,  -1,  -2,   0,  -8,   0,   0 ],   # cpre
+        [ 0,   0,   0,   1,  -1,   0,   0,  -1 ],   # aa
+        [ 0,   0,   0,   0,   0,   1,   0,   0 ],   # lip
+        [ 0,   2,  30,  -2,  -3,  -8,  -1,   0 ]],  # e
         index = met,
         columns = enz + exc)
 
@@ -75,10 +72,10 @@ def simulate(time, c_ex, c_ub, n_flag, kcat=None, Km=None, hc=None, remote=False
     radius = m.Var(value=0.5, lb=0.25, ub=0.75, name = "radius")
 
     # volume of cylindrical cell (cylinder) [µm^3]
-    volume = m.Var(value=1, lb=0, ub=10, name = "volume")
+    volume = m.Var(value=8, lb=0, ub=10, name = "volume")
 
     # surface area of cylindrical cell  [µm^2]
-    surface = m.Var(value=10, lb=0, ub=100, name = "surface")
+    surface = m.Var(value=25, lb=0, ub=100, name = "surface")
 
     # density of the cell in 1000 aa / µm3 (PMID: 31690234)
     density = m.Param(value=8e6, name = "density")
@@ -94,27 +91,27 @@ def simulate(time, c_ex, c_ub, n_flag, kcat=None, Km=None, hc=None, remote=False
 
     # list of catalytic rates v for all enzymes
     v = pd.Series(
-        [m.Var(value = 1, lb = 0, ub = 2e7, name = "v_" + i) for i in enz + exc],
+        [m.Var(value = 1e5, lb = 0, ub = 2e7, name = "v_" + i) for i in enz + exc],
         index = enz + exc)
 
     # list of alpha = fraction of ribosomes engaged in synthesis of protein
     a = pd.Series(
-        [m.Var(value = 1, lb = 0, ub = 1, name = "a_" + i) for i in pro],
+        [m.Var(value = 0.1, lb = 0, ub = 1, name = "a_" + i) for i in pro],
         index = pro)
 
     # list of concentration of all components (enzymes and metabolites)
     c = pd.Series(
-        [m.Var(value = 1, lb = 0, ub = c_ub[i], name = "c_" + i) for i in pro + met + mem],
+        [m.Var(value = 1e3, lb = 0, ub = c_ub[i], name = "c_" + i) for i in pro + met + mem],
         index = pro + met + mem)
 
     # cex is (time dependent) substrate concentration [mM]
     cex = m.Param(value = c_ex, name = "cex")
 
     # growth rate as variable that is to be maximized [h^-1]
-    mu = m.Var(value = 1, name = "mu")
+    mu = m.Var(value = 1, lb = 0, ub = 1.5, name = "mu")
 
     # biomass accumulated over time with initial value [fold change]
-    bm = m.Var(value = 1, name = "bm")
+    #bm = m.Var(value = 1, lb = 1, ub = 1e7, name = "bm")
 
     # fraction of utilized protein space (total aa content / allowed aa content)
     utilization = m.Var(value=0.1, lb=0, ub=1, name = "utilization")
@@ -136,7 +133,7 @@ def simulate(time, c_ex, c_ub, n_flag, kcat=None, Km=None, hc=None, remote=False
     m.Equations([sum(stoich.loc[i] * v) - mu * c[i] == 0 for i in met])
 
     # biomass accumulation over time
-    m.Equation(bm.dt() == mu * 3.6 * bm)
+    #m.Equation(bm.dt() == mu * bm)
 
     # Michaelis-Menthen type enzyme kinetics (V in molec s^-1 enz^-1)
     m.Equation(v["Tra"] == kcat["Tra"]*c["Tra"]*cex**hc["Tra"]/(Km["Tra"]**hc["Tra"] + cex**hc["Tra"]))
@@ -145,7 +142,7 @@ def simulate(time, c_ex, c_ub, n_flag, kcat=None, Km=None, hc=None, remote=False
     m.Equation(v["Aab"] == kcat["Aab"]*c["Aab"]*c["cpre"]**hc["Aab"]/(Km["Aab"]**hc["Aab"] + c["cpre"]**hc["Aab"]))
     m.Equation(v["Rib"] == kcat["Rib"]*c["Rib"]*c["aa"]**hc["Rib"]/(Km["Rib"]**hc["Rib"] + c["aa"]**hc["Rib"]))
     m.Equation(v["Lpb"] == kcat["Lpb"]*c["Lpb"]*c["cpre"]**hc["Lpb"]/(Km["Lpb"]**hc["Lpb"] + c["cpre"]**hc["Lpb"]))
-    m.Equation(v["Fla"] == kcat["Fla"]*c["Fla"]*c["cpre"]**hc["Fla"]/(Km["Fla"]**hc["Fla"] + c["cpre"]**hc["Fla"]))
+    # m.Equation(v["Fla"] == kcat["Fla"]*c["Fla"]*c["cpre"]**hc["Fla"]/(Km["Fla"]**hc["Fla"] + c["cpre"]**hc["Fla"]))
 
     # CELLULAR CONSTRAINTS
     #
@@ -181,7 +178,7 @@ def simulate(time, c_ex, c_ub, n_flag, kcat=None, Km=None, hc=None, remote=False
     m.Equation(a["Oth"] == 0.5)
 
     # force production of flagella
-    #m.Equation(c["Fla"] == n_flag)
+    m.Equation(a["Fla"] == a_fla)
 
     # SOLVING ----------------------------------------------------------
     #
