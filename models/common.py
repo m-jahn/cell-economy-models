@@ -29,8 +29,7 @@ def randomize(n, lb=0.5, ub=2.0):
 
 # generalized plotting function
 def subplots(df, xvar="time", yvar="mu", rows=4, cols=2, pos=1, ylim=[0, 1], title=""):
-    df_sub = df[df["iteration"] == df["iteration"][0]]
-    print(df_sub)
+    df_sub = df[df["iteration"] == list(df["iteration"])[0]]
     plt.subplot(rows, cols, pos)
     plt.axis([0, max(df[xvar]), ylim[0], ylim[1]])
     plt.title(title, loc="left", fontsize=10)

@@ -30,7 +30,7 @@ met = ["cin", "cpre", "aa", "lip", "e"]
 mem = ["cpm"]
 
 # upper boundaries
-c_ub_pro = pd.Series([1e6, 1e6, 1e6, 1e6, 1e6, 1e6, 10, 1e7], index=pro)
+c_ub_pro = pd.Series([1e6, 1e6, 1e6, 1e6, 1e6, 1e6, 1e3, 1e7], index=pro)
 c_ub_met = pd.Series([1e5, 1e5, 1e5, 1e6, 1e6], index=met)
 c_ub_mem = pd.Series([1e6], index=mem)
 c_ub = pd.concat([c_ub_pro, c_ub_met, c_ub_mem])
@@ -46,7 +46,7 @@ outdir = "results/salmonella/sampling/"
 
 while n_solves < 1 and n_iterations <= 10:
     n_iterations += 1
-    iter = "{0:03d}".format(n_iterations)  # "{0:02.1f}".format(n_iterations)
+    iter = "{0:03d}".format(n_iterations)  # "{0:02.2f}".format(0.0)
     kcat = pd.Series(common.randomize([200, 500, 100, 10, 22, 20]), index=enz)
     Km = pd.Series(common.randomize([20, 0.05, 0.03, 1, 1, 0.5]), index=enz)
     hc = pd.Series([1.0, 1.0, 1.0, 1.0, 1.0, 1.0], index=enz)
@@ -70,12 +70,25 @@ kcat = df_top_params.kcat
 Km = df_top_params.Km
 hc = df_top_params.hc
 
-# loop through different values of a variable
-outdir = "results/salmonella/flagella/"
+
+# 4.1 simulate substrate limitation with different amount of flagella
+outdir = "results/salmonella/c_limitation/"
 for a_fla in np.arange(0, 0.09, 0.01):
     try:
         result_ss = steadystate.simulate(time, c_ex, c_ub, a_fla, kcat, Km, hc, remote)
         result_ss.table.to_csv(outdir + "steady_state_flag_" + str(a_fla) + ".csv")
+    except:
+        print("\n-------\nmodel not solvable, trying next parameter set")
+
+
+# 4.2 simulate substrate limitation with and without ATP cost for flagella (change stoich matrix)
+outdir = "results/salmonella/rotation/"
+c_ex = np.round(2 ** np.arange(-3, 0, 0.5), 3)
+time = np.arange(0, len(c_ex), 1)
+for a_fla in np.arange(0, 0.09, 0.02):
+    try:
+        result_ss = steadystate.simulate(time, c_ex, c_ub, a_fla, kcat, Km, hc, remote)
+        result_ss.table.to_csv(outdir + "steady_state_flag_" + "{0:02.2f}".format(a_fla) + ".csv")
     except:
         print("\n-------\nmodel not solvable, trying next parameter set")
 
@@ -87,7 +100,7 @@ df_steadystate = []
 for file in sorted(glob(outdir + "steady*.csv")):
     df = pd.read_csv(file)
     df["type"] = "steady_state"
-    df["iteration"] = re.findall("flag_[0-9]+\\.[0-9]+", file)[0] # iter, flag
+    df["iteration"] = re.findall("(flag_[0-9]+\\.[0-9]+(\\_no_ATP)?)", file)[0][0]
     df = df.query("time != 0")
     df_steadystate.append(df)
 
@@ -117,7 +130,6 @@ common.subplots(df_combined, xvar="time", yvar="a_lpb", pos=7, ylim=[0, 0.01], t
 common.subplots(df_combined, xvar="time", yvar="a_fla", pos=8, ylim=[0, 0.5], title="flagella biosynthesis")
 
 plt.savefig(outdir + "enzymes.png", dpi=182)
-
 
 # 5.2  physicochemical properties
 # -------------------------------

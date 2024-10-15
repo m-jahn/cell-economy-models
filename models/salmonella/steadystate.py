@@ -28,9 +28,9 @@ def simulate(time, c_ex, c_ub, a_fla, kcat=None, Km=None, hc=None, remote=False)
     m.time = time
 
     # organize variables in sets to simplify indexing
-    enz = ["Tra", "Cbn", "Etc", "Aab", "Rib", "Lpb"]            # enzymes
+    enz = ["Tra", "Cbn", "Etc", "Aab", "Rib", "Lpb", "Fla"]     # enzymes
     exc = ["ex_e", "ex_a"]                                      # exchange reactions "ex_c", "ex_l",
-    pro = enz + ["Fla", "Oth"]                                  # proteins
+    pro = enz + ["Oth"]                                         # proteins
     met = ["cin", "cpre", "aa", "lip", "e"]                     # metabolites
     mem = ["cpm"]                                               # membrane compartment(s)
     memP = ["Tra", "Etc", "Fla"]                                # membrane located proteins
@@ -43,23 +43,23 @@ def simulate(time, c_ex, c_ub, a_fla, kcat=None, Km=None, hc=None, remote=False)
     # enzyme kinetic parameters as pandas series
     # kcat [molec/s], Km [mM], Hill coefficient [dimensionless]
     if kcat is None:
-        kcat = pd.Series([200, 500, 100, 10, 22, 20], index = enz)
+        kcat = pd.Series([200, 500, 100, 10, 22, 20, 400], index = enz)
     if Km is None:
-        Km = pd.Series([20, 0.05, 0.03, 1, 1, 0.5], index = enz)
+        Km = pd.Series([20, 0.05, 0.03, 1, 1, 0.5, 1.0], index = enz)
     if hc is None:
-        hc = pd.Series([1.0, 1.0, 1.0, 1.0, 1.0, 1.0], index = enz)
+        hc = pd.Series([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], index = enz)
 
     # protein size [1000 aa]
-    pro_size = pd.Series([1, 5, 10, 20, 7.5, 2, 4e3, 0.35], index = pro)
+    pro_size = pd.Series([1, 5, 10, 20, 7.5, 2, 5e3, 0.35], index = pro)
 
     # reaction stoichiometry matrix of met x enz
     stoich = pd.DataFrame([
-        # Tra  Cbn  Etc  Aab  Rib  Lpb  ex_e ex_a   #
-        [ 1,  -1,   0,   0,   0,   0,   0,   0 ],   # cin
-        [ 0,   2,  -1,  -2,   0,  -8,   0,   0 ],   # cpre
-        [ 0,   0,   0,   1,  -1,   0,   0,  -1 ],   # aa
-        [ 0,   0,   0,   0,   0,   1,   0,   0 ],   # lip
-        [ 0,   2,  30,  -2,  -3,  -8,  -1,   0 ]],  # e
+        # Tra  Cbn  Etc  Aab  Rib  Lpb  Fla  ex_e ex_a   #
+        [ 1,  -1,   0,   0,   0,   0,   0,   0,   0 ],   # cin
+        [ 0,   2,  -1,  -2,   0,  -8,   0,   0,   0 ],   # cpre
+        [ 0,   0,   0,   1,  -1,   0,   0,   0,  -1 ],   # aa
+        [ 0,   0,   0,   0,   0,   1,   0,   0,   0 ],   # lip
+        [ 0,   2,  30,  -2,  -3,  -8,  -1,  -1,   0 ]],  # e
         index = met,
         columns = enz + exc)
 
@@ -142,7 +142,7 @@ def simulate(time, c_ex, c_ub, a_fla, kcat=None, Km=None, hc=None, remote=False)
     m.Equation(v["Aab"] == kcat["Aab"]*c["Aab"]*c["cpre"]**hc["Aab"]/(Km["Aab"]**hc["Aab"] + c["cpre"]**hc["Aab"]))
     m.Equation(v["Rib"] == kcat["Rib"]*c["Rib"]*c["aa"]**hc["Rib"]/(Km["Rib"]**hc["Rib"] + c["aa"]**hc["Rib"]))
     m.Equation(v["Lpb"] == kcat["Lpb"]*c["Lpb"]*c["cpre"]**hc["Lpb"]/(Km["Lpb"]**hc["Lpb"] + c["cpre"]**hc["Lpb"]))
-    # m.Equation(v["Fla"] == kcat["Fla"]*c["Fla"]*c["cpre"]**hc["Fla"]/(Km["Fla"]**hc["Fla"] + c["cpre"]**hc["Fla"]))
+    m.Equation(v["Fla"] == kcat["Fla"]*c["Fla"])
 
     # CELLULAR CONSTRAINTS
     #

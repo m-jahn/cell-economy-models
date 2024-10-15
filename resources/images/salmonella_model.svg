@@ -43,8 +43,8 @@
      id="namedview2125"
      showgrid="false"
      inkscape:zoom="1.5556349"
-     inkscape:cx="224.3457"
-     inkscape:cy="180.95506"
+     inkscape:cx="224.02429"
+     inkscape:cy="181.59788"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -1022,7 +1022,7 @@
     </g>
     <text
        xml:space="preserve"
-       style="font-size:9px;line-height:1.25;font-family:FreeSans;-inkscape-font-specification:FreeSans;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#999999;stroke:#ececec;stroke-width:4;stroke-linecap:round"
+       style="font-size:9px;line-height:1.25;font-family:FreeSans;-inkscape-font-specification:FreeSans;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#999999;stroke:none;stroke-width:4;stroke-linecap:round"
        x="1.4324417"
        y="6.9246178"
        id="text1"><tspan
@@ -1031,9 +1031,9 @@
          style="fill:#999999;stroke:none;stroke-width:4"
          x="1.4324417"
          y="6.9246178"><tspan
-   style="font-weight:bold;fill:#999999"
+   style="font-weight:bold;fill:#999999;stroke:none"
    id="tspan3-6">Cellular economy model</tspan> for <tspan
-   style="font-style:italic"
+   style="font-style:italic;stroke:none"
    id="tspan2">Salmonella typhimurium  </tspan>|  Author: Dr. Michael Jahn</tspan></text>
     <path
        style="font-variation-settings:normal;display:inline;vector-effect:none;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.15705;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;marker-start:url(#TriangleInM-8-4-7-8-3-2-6-23);stop-color:#000000"
