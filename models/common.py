@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import math
 
 
 # define class result where model results are collected
@@ -47,3 +48,17 @@ def subplots(df, xvar="time", yvar="mu", rows=4, cols=2, pos=1, ylim=[0, 1], tit
     )
     plt.legend(title="", fontsize="6", loc="lower right")
     plt.grid(axis="both")
+
+
+# Diffusion model for a simple source boundary with constant concentration C0
+# and semi-infinite boundary (no reflection)
+# reference: Crank, J. The Mathematics of Diffusion; Oxford University Press: New York, NY, USA, 1979. 
+# See Section 2.4.2, page 21
+# Model: C(x,t) = C0 * erfc( x / (2 * sqrt(D * t)) ), with
+#   C = concentration [mM] at time t [s] and location x [µm]
+#   C0 = initial concentration [mM]
+#   erfc = error function complement, erfc z = 1 - erf z
+#   D = diffusion coefficient of glucose in water = 600 µm^2 / s (Bionumbers ID:104089)
+def diffusion_model(x, t=3600, D=600, C0=5):
+    C = C0 * math.erfc( x / (2 * math.sqrt(D * t)))
+    return(C)
