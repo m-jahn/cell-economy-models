@@ -29,3 +29,4 @@ ODE_plotting.py
 ODE_test.py
 results/*
 *.csv
+*.xlsx
