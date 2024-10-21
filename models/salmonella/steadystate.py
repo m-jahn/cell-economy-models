@@ -43,7 +43,7 @@ def simulate(time, c_ex, c_ub, a_fla, kcat=None, Km=None, hc=None, remote=False)
     # enzyme kinetic parameters as pandas series
     # kcat [molec/s], Km [mM], Hill coefficient [dimensionless]
     if kcat is None:
-        kcat = pd.Series([200, 500, 100, 10, 22, 20, 400], index = enz)
+        kcat = pd.Series([200, 500, 100, 10, 22, 20, 400 * 100], index = enz)
     if Km is None:
         Km = pd.Series([20, 0.05, 0.03, 1, 1, 0.5, 1.0], index = enz)
     if hc is None:
@@ -110,9 +110,6 @@ def simulate(time, c_ex, c_ub, a_fla, kcat=None, Km=None, hc=None, remote=False)
     # growth rate as variable that is to be maximized [h^-1]
     mu = m.Var(value = 1, lb = 0, ub = 1.5, name = "mu")
 
-    # biomass accumulated over time with initial value [fold change]
-    #bm = m.Var(value = 1, lb = 1, ub = 1e7, name = "bm")
-
     # fraction of utilized protein space (total aa content / allowed aa content)
     utilization = m.Var(value=0.1, lb=0, ub=1, name = "utilization")
 
@@ -131,9 +128,6 @@ def simulate(time, c_ex, c_ub, a_fla, kcat=None, Km=None, hc=None, remote=False)
     # metabolite mass balance: left side, production of metabolites by
     # the respective enzyme, right side, growth rate times metabolite conc
     m.Equations([sum(stoich.loc[i] * v) - mu * c[i] == 0 for i in met])
-
-    # biomass accumulation over time
-    #m.Equation(bm.dt() == mu * bm)
 
     # Michaelis-Menthen type enzyme kinetics (V in molec s^-1 enz^-1)
     m.Equation(v["Tra"] == kcat["Tra"]*c["Tra"]*cex**hc["Tra"]/(Km["Tra"]**hc["Tra"] + cex**hc["Tra"]))
@@ -188,7 +182,7 @@ def simulate(time, c_ex, c_ub, a_fla, kcat=None, Km=None, hc=None, remote=False)
 
     # convert rates from [1000 s^-1] to [h^-1]
     result = common.result("steady_state", m, v, a, c, c[pro])
-    rate_cols = [i for i in list(result.table.columns) if i.startswith("v_")]
+    rate_cols = ["v_" + i.lower() for i in enz + exc]
     result.table[["mu"] + rate_cols] = result.table[["mu"] + rate_cols].apply(lambda x: x * 3.6)
 
     # return results
