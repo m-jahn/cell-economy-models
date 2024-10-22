@@ -28,5 +28,6 @@ MANIFEST
 ODE_plotting.py
 ODE_test.py
 results/*
+resources/*
 *.csv
 *.xlsx

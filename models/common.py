@@ -29,22 +29,25 @@ def randomize(n, lb=0.5, ub=2.0):
 
 
 # generalized plotting function
-def subplots(df, xvar="time", yvar="mu", rows=4, cols=2, pos=1, ylim=[0, 1], title=""):
+def subplots(df, xvar="time", yvar="mu", rows=4, cols=2, pos=1, ylim=[0, 1], title="", cex=False):
     df_sub = df[df["iteration"] == list(df["iteration"])[0]]
+    palette = sns.color_palette("YlOrBr")
     plt.subplot(rows, cols, pos)
     plt.axis([0, max(df[xvar]), ylim[0], ylim[1]])
     plt.title(title, loc="left", fontsize=10)
-    plt.fill_between(
-        x=df_sub["time"],
-        y1=ylim[0] + df_sub["cex"] / max(df_sub["cex"]) * np.diff(ylim),
-        color="grey",
-        alpha=0.2,
-        linewidth=0,
-    )
+    if cex:
+        plt.fill_between(
+            x=df_sub["time"],
+            y1=ylim[0] + df_sub["cex"] / max(df_sub["cex"]) * np.diff(ylim),
+            color="grey",
+            alpha=0.2,
+            linewidth=0,
+        )
     sns.lineplot(
         x=df[xvar],
         y=df[yvar],
         hue=df["iteration"],
+        palette=palette
     )
     plt.legend(title="", fontsize="6", loc="lower right")
     plt.grid(axis="both")
