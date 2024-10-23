@@ -128,7 +128,7 @@ sns.set_theme(style="ticks", font_scale=0.75)
 
 # 4.4.1 growth rate, relative enzyme concentrations
 plt.figure(figsize=[8, 8])
-plt.subplots_adjust(wspace=0.5, hspace=0.5)
+plt.subplots_adjust(wspace=0.5, hspace=0.7, top=0.925, bottom=0.075)
 
 common.subplots(df_steadystate, xvar="time", yvar="mu", pos=1, ylim=[0, 1.0], title="growth rate")
 common.subplots(df_steadystate, xvar="time", yvar="a_tra", pos=2, ylim=[0, 0.5], title="carbon transport")
@@ -145,7 +145,7 @@ plt.savefig(outdir + "enzymes.svg")
 
 # 4.4.2  physicochemical properties
 plt.figure(figsize=[8, 8])
-plt.subplots_adjust(wspace=0.5, hspace=0.5)
+plt.subplots_adjust(wspace=0.5, hspace=0.7, top=0.925, bottom=0.075)
 
 common.subplots(df_steadystate, xvar="time", yvar="length", pos=1, ylim=[1, 6], title="length [µm]")
 common.subplots(df_steadystate, xvar="time", yvar="radius", pos=2, ylim=[0.2, 0.8], title="radius [µm]")
@@ -162,7 +162,7 @@ plt.savefig(outdir + "properties.svg")
 
 # 4.4.3 enzymatic rates
 plt.figure(figsize=[8, 8])
-plt.subplots_adjust(wspace=0.5, hspace=0.5)
+plt.subplots_adjust(wspace=0.5, hspace=0.7, top=0.925, bottom=0.075)
 
 common.subplots(df_steadystate, xvar="time", yvar="v_tra", pos=1, ylim=[0, 1e7], title="V carbon transport")
 common.subplots(df_steadystate, xvar="time", yvar="v_cbn", pos=2, ylim=[0, 1e7], title="V carbon metabolism")
@@ -184,8 +184,9 @@ df_cost["energy cost"] = df_cost["iteration"].str.contains("no_ATP")
 df_cost["energy cost"] = df_cost["energy cost"].apply(
     lambda x: "without ATP cost" if x else "with ATP cost"
 )
-plt.figure(figsize=[8, 4])
+plt.figure(figsize=[8, 3.5])
 plt.subplot(1, 2, 1)
+plt.subplots_adjust(bottom=0.15)
 plt.title("growth rate with increasing flagella", loc="left", fontsize=10)
 ax = sns.barplot(
     x=df_cost["a_fla"].astype(str),
@@ -259,7 +260,7 @@ sns.set_theme(style="ticks", font_scale=0.75)
 
 # 5.3.1 growth rate, biomass, enzyme concentrations
 plt.figure(figsize=[8, 8])
-plt.subplots_adjust(wspace=0.5, hspace=0.5)
+plt.subplots_adjust(wspace=0.5, hspace=0.7, top=0.925, bottom=0.075)
 
 common.subplots(df_combined, xvar="time", yvar="mu", pos=1, ylim=[0, 1.0], title="growth rate")
 common.subplots(df_combined, xvar="time", yvar="a_tra", pos=2, ylim=[0, 0.5], title="carbon transport")
@@ -276,7 +277,7 @@ plt.savefig(outdir + "enzymes.svg")
 
 # 5.3.2  physicochemical properties
 plt.figure(figsize=[8, 8])
-plt.subplots_adjust(wspace=0.5, hspace=0.5)
+plt.subplots_adjust(wspace=0.5, hspace=0.7, top=0.925, bottom=0.075)
 
 common.subplots(df_combined, xvar="time", yvar="length", pos=1, ylim=[1, 6], title="length [µm]")
 common.subplots(df_combined, xvar="time", yvar="radius", pos=2, ylim=[0.2, 0.8], title="radius [µm]")
@@ -293,7 +294,7 @@ plt.savefig(outdir + "properties.svg")
 
 # 5.3.3 enzymatic rates
 plt.figure(figsize=[8, 8])
-plt.subplots_adjust(wspace=0.5, hspace=0.5)
+plt.subplots_adjust(wspace=0.5, hspace=0.7, top=0.925, bottom=0.075)
 
 common.subplots(df_combined, xvar="time", yvar="v_tra", pos=1, ylim=[0, 1e7], title="V carbon transport")
 common.subplots(df_combined, xvar="time", yvar="v_cbn", pos=2, ylim=[0, 1e7], title="V carbon metabolism")
