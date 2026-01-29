@@ -23,6 +23,7 @@ importlib.reload(steadystate)
 remote = True
 c_ex = np.round(2 ** np.arange(-6, 1, 0.5), 3)
 time = np.arange(0, len(c_ex), 1)
+max_retries = 3
 
 # define sets
 enz = ["Tra", "Cbn", "Etc", "Aab", "Rib", "Lpb", "Fla"]
@@ -76,30 +77,30 @@ hc = df_top_params.hc
 outdir = "results/salmonella/c_limitation/"
 retries = 0
 for a_fla in np.arange(0, 0.06, 0.01):
-    while retries <= 5:
+    while retries <= max_retries:
         try:
             result_ss = steadystate.simulate(time, c_ex, c_ub, a_fla, kcat, Km, hc, remote)
             result_ss.table.to_csv(outdir + "steady_state_flag_" + "{0:02.2f}".format(a_fla) + ".csv")
-            retries = 10
+            break
         except:
-            print("\n-------\nmodel not solvable, varying parameter")
+            print(f"\n---\nmodel not solvable, varying parameter (retry {retries})")
             kcat["Fla"] = kcat["Fla"] + np.random.normal(1) / 100
             retries += 1
     retries = 0
 
 
-# 4.2 simulate substrate limitation with and without ATP cost for flagella (change stoich matrix)
+# 4.2 simulate substrate limitation with and without ATP cost for flagella (adjust stoich matrix)
 outdir = "results/salmonella/rotation/"
 c_ex = np.round(2 ** np.arange(-3, 0, 0.5), 3)
 time = np.arange(0, len(c_ex), 1)
 kcat["Fla"] = 400 * 100
 retries = 0
 for a_fla in np.arange(0, 0.06, 0.01):
-    while retries <= 5:
+    while retries <= max_retries:
         try:
             result_ss = steadystate.simulate(time, c_ex, c_ub, a_fla, kcat, Km, hc, remote)
             result_ss.table.to_csv(outdir + "steady_state_flag_" + "{0:02.2f}".format(a_fla) + ".csv")
-            retries = 10
+            break
         except:
             print("\n-------\nmodel not solvable, varying parameter")
             kcat["Fla"] = kcat["Fla"] + np.random.normal(1) / 100
@@ -225,12 +226,12 @@ time_init = 3 * 3600 # [sec] only relevant for substrate gradient
 time =  np.concatenate([[0, 0.1], np.arange(0.5, 10, 0.5)]) # [h]
 retries = 0
 # common.diffusion_model(x = dist_init, t = time_init, D = 600, C0 = c_init)
-for a_fla in np.arange(0.00, 0.06, 0.01):
-    while retries <= 5:
+for a_fla in [0.001, 0.021, 0.051]: #np.arange(0.00, 0.06, 0.01):
+    while retries <= max_retries:
         try:
             result_ss = dynamic.simulate(time, time_init, dist_init, c_init, c_ub, a_fla, kcat, Km, hc, remote)
             result_ss.table.to_csv(outdir + "dynamic_flag_" + "{0:02.2f}".format(a_fla) + ".csv")
-            retries = 10
+            break
         except:
             print("\n-------\nmodel not solvable, varying parameter")
             c_init = c_init + np.random.normal(1) / 100
