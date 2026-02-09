@@ -27,7 +27,8 @@ MANIFEST
 # Custom
 ODE_plotting.py
 ODE_test.py
+data/tables/*
+data/figures/*
 results/*
 resources/*
-*.csv
 *.xlsx

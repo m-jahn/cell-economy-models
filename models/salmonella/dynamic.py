@@ -1,7 +1,7 @@
 #
 # CELLULAR ECONOMY MODEL FOR SALMONELLA
 # version: 1.0
-# subversion: "flagella expression trade-offs, dyanmic"
+# subversion: "flagella expression trade-offs, dynamic"
 # initial setup: 2024-09-04
 # author: Michael Jahn
 # affiliation: Max PLanck Unit for the Science of Pathogens
