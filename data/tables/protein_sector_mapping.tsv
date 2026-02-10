@@ -1,0 +1,2347 @@
+uniprot_id	protein	sector	sector_short
+H9L427	Large ribosomal subunit assembly factor BipA	Translation and protein homeostasis	Rib
+H9L478	Bacterial microcompartment shell protein PduJ	Other	Oth
+O84947	SPI-2 type 3 secretion system translocon protein SctE	Flagellum and motility including its regulation	Fla
+P0A1B9	SPI-1 type 3 secretion system ATPase	Flagellum and motility including its regulation	Fla
+P0A1C7	Bacterial microcompartment shell protein PduA	Other	Oth
+P0A1C9	Bacterial microcompartment shell protein EutL	Other	Oth
+P0A1S2	DNA-binding protein H-NS	Other	Oth
+P0A251	Alkyl hydroperoxide reductase C	Other	Oth
+P0A2I3	DNA gyrase subunit B	Other	Oth
+P0A2R8	Magnesium Transport protein CorA	Transport	Tra
+P0CW86	Superoxide dismutase [Cu-Zn] 1	Other	Oth
+P22036	Magnesium-Transporting ATPase, P-type 1	Transport	Tra
+P26311	Peptidase T	Translation and protein homeostasis	Rib
+P26353	Flavohemoprotein	Other	Oth
+P26466	Maltoporin	Transport	Tra
+P29768	Sialidase	Other	Oth
+P30878	Melibiose permease	Transport	Tra
+P37449	Bacterial microcompartment shell protein PduB	Other	Oth
+P40193	Vitamin B6 salvage pathway transcriptional repressor PtsJ	Other	Oth
+P40709	Inner membrane protein PbgA	Lipid and cell wall metabolism	Lpb
+P40817	Diaminopropionate ammonia-lyase	Amino acid biosynthesis	Aab
+P41791	Bacterial microcompartment shell protein EutM	Other	Oth
+P41792	Bacterial microcompartment shell vertex protein EutN	Other	Oth
+P51067	Isocitrate dehydrogenase kinase/phosphatase	Carbon metabolism	Cbn
+P55880	Protein/nucleic acid deglycase YajL	Translation and protein homeostasis	Rib
+Q7CP78	2-iminobutanoate/2-iminopropanoate deaminase	Amino acid biosynthesis	Aab
+Q8ZL97	Antitoxin TacA 1	Other	Oth
+Q8ZL98	tRNA-acetylating toxin 1	Translation and protein homeostasis	Rib
+Q8ZMX2	Peptidyl-lysine N-acetyltransferase Pat	Translation and protein homeostasis	Rib
+Q8ZNF5	Nucleoside triphosphatase NudI	Other	Oth
+Q8ZNR3	E3 ubiquitin-protein ligase SopA	Translation and protein homeostasis	Rib
+Q8ZNR5	Corrinoid adenosyltransferase PduO	Carbon metabolism	Cbn
+Q8ZPA3	ABC Transporter D-alanine-binding periplasmic protein	Transport	Tra
+Q8ZPD3	L-methionine sulfoximine acetyltransferase	Amino acid biosynthesis	Aab
+Q8ZPS5	Protein nucleotidyltransferase YdiU	Translation and protein homeostasis	Rib
+Q8ZPX9	Aminoglycoside adenylyltransferase	Other	Oth
+Q8ZR88	tRNA 2-selenouridine synthase	Translation and protein homeostasis	Rib
+Q8ZR95	Copper-exporting P-type ATPase	Transport	Tra
+Q9EYX5	Zinc Transport protein ZntB	Transport	Tra
+Q9XDM8	Bacterial microcompartment shell protein PduT	Other	Oth
+Q9XDM9	Cobalamin reductase PduS	Carbon metabolism	Cbn
+Q9ZFU8	Bacterial microcompartment shell protein EutK	Other	Oth
+Q9ZFV5	Acetate kinase EutQ	Carbon metabolism	Cbn
+Q9ZFV7	Bacterial microcompartment shell protein EutS	Other	Oth
+Q9ZJ12	Elongation factor P--(R)-beta-lysine ligase	Translation and protein homeostasis	Rib
+O31043	Propanediol dehydratase-reactivating factor large subunit	Carbon metabolism	Cbn
+P02936	Outer membrane protein A	Lipid and cell wall metabolism	Lpb
+P0A1D1	Bacterial microcompartment shell protein PduU	Other	Oth
+P0A1G7	Chaperone protein DnaJ	Translation and protein homeostasis	Rib
+P0A1X6	Methionine aminopeptidase	Translation and protein homeostasis	Rib
+P0A208	Probable acetate kinase EutP	Carbon metabolism	Cbn
+P0A281	Peptidyl-tRNA hydrolase	Translation and protein homeostasis	Rib
+P0A2F0	ECF RNA polymerase sigma-E factor	Other	Oth
+P0A2I1	DNA topoisomerase 1	Other	Oth
+P0A2I5	DNA topoisomerase 4 subunit B	Other	Oth
+P0A2P6	Tyrosine recombinase XerD	Other	Oth
+P0A2T8	Fumarate and nitrate reduction regulatory protein	Electron Transport chain	Etc
+P0DM81	RNA polymerase sigma factor RpoS	Other	Oth
+P10502	Sodium/proline symporter	Transport	Tra
+P19480	Alkyl hydroperoxide reductase subunit F	Other	Oth
+P22038	tRNA/tmRNA (uracil-C(5))-methyltransferase	Translation and protein homeostasis	Rib
+P25078	Deoxyribodipyrimidine photolyase	Other	Oth
+P25945	Protein TonB	Transport	Tra
+P26189	Regulatory protein ada	Other	Oth
+P26973	DNA topoisomerase 4 subunit A	Other	Oth
+P35672	SPI-1 type 3 secretion system secretin	Flagellum and motility including its regulation	Fla
+P36640	Magnesium-Transporting ATPase, P-type 1	Transport	Tra
+P37411	DNA gyrase subunit A	Other	Oth
+P40676	Transcriptional regulator SlyA	Other	Oth
+P40815	Type III restriction-modification enzyme StyLTI Res subunit	Other	Oth
+P41780	FAD:protein FMN transferase	Other	Oth
+P41796	Probable ethanolamine permease EutH	Transport	Tra
+P58718	D-threonate 4-phosphate dehydrogenase	Carbon metabolism	Cbn
+P60066	Arginine/agmatine antiporter	Transport	Tra
+P63343	ATP-dependent zinc metalloprotease FtsH	Translation and protein homeostasis	Rib
+P63462	FMN-dependent NADH:quinone oxidoreductase	Electron Transport chain	Etc
+P65836	Ribosomal large subunit pseudouridine synthase D	Translation and protein homeostasis	Rib
+Q00267	Arylamine N-acetyltransferase / N-hydroxyarylamine O-acetyltransferase	Other	Oth
+Q08015	tRNA hydroxylase	Translation and protein homeostasis	Rib
+Q7BVH7	Secreted effector protein SseB	Flagellum and motility including its regulation	Fla
+Q7CPJ9	PanD regulatory factor	Other	Oth
+Q7CQ01	Chaperone protein ClpB	Translation and protein homeostasis	Rib
+Q7CQN4	Major outer membrane lipoprotein Lpp 1	Lipid and cell wall metabolism	Lpb
+Q8ZKA7	NAD(P)H-hydrate repair enzyme	Other	Oth
+Q8ZKR2	Aminoimidazole riboside kinase	Other	Oth
+Q8ZKU8	Serine/threonine protein kinase RdoA	Other	Oth
+Q8ZL64	AutoTransporter adhesin SadA	Flagellum and motility including its regulation	Fla
+Q8ZLS5	GTPase Obg	Translation and protein homeostasis	Rib
+Q8ZLY4	Multifunctional CCA protein	Translation and protein homeostasis	Rib
+Q8ZM00	Probable HTH-type transcriptional regulator STM3175	Other	Oth
+Q8ZM86	tRNA(fMet)-specific endonuclease VapC	Translation and protein homeostasis	Rib
+Q8ZMH3	Serine/threonine-protein phosphatase 2	Other	Oth
+Q8ZN52	Dual-specificity RNA methyltransferase RlmN	Translation and protein homeostasis	Rib
+Q8ZNN5	Iron-sulfur cluster carrier protein	Electron Transport chain	Etc
+Q8ZNP1	Probable lipid kinase YegS	Lipid and cell wall metabolism	Lpb
+Q8ZNT5	Probable diguanylate cyclase DgcQ	Other	Oth
+Q8ZNY9	Serine/threonine-protein phosphatase 1	Other	Oth
+Q8ZP19	Flagellar brake protein YcgR	Flagellum and motility including its regulation	Fla
+Q8ZP57	Secreted effector kinase SteC	Flagellum and motility including its regulation	Fla
+Q8ZP88	tRNA-cytidine(32) 2-sulfurtransferase	Translation and protein homeostasis	Rib
+Q8ZPP9	Major outer membrane lipoprotein Lpp 2	Lipid and cell wall metabolism	Lpb
+Q8ZPS6	Anti-FlhC(2)FlhD(4) factor YdiV	Flagellum and motility including its regulation	Fla
+Q8ZPU1	Chitooligosaccharide deacetylase	Lipid and cell wall metabolism	Lpb
+Q8ZR43	Transcriptional regulator RamR	Other	Oth
+Q8ZRC9	Cyclic di-GMP-binding protein YajQ	Other	Oth
+Q8ZRP8	H(+)/Cl(-) exchange Transporter ClcA	Transport	Tra
+Q8ZRS2	Multicopper oxidase CueO	Electron Transport chain	Etc
+Q9R803	SPI-2 type 3 secretion system translocon protein SctB	Flagellum and motility including its regulation	Fla
+Q9RCI2	tRNA-2-methylthio-N(6)-dimethylallyladenosine synthase MiaB	Translation and protein homeostasis	Rib
+Q9XDN3	Bacterial microcompartment shell vertex protein PduN	Other	Oth
+Q9XDN4	Bacterial microcompartment assembly protein PduM	Other	Oth
+Q9XDN6	Bacterial microcompartment shell protein PduK	Other	Oth
+H9L428	Ribokinase	Carbon metabolism	Cbn
+H9L484	Transcriptional regulator RamA	Other	Oth
+H9L4B6	Probable diguanylate cyclase DgcQ	Other	Oth
+O30911	ATP-dependent protease HslU	Translation and protein homeostasis	Rib
+O30917	Chaperone protein SigE	Other	Oth
+O54453	5'-3' exoribonuclease Rnm	Other	Oth
+O68446	HTH-type transcriptional repressor PurR	Other	Oth
+O84944	Type III secretion system chaperone SseA	Flagellum and motility including its regulation	Fla
+O87576	Apolipoprotein N-acyltransferase	Lipid and cell wall metabolism	Lpb
+P03013	DNA-invertase hin	Other	Oth
+P06187	Type I restriction enzyme StySJI specificity subunit	Other	Oth
+P06614	HTH-type transcriptional regulator CysB	Other	Oth
+P0A197	Probable protein kinase UbiB	Electron Transport chain	Etc
+P0A1B3	Arginine repressor	Other	Oth
+P0A1C5	Cell division protein FtsP	Lipid and cell wall metabolism	Lpb
+P0A1D5	GroES	Translation and protein homeostasis	Rib
+P0A1D7	ClpP	Translation and protein homeostasis	Rib
+P0A1H5	Elongation factor Tu	Translation and protein homeostasis	Rib
+P0A1H7	Biopolymer Transport protein ExbB	Transport	Tra
+P0A1R6	DNA-binding protein HU-alpha	Other	Oth
+P0A1R8	DNA-binding protein HU-beta	Other	Oth
+P0A1S0	Integration host factor subunit alpha	Other	Oth
+P0A1S4	DNA-binding protein StpA	Other	Oth
+P0A1W4	Elongation factor 4 LepA	Translation and protein homeostasis	Rib
+P0A1W8	Branched-chain amino acid permease BrnQ	Transport	Tra
+P0A1Z2	Chaperone protein Skp	Translation and protein homeostasis	Rib
+P0A206	Ethanolamine utilization protein EutJ	Carbon metabolism	Cbn
+P0A237	Protein SirB2	Other	Oth
+P0A271	ATP-dependent protease HslV	Translation and protein homeostasis	Rib
+P0A273	LexA repressor	Other	Oth
+P0A2C3	Ribonuclease PH	Translation and protein homeostasis	Rib
+P0A2F8	Citrate/sodium symporter CitS	Transport	Tra
+P0A2G1	SsrA-binding protein	Translation and protein homeostasis	Rib
+P0A2G3	Citrate-proton symporter	Transport	Tra
+P0A2N6	Cell division protein ZipA	Lipid and cell wall metabolism	Lpb
+P0A2P8	Catabolite repressor/activator	Other	Oth
+P0A2Q2	HTH-type transcriptional activator IlvY	Other	Oth
+P0A2Q4	HTH-type transcriptional regulator MetR	Other	Oth
+P0A2R0	Redox-sensitive transcriptional activator SoxR	Other	Oth
+P0A2R6	tRNA-dihydrouridine synthase B	Translation and protein homeostasis	Rib
+P0A2S0	Leucine-responsive regulatory protein	Other	Oth
+P0A2S9	HTH-type transcriptional activator RhaS	Other	Oth
+P0A2U0	Methylated-DNA--protein-cysteine methyltransferase	Other	Oth
+P0A2U2	Ribosomal protein bS6--L-glutamate ligase	Translation and protein homeostasis	Rib
+P0CI70	Protein MgtC	Other	Oth
+P0CK99	Aromatic amino acid Transport protein AroP	Transport	Tra
+P0CL03	AmpD amidase	Lipid and cell wall metabolism	Lpb
+P0CL08	Transcriptional regulator HilD	Other	Oth
+P0CL43	SPI-1 type 3 secretion system pilotin	Flagellum and motility including its regulation	Fla
+P0CL45	SPI-1 type 3 secretion system stator protein	Flagellum and motility including its regulation	Fla
+P0CZ04	Salmonella pathogenicity island 2 protein C	Flagellum and motility including its regulation	Fla
+P13041	Virulence genes transcriptional activator	Other	Oth
+P20751	Probable protein adenylyltransferase Fic	Other	Oth
+P22493	Protein UmuD	Other	Oth
+P23831	Protein SamA	Other	Oth
+P24517	DNA repair protein RadA	Other	Oth
+P26318	Transcriptional regulator FimY	Flagellum and motility including its regulation	Fla
+P26401	Abequosyltransferase RfbV	Lipid and cell wall metabolism	Lpb
+P26402	O-antigen chain mannosyltransferase RfbU	Lipid and cell wall metabolism	Lpb
+P26403	O-antigen chain rhamnosyltransferase RfbN	Lipid and cell wall metabolism	Lpb
+P26406	Undecaprenyl-phosphate galactose phosphotransferase	Lipid and cell wall metabolism	Lpb
+P27236	Dipeptidyl carboxypeptidase	Lipid and cell wall metabolism	Lpb
+P27237	Oligopeptidase A	Translation and protein homeostasis	Rib
+P30705	Outer membrane porin PhoE	Transport	Tra
+P36936	Peptidase E	Translation and protein homeostasis	Rib
+P37169	Probable lipid II flippase MurJ	Lipid and cell wall metabolism	Lpb
+P37409	Vitamin B12 Transporter BtuB	Transport	Tra
+P37430	Transcription termination/antitermination protein NusA	Translation and protein homeostasis	Rib
+P37451	Propanediol uptake facilitator PduF	Transport	Tra
+P37462	Alkylated DNA repair protein AlkB	Other	Oth
+P37921	Type-1 fimbrial protein, A chain	Flagellum and motility including its regulation	Fla
+P37928	HTH-type transcriptional regulator FimW	Flagellum and motility including its regulation	Fla
+P39434	Soluble lytic murein transglycosylase	Lipid and cell wall metabolism	Lpb
+P40680	Probable L,D-transpeptidase ErfK/SrfK	Lipid and cell wall metabolism	Lpb
+P40687	DNA topoisomerase 3	Other	Oth
+P40731	tRNA threonylcarbamoyltransferase	Translation and protein homeostasis	Rib
+P40813	Type I restriction enzyme StySJI methylase subunit	Other	Oth
+P40814	Type III restriction-modification enzyme StyLTI Mod subunit	Other	Oth
+P40816	Release factor glutamine methyltransferase	Translation and protein homeostasis	Rib
+P40819	Orphan antitoxin YefM	Translation and protein homeostasis	Rib
+P40827	Murein hydrolase activator NlpD	Lipid and cell wall metabolism	Lpb
+P40865	HTH-type transcriptional activator RhaR	Other	Oth
+P43015	Transcriptional regulator HilA	Other	Oth
+P43669	Tail-specific protease	Translation and protein homeostasis	Rib
+P46924	Probable transcriptional regulator LeuO	Other	Oth
+P55888	Tyrosine recombinase XerC	Other	Oth
+P58525	N-methyl-L-tryptophan oxidase	Amino acid biosynthesis	Aab
+P58533	D-aminoacyl-tRNA deacylase	Translation and protein homeostasis	Rib
+P58627	7-methyl-GTP pyrophosphatase	Translation and protein homeostasis	Rib
+P59696	Transposase IS200	Other	Oth
+P60195	Ribonuclease BN	Translation and protein homeostasis	Rib
+P60959	Phosphatidylglycerol--prolipoprotein diacylglyceryl transferase	Lipid and cell wall metabolism	Lpb
+P63866	Fluoride-specific ion channel FluC	Transport	Tra
+P63989	DNA polymerase IV	Other	Oth
+P64036	Elongation factor P	Translation and protein homeostasis	Rib
+P64394	Integration host factor subunit beta	Other	Oth
+P65359	Septum site-determining protein MinC	Lipid and cell wall metabolism	Lpb
+P65449	Peptide methionine sulfoxide reductase MsrB	Translation and protein homeostasis	Rib
+P65510	Glutathione-regulated potassium-efflux system ancillary protein KefG	Transport	Tra
+P65524	K(+)/H(+) antiporter NhaP2	Transport	Tra
+P65817	Protease HtpX	Translation and protein homeostasis	Rib
+P65840	Ribosomal small subunit pseudouridine synthase A	Translation and protein homeostasis	Rib
+P66684	Ribonuclease T	Translation and protein homeostasis	Rib
+P66932	Trigger factor	Translation and protein homeostasis	Rib
+P66950	Beta-barrel assembly-enhancing protease	Lipid and cell wall metabolism	Lpb
+P66974	tRNA (cytidine/uridine-2'-O-)-methyltransferase TrmJ	Translation and protein homeostasis	Rib
+P67197	Phosphoenolpyruvate synthase regulatory protein	Carbon metabolism	Cbn
+P67341	O-acetyl-ADP-ribose deacetylase	Other	Oth
+P67347	Protein-methionine-sulfoxide reductase catalytic subunit MsrP	Translation and protein homeostasis	Rib
+P67470	Zinc Transporter ZupT	Transport	Tra
+P67520	Ribosomal RNA large subunit methyltransferase H	Translation and protein homeostasis	Rib
+P67613	Leucyl/phenylalanyl-tRNA--protein transferase	Translation and protein homeostasis	Rib
+P68738	Endonuclease V	Other	Oth
+P69066	Chaperone protein SicA	Translation and protein homeostasis	Rib
+P74839	Propionate catabolism operon regulatory protein	Other	Oth
+P74853	SPI-2 type 3 secretion system stator protein	Flagellum and motility including its regulation	Fla
+P74884	Fe(2+) Transporter FeoB	Transport	Tra
+Q04866	Chain length determinant protein	Lipid and cell wall metabolism	Lpb
+Q05587	Regulatory protein PocR	Other	Oth
+Q56016	Ribosomal RNA small subunit methyltransferase A	Translation and protein homeostasis	Rib
+Q56057	GTPase Era	Translation and protein homeostasis	Rib
+Q56121	Peptide chain release factor 3	Translation and protein homeostasis	Rib
+Q7BM06	3'-5' ssDNA/RNA exonuclease TatD	Other	Oth
+Q7CPC4	L-rhamnose mutarotase	Carbon metabolism	Cbn
+Q7CPD4	Xaa-Pro dipeptidase	Amino acid biosynthesis	Aab
+Q7CPJ1	Ribosomal RNA large subunit methyltransferase J	Translation and protein homeostasis	Rib
+Q7CPQ6	Outer membrane lipoprotein DolP	Lipid and cell wall metabolism	Lpb
+Q7CPS4	Protein YgiW	Other	Oth
+Q7CPW1	Ribosomal RNA large subunit methyltransferase M	Translation and protein homeostasis	Rib
+Q7CQ08	tRNA-specific adenosine deaminase	Translation and protein homeostasis	Rib
+Q7CQ23	Thioredoxin-dependent peroxiredoxin	Translation and protein homeostasis	Rib
+Q7CQ25	GDP-mannose pyrophosphatase	Carbon metabolism	Cbn
+Q7CQ37	Flagellar regulator Flk	Flagellum and motility including its regulation	Fla
+Q7CQ75	Murein DD-endopeptidase MepS	Lipid and cell wall metabolism	Lpb
+Q7CQC4	Carboxy-S-adenosyl-L-methionine synthase	Carbon metabolism	Cbn
+Q7CQE0	tRNA threonylcarbamoyladenosine biosynthesis protein TsaB	Translation and protein homeostasis	Rib
+Q7CQE4	Membrane-bound lytic murein transglycosylase A	Lipid and cell wall metabolism	Lpb
+Q7CQK0	Spermidine export protein MdtI	Transport	Tra
+Q7CQK1	Spermidine export protein MdtJ	Transport	Tra
+Q7CQV9	DNA protection during starvation protein	Other	Oth
+Q7CQY3	Ferric uptake regulation protein	Other	Oth
+Q7CQY4	Chitoporin	Transport	Tra
+Q7CR17	Hemolysin expression-modulating protein Hha	Other	Oth
+Q7CR52	Sigma factor-binding protein Crl	Other	Oth
+Q7CR81	Cell division protein FtsQ	Lipid and cell wall metabolism	Lpb
+Q7CR87	Chaperone SurA	Translation and protein homeostasis	Rib
+Q8XFK6	Thiol:disulfide interchange protein DsbE	Translation and protein homeostasis	Rib
+Q8XG35	Cytochrome c-type biogenesis protein CcmE	Translation and protein homeostasis	Rib
+Q8ZJT6	tRNA (cytidine/uridine-2'-O-)-methyltransferase TrmJ	Translation and protein homeostasis	Rib
+Q8ZJU7	Transcriptional regulator Rob	Other	Oth
+Q8ZJU9	Energy-dependent translational throttle protein EttA	Translation and protein homeostasis	Rib
+Q8ZJW4	Ribosomal protein bS18-alanine N-acetyltransferase	Translation and protein homeostasis	Rib
+Q8ZJW6	Ribosomal RNA small subunit methyltransferase C	Translation and protein homeostasis	Rib
+Q8ZJW8	Probable diguanylate cyclase DgcQ	Other	Oth
+Q8ZJX6	Phosphoglycerol transferase I	Lipid and cell wall metabolism	Lpb
+Q8ZJZ8	Isoaspartyl dipeptidase	Translation and protein homeostasis	Rib
+Q8ZK66	Mur ligase	Lipid and cell wall metabolism	Lpb
+Q8ZKA3	HTH-type transcriptional repressor NsrR	Other	Oth
+Q8ZKA5	GTPase HflX	Translation and protein homeostasis	Rib
+Q8ZKA8	Epoxyqueuosine reductase	Translation and protein homeostasis	Rib
+Q8ZKB8	L-lysine 2,3-aminomutase	Amino acid biosynthesis	Aab
+Q8ZKC3	Thiol:disulfide interchange protein DsbD	Lipid and cell wall metabolism	Lpb
+Q8ZKH4	tRNA-dihydrouridine synthase	Translation and protein homeostasis	Rib
+Q8ZKL1	RNA pseudouridine synthase RluF	Translation and protein homeostasis	Rib
+Q8ZKN9	Cell division protein FtsN	Lipid and cell wall metabolism	Lpb
+Q8ZKP5	Ferredoxin/ferredoxin--NADP reductase	Electron Transport chain	Etc
+Q8ZKR4	Cation-efflux pump FieF	Transport	Tra
+Q8ZKW2	Regulatory ATPase RavA	Other	Oth
+Q8ZKX9	Quinone reductase	Electron Transport chain	Etc
+Q8ZKY3	tRNA modification GTPase MnmE	Translation and protein homeostasis	Rib
+Q8ZL46	Nucleoid occlusion factor SlmA	Other	Oth
+Q8ZL60	tRNA (cytidine/uridine-2'-O-)-methyltransferase TrmL	Translation and protein homeostasis	Rib
+Q8ZL65	Inner membrane lipoprotein SadB	Lipid and cell wall metabolism	Lpb
+Q8ZLB5	Cyclic di-GMP binding protein BcsE	Other	Oth
+Q8ZLB7	Endoglucanase	Carbon metabolism	Cbn
+Q8ZLE5	P-type Zn(2+) Transporter	Transport	Tra
+Q8ZLG0	Ribokinase	Carbon metabolism	Cbn
+Q8ZLH9	3'-phosphate/5'-hydroxy nucleic acid ligase	Translation and protein homeostasis	Rib
+Q8ZLI3	HTH-type transcriptional regulator MalT	Other	Oth
+Q8ZLM5	Ribosomal RNA small subunit methyltransferase B	Translation and protein homeostasis	Rib
+Q8ZLN0	Threonylcarbamoyl-AMP synthase TsaC	Translation and protein homeostasis	Rib
+Q8ZLN7	Anti-FlhC(2)FlhD(4) factor YdiV	Flagellum and motility including its regulation	Fla
+Q8ZLP1	Protein-methionine-sulfoxide reductase heme-binding subunit MsrQ	Electron Transport chain	Etc
+Q8ZLS7	Ribosomal RNA large subunit methyltransferase E	Translation and protein homeostasis	Rib
+Q8ZLT2	tRNA pseudouridine synthase B	Translation and protein homeostasis	Rib
+Q8ZLY6	Glutamine synthetase adenylyltransferase	Amino acid biosynthesis	Aab
+Q8ZLY9	Ubiquinone biosynthesis accessory factor UbiK	Electron Transport chain	Etc
+Q8ZM06	Methylglyoxal reductase DkgA	Carbon metabolism	Cbn
+Q8ZM39	Membrane-bound lytic murein transglycosylase C	Lipid and cell wall metabolism	Lpb
+Q8ZM40	tRNA (guanine-N(7)-)-methyltransferase	Translation and protein homeostasis	Rib
+Q8ZM79	N(4)-acetylcytidine amidohydrolase	Translation and protein homeostasis	Rib
+Q8ZMB5	Protease 3	Translation and protein homeostasis	Rib
+Q8ZMC4	L-fucose mutarotase	Carbon metabolism	Cbn
+Q8ZMC9	Flap endonuclease Xni	Other	Oth
+Q8ZMD5	tRNA pseudouridine synthase C	Translation and protein homeostasis	Rib
+Q8ZME1	RlmD methyltransferase	Translation and protein homeostasis	Rib
+Q8ZMF2	CRISPR-associated endonuclease Cas1	Other	Oth
+Q8ZMF8	tRNA pseudouridine synthase D	Translation and protein homeostasis	Rib
+Q8ZMF9	Protein-L-isoaspartate O-methyltransferase	Translation and protein homeostasis	Rib
+Q8ZMG5	3-oxo-tetronate kinase	Carbon metabolism	Cbn
+Q8ZMJ5	Carbamoyltransferase HypF	Amino acid biosynthesis	Aab
+Q8ZMJ7	Anaerobic nitric oxide reductase flavorubredoxin	Electron Transport chain	Etc
+Q8ZMJ8	Anaerobic nitric oxide reductase transcription regulator NorR	Other	Oth
+Q8ZMJ9	Arabinose 5-phosphate isomerase GutQ	Carbon metabolism	Cbn
+Q8ZMX7	ATP-dependent RNA helicase SrmB	Translation and protein homeostasis	Rib
+Q8ZN28	Membrane-bound lytic murein transglycosylase F	Lipid and cell wall metabolism	Lpb
+Q8ZN53	Cytoskeleton protein RodZ	Flagellum and motility including its regulation	Fla
+Q8ZN74	tRNA(Met) cytidine acetyltransferase TmcA	Translation and protein homeostasis	Rib
+Q8ZNB0	Penicillin-insensitive murein endopeptidase	Lipid and cell wall metabolism	Lpb
+Q8ZNB2	tRNA 5-methylaminomethyl-2-thiouridine biosynthesis bifunctional protein MnmC	Translation and protein homeostasis	Rib
+Q8ZNB9	tRNA pseudouridine synthase A	Translation and protein homeostasis	Rib
+Q8ZNF4	Lipopolysaccharide core heptose(II)-phosphate phosphatase PmrG	Lipid and cell wall metabolism	Lpb
+Q8ZNM4	tRNA-dihydrouridine(16) synthase	Translation and protein homeostasis	Rib
+Q8ZNM6	D-alanyl-D-alanine endopeptidase PBP7	Lipid and cell wall metabolism	Lpb
+Q8ZNQ6	Anti-FlhC(2)FlhD(4) factor YdiV	Flagellum and motility including its regulation	Fla
+Q8ZNR6	Propanediol dehydratase-reactivating factor small subunit	Carbon metabolism	Cbn
+Q8ZNS5	Mlc titration factor A	Other	Oth
+Q8ZNU4	Ferritin	Other	Oth
+Q8ZNV1	tRNA U34 carboxymethyltransferase	Translation and protein homeostasis	Rib
+Q8ZNZ2	Ribosomal RNA small subunit methyltransferase F	Translation and protein homeostasis	Rib
+Q8ZP15	Fatty acid metabolism regulator protein	Lipid and cell wall metabolism	Lpb
+Q8ZP51	Ribosomal large subunit pseudouridine synthase C	Translation and protein homeostasis	Rib
+Q8ZP65	Thiol peroxidase Tpx	Translation and protein homeostasis	Rib
+Q8ZP67	Murein peptide amidase A	Lipid and cell wall metabolism	Lpb
+Q8ZPK5	Voltage-gated ClC-type chloride channel ClcB	Transport	Tra
+Q8ZPM1	Ion-translocating oxidoreductase complex subunit B	Electron Transport chain	Etc
+Q8ZPM2	Ion-translocating oxidoreductase complex subunit C	Electron Transport chain	Etc
+Q8ZPM4	Ion-translocating oxidoreductase complex subunit G	Electron Transport chain	Etc
+Q8ZPM6	Dipeptide and tripeptide permease A	Transport	Tra
+Q8ZPP2	Multidrug resistance protein MdtK	Transport	Tra
+Q8ZQ08	Penicillin-binding protein activator LpoB	Lipid and cell wall metabolism	Lpb
+Q8ZQ16	Ribosomal large subunit pseudouridine synthase K/L	Translation and protein homeostasis	Rib
+Q8ZQ23	tRNA uridine(34) hydroxylase	Translation and protein homeostasis	Rib
+Q8ZQ34	N-acetylneuraminate epimerase	Carbon metabolism	Cbn
+Q8ZQ59	Secreted effector protein PipB	Flagellum and motility including its regulation	Fla
+Q8ZQ72	ATP-binding protein Uup	Translation and protein homeostasis	Rib
+Q8ZQ73	Ribosomal RNA large subunit methyltransferase K/L	Translation and protein homeostasis	Rib
+Q8ZQ79	Secreted effector protein SseI	Flagellum and motility including its regulation	Fla
+Q8ZQB7	Chromosome partition protein MukF	Other	Oth
+Q8ZQD5	DNA translocase FtsK	Lipid and cell wall metabolism	Lpb
+Q8ZQJ5	23S rRNA methyltransferase RlmC	Translation and protein homeostasis	Rib
+Q8ZQM1	Ribosomal protein uS12 methylthiotransferase RimO	Translation and protein homeostasis	Rib
+Q8ZQN7	ATP-dependent DNA helicase DinG	Other	Oth
+Q8ZQZ7	LPS-assembly lipoprotein LptE	Lipid and cell wall metabolism	Lpb
+Q8ZR01	Rare lipoprotein A	Lipid and cell wall metabolism	Lpb
+Q8ZRB9	Lon protease	Translation and protein homeostasis	Rib
+Q8ZRC0	ClpX	Translation and protein homeostasis	Rib
+Q8ZRD8	Queuine tRNA-ribosyltransferase	Translation and protein homeostasis	Rib
+Q8ZRF7	Inhibitor of hydrogen peroxide resistance	Other	Oth
+Q8ZRG7	Mercuric Transport protein	Transport	Tra
+Q8ZRJ9	Outer membrane protein PagN	Flagellum and motility including its regulation	Fla
+Q8ZRN3	Peptidyl-tRNA hydrolase ArfB	Translation and protein homeostasis	Rib
+Q8ZRP1	Regulator of sigma E protease RseP	Other	Oth
+Q8ZRS5	D-threonate kinase	Carbon metabolism	Cbn
+Q8ZRT6	8-oxo-dGTP diphosphatase MutT	Other	Oth
+Q8ZRV8	RNA polymerase-associated protein RapA	Translation and protein homeostasis	Rib
+Q8ZRV9	Dual-specificity RNA pseudouridine synthase RluA	Translation and protein homeostasis	Rib
+Q8ZRW0	LPS-assembly protein LptD	Lipid and cell wall metabolism	Lpb
+Q8ZRW2	Potassium-efflux antiporter KefC	Transport	Tra
+Q8ZRW3	Quinone reductase KefF	Electron Transport chain	Etc
+Q8ZRX2	Crotonobetainyl-CoA reductase	Carbon metabolism	Cbn
+Q8ZRX3	L-carnitine CoA-transferase	Carbon metabolism	Cbn
+Q8ZRX5	Carnitinyl-CoA dehydratase	Carbon metabolism	Cbn
+Q935S7	Chromosome partition protein MukB	Other	Oth
+Q93CH6	HTH-type transcriptional regulator CueR	Other	Oth
+Q93IN1	Cyclic di-GMP-binding protein	Other	Oth
+Q9F7A2	GDP-mannose mannosyl hydrolase	Carbon metabolism	Cbn
+Q9L645	Anaerobic ribonucleoside-triphosphate reductase-activating protein	Other	Oth
+Q9L6L2	Trk system potassium uptake protein TrkH	Transport	Tra
+Q9L6M2	3'-5' ssDNA/RNA exonuclease TatD	Other	Oth
+Q9L6M5	Ubiquinone biosynthesis accessory factor UbiJ	Electron Transport chain	Etc
+Q9L6N4	Pyridoxal phosphate phosphatase YigL	Carbon metabolism	Cbn
+Q9L6S1	ATP-dependent DNA helicase Rep	Other	Oth
+Q9RPF4	Divalent metal cation Transporter MntH	Transport	Tra
+Q9XCI8	GTPase Der	Translation and protein homeostasis	Rib
+Q9XDM6	Propanediol utilization protein PduV	Other	Oth
+Q9ZF31	Translation initiation factor IF-2	Translation and protein homeostasis	Rib
+Q9ZFU7	HTH-type DNA-binding transcriptional activator EutR	Other	Oth
+H9L443	Thiol:disulfide interchange protein	Lipid and cell wall metabolism	Lpb
+H9L451	Outer membrane protein assembly factor BamB	Lipid and cell wall metabolism	Lpb
+H9L452	Membrane fusion protein family protein	Transport	Tra
+H9L461	Sigma-E factor regulatory protein RseB	Other	Oth
+H9L463	Replicative helicase loader DnaC	Other	Oth
+H9L479	Outer membrane esterase	Lipid and cell wall metabolism	Lpb
+H9L4A4	Fimbrial outer membrane usher	Flagellum and motility including its regulation	Fla
+H9L4B7	Pilin	Flagellum and motility including its regulation	Fla
+O33787	Uncharacterized inner membrane Transporter YicL	Transport	Tra
+O33789	ECA polysaccharide chain length modulation protein	Lipid and cell wall metabolism	Lpb
+O52714	DNA replication terminus site-binding protein (Ter-binding protein)	Other	Oth
+O54294	Probable csgAB operon transcriptional regulatory protein	Other	Oth
+O87574	Endoribonuclease YbeY (EC 3.1.-.-)	Translation and protein homeostasis	Rib
+P03022	Arabinose operon regulatory protein	Other	Oth
+P03054	trp operon leader peptide	Translation and protein homeostasis	Rib
+P03062	leu operon leader peptide (leu operon attenuator peptide)	Translation and protein homeostasis	Rib
+P06203	Met repressor (Met regulon regulatory protein MetJ)	Other	Oth
+P0A189	Threonine/serine Transporter ThrP (Threonine/serine:H(+) symporter ThrP)	Transport	Tra
+P0A1D9	Cold shock-like protein CspH	Translation and protein homeostasis	Rib
+P0A1E5	Major curlin subunit (Fimbrin SEF17)	Flagellum and motility including its regulation	Fla
+P0A1E8	Minor curlin subunit (Fimbrin SEF17 minor subunit)	Flagellum and motility including its regulation	Fla
+P0A1F4	Inner membrane protein YghB	Other	Oth
+P0A1G3	Virulence protein MsgA	Other	Oth
+P0A1G5	RNA polymerase-binding transcription factor DksA	Other	Oth
+P0A1H1	Protein-disulfide oxidoreductase DsbI	Translation and protein homeostasis	Rib
+P0A1H3	Elongation factor G (EF-G)	Translation and protein homeostasis	Rib
+P0A1L7	Surface presentation of antigens protein SpaQ	Flagellum and motility including its regulation	Fla
+P0A1N0	Surface presentation of antigens protein SpaK (Class 1B type III secretion system chaperone SpaK) (Invasion protein InvB)	Flagellum and motility including its regulation	Fla
+P0A1N6	Flavodoxin 2	Electron Transport chain	Etc
+P0A1P8	Glutaredoxin 1 (Grx1)	Translation and protein homeostasis	Rib
+P0A1S8	Putative HNH nuclease YajD (EC 3.1.-.-)	Other	Oth
+P0A1T2	Large ribosomal RNA subunit accumulation protein YceD (23S rRNA accumulation protein YceD) (G30K)	Translation and protein homeostasis	Rib
+P0A1T6	LPS-assembly lipoprotein LptM	Lipid and cell wall metabolism	Lpb
+P0A1U0	Medium/long-chain acyl-CoA thioesterase YigI (EC 3.1.2.20)	Lipid and cell wall metabolism	Lpb
+P0A1U2	Biotin Transporter	Transport	Tra
+P0A1U6	Regulator of ribonuclease activity B	Translation and protein homeostasis	Rib
+P0A1X0	Outer membrane lipoprotein SlyB	Lipid and cell wall metabolism	Lpb
+P0A1X8	Large-conductance mechanosensitive channel	Transport	Tra
+P0A1Z6	Bacterioferritin-associated ferredoxin	Electron Transport chain	Etc
+P0A1Z8	Curli assembly protein CsgC	Flagellum and motility including its regulation	Fla
+P0A200	Curli production assembly/Transport component CsgE	Flagellum and motility including its regulation	Fla
+P0A202	Curli production assembly/Transport component CsgF	Flagellum and motility including its regulation	Fla
+P0A204	Curli production assembly/Transport component CsgG	Flagellum and motility including its regulation	Fla
+P0A212	DNA gyrase inhibitor	Other	Oth
+P0A235	O-antigen polymerase (EC 2.4.99.27)	Lipid and cell wall metabolism	Lpb
+P0A241	Cell division inhibitor SulA	Other	Oth
+P0A261	Nucleoside-specific channel-forming protein Tsx	Transport	Tra
+P0A265	Peptidyl-prolyl cis-trans isomerase C (PPIase C) (EC 5.2.1.8) (Parvulin) (Rotamase C)	Translation and protein homeostasis	Rib
+P0A279	Protein PsiE (Mig-7)	Other	Oth
+P0A287	Peptide chain release factor 1 (RF-1)	Translation and protein homeostasis	Rib
+P0A289	Peptide chain release factor 2 (RF-2)	Translation and protein homeostasis	Rib
+P0A293	Ribosomal protein uL3 glutamine methyltransferase (uL3 MTase) (EC 2.1.1.298) (N5-glutamine methyltransferase PrmB)	Translation and protein homeostasis	Rib
+P0A2B5	Ribosome maturation factor RimM	Translation and protein homeostasis	Rib
+P0A2B7	DNA recombination protein RmuC	Other	Oth
+P0A2D1	Oxidoreductase UcpA (EC 1.-.-.-)	Electron Transport chain	Etc
+P0A2D7	HTH-type transcriptional regulatory protein TyrR	Other	Oth
+P0A2G5	Sialic acid Transporter NanT (Sialic acid permease) (Sialic acid/H(+) symporter)	Transport	Tra
+P0A2G7	Uncharacterized protein YciH	Other	Oth
+P0A2J9	Trk system potassium uptake protein TrkA (K(+)-uptake protein TrkA)	Transport	Tra
+P0A2K9	Uncharacterized Nudix hydrolase NudL (EC 3.6.1.-)	Other	Oth
+P0A2L3	Magnesium and cobalt efflux protein CorC	Transport	Tra
+P0A2L5	UPF0056 inner membrane protein MarC	Other	Oth
+P0A2L9	Protein SirB1	Other	Oth
+P0A2M1	Transcriptional repressor NrdR	Other	Oth
+P0A2N4	Inner membrane Transporter YjeM	Transport	Tra
+P0A2N8	Der GTPase-activating protein YihI	Translation and protein homeostasis	Rib
+P0A2Q0	HTH-type transcriptional regulator HdfR (H-NS-dependent flhDC regulator)	Other	Oth
+P0A2T4	Multiple antibiotic resistance protein MarR	Other	Oth
+P0A6R6	DNA-binding protein Fis	Other	Oth
+P0A8B8	Nucleoid-associated protein YbaB	Other	Oth
+P0A8C9	Putative membrane protein insertion efficiency factor	Translation and protein homeostasis	Rib
+P0A9X6	Cell shape-determining protein MreB	Lipid and cell wall metabolism	Lpb
+P0A9Y2	Cold shock protein CspA (CSP-A) (7.4 kDa cold shock protein) (CS7.4)	Translation and protein homeostasis	Rib
+P0A9Y9	Cold shock-like protein CspC (CSP-C)	Translation and protein homeostasis	Rib
+P0AA02	Transcription termination/antitermination protein NusG	Translation and protein homeostasis	Rib
+P0CL01	Cold shock-like protein CspJ	Translation and protein homeostasis	Rib
+P0CL04	Threonine/homoserine exporter RhtA	Transport	Tra
+P0CL09	Transcriptional regulator sirC	Other	Oth
+P0CL10	Pyruvate dehydrogenase complex repressor	Other	Oth
+P0CL11	HTH-type transcriptional regulator GalR (Galactose operon repressor)	Other	Oth
+P0CL12	HTH-type transcriptional regulator MlrA (MerR-like regulator A)	Other	Oth
+P0CL13	Intracellular growth attenuator protein IgaA	Other	Oth
+P0CL16	Chaperone protein SicP	Translation and protein homeostasis	Rib
+P0CL46	Formate hydrogenlyase transcriptional activator	Electron Transport chain	Etc
+P0CL48	Ferrioxamine B receptor	Transport	Tra
+P12673	Sulfate Transporter CysZ	Transport	Tra
+P17430	Acetate operon repressor	Other	Oth
+P22494	Protein UmuC	Other	Oth
+P24520	Nicotinamide riboside Transporter PnuC	Transport	Tra
+P25926	Nitrite Transporter NirC	Transport	Tra
+P25927	Putative surface-exposed virulence protein BigA	Other	Oth
+P26400	Putative O-antigen Transporter	Transport	Tra
+P26478	Maltose operon periplasmic protein	Transport	Tra
+P26983	Ribosome hibernation promoting factor (HPF) (Hibernation factor HPF)	Translation and protein homeostasis	Rib
+P27135	L-rhamnose-proton symporter (L-rhamnose-H(+) Transport protein)	Transport	Tra
+P30752	Outer-membrane lipoprotein LolB	Lipid and cell wall metabolism	Lpb
+P33027	Sugar efflux Transporter B	Transport	Tra
+P33321	Translation initiation factor IF-3	Translation and protein homeostasis	Rib
+P35671	Invasion protein InvE	Flagellum and motility including its regulation	Fla
+P36245	tRNA (guanine-N(1)-)-methyltransferase (EC 2.1.1.228) (M1G-methyltransferase) (tRNA [GM37] methyltransferase)	Translation and protein homeostasis	Rib
+P36674	HTH-type transcriptional regulator TreR (Trehalose operon repressor)	Other	Oth
+P37168	Putative oxidoreductase YceM (EC 1.-.-.-)	Electron Transport chain	Etc
+P37174	Cys-tRNA(Pro)/Cys-tRNA(Cys) deacylase YbaK (EC 4.2.-.-)	Translation and protein homeostasis	Rib
+P37415	Recombination-promoting nuclease pSLT051 (EC 3.1.21.-)	Other	Oth
+P37444	Trp operon repressor	Other	Oth
+P37458	Probable ECA polymerase	Lipid and cell wall metabolism	Lpb
+P37459	Probable HTH-type transcriptional regulator SinR	Other	Oth
+P37460	Proline-specific permease ProY	Transport	Tra
+P37592	Outer membrane porin protein OmpD	Transport	Tra
+P37594	Methyl viologen resistance protein SmvA	Transport	Tra
+P37722	Esterase FrsA (EC 3.1.1.1)	Carbon metabolism	Cbn
+P37723	Osmotically-inducible lipoprotein B	Lipid and cell wall metabolism	Lpb
+P37922	Fimbrin-like protein FimI	Flagellum and motility including its regulation	Fla
+P37923	Chaperone protein FimC	Flagellum and motility including its regulation	Fla
+P37924	Outer membrane usher protein FimD	Flagellum and motility including its regulation	Fla
+P37925	Type 1 fimbrin D-mannose specific adhesin (Protein FimH)	Flagellum and motility including its regulation	Fla
+P37926	Fimbrial-like protein FimF	Flagellum and motility including its regulation	Fla
+P40612	Surface presentation of antigens protein SpaM (Invasion protein InvI)	Flagellum and motility including its regulation	Fla
+P40613	Surface presentation of antigens protein SpaN (Invasion protein InvJ)	Flagellum and motility including its regulation	Fla
+P40677	Peptidyl-lysine N-acetyltransferase YjaB (EC 2.3.1.-) (KAT)	Translation and protein homeostasis	Rib
+P40700	Surface presentation of antigens protein SpaP	Flagellum and motility including its regulation	Fla
+P40701	Surface presentation of antigens protein SpaR	Flagellum and motility including its regulation	Fla
+P40702	Surface presentation of antigens protein SpaS	Flagellum and motility including its regulation	Fla
+P40730	Putative inorganic phosphate export protein YjbB	Transport	Tra
+P40783	Quinone oxidoreductase (EC 1.6.5.5) (NADPH:quinone reductase) (Zeta-crystallin homolog protein)	Electron Transport chain	Etc
+P40788	Uncharacterized isomerase YddE (EC 5.1.-.-)	Other	Oth
+P40812	L-asparagine permease (L-asparagine Transport protein)	Transport	Tra
+P40862	Proline/betaine Transporter (Proline porter II) (PPII)	Transport	Tra
+P41030	HTH-type transcriptional regulator GalS (Mgl repressor and galactose ultrainduction factor)	Other	Oth
+P41783	Protein PrgH	Flagellum and motility including its regulation	Fla
+P41786	Lipoprotein PrgK	Flagellum and motility including its regulation	Fla
+P43660	Long polar fimbria protein A	Flagellum and motility including its regulation	Fla
+P43663	Protein LpfD	Flagellum and motility including its regulation	Fla
+P43664	Protein LpfE	Flagellum and motility including its regulation	Fla
+P50335	Protein YhjJ	Other	Oth
+P52619	Repressor of phase 1 flagellin gene	Flagellum and motility including its regulation	Fla
+P55890	Thiol:disulfide interchange protein DsbC	Translation and protein homeostasis	Rib
+P56978	Iron-sulfur cluster assembly protein CyaY	Electron Transport chain	Etc
+P58509	HTH-type transcriptional regulator ArgP	Other	Oth
+P58531	Probable sugar efflux Transporter	Transport	Tra
+P58535	Putative aminopeptidase SgcX (EC 3.4.11.-)	Translation and protein homeostasis	Rib
+P58586	Putative gluconeogenesis factor	Carbon metabolism	Cbn
+P58614	Surface composition regulator	Other	Oth
+P60190	Protein SprT	Other	Oth
+P60317	RNA chaperone ProQ	Translation and protein homeostasis	Rib
+P60636	UPF0299 membrane protein YohJ	Other	Oth
+P60829	Dual-action ribosomal maturation protein DarP (Large ribosomal subunit assembly factor DarP)	Translation and protein homeostasis	Rib
+P61351	Protein YceI	Other	Oth
+P63263	Curved DNA-binding protein	Other	Oth
+P63423	Acetyltransferase YpeA (EC 2.3.1.-)	Translation and protein homeostasis	Rib
+P63727	Soluble cytochrome b562 (Cytochrome b-562)	Electron Transport chain	Etc
+P63993	Disulfide bond formation protein B (Disulfide oxidoreductase)	Translation and protein homeostasis	Rib
+P64046	Elongation factor protein EfpL	Translation and protein homeostasis	Rib
+P64052	Elongation factor Ts (EF-Ts)	Translation and protein homeostasis	Rib
+P64068	Probable GTP-binding protein EngB	Translation and protein homeostasis	Rib
+P64095	Protein FixB	Electron Transport chain	Etc
+P64162	Cell division protein FtsB	Lipid and cell wall metabolism	Lpb
+P64237	Ribosomal RNA small subunit methyltransferase G (EC 2.1.1.170) (16S rRNA 7-methylguanosine methyltransferase) (16S rRNA m7G methyltransferase)	Translation and protein homeostasis	Rib
+P64281	Transcription elongation factor GreA (Transcript cleavage factor GreA)	Translation and protein homeostasis	Rib
+P64413	Nickel-responsive regulator	Other	Oth
+P64419	Hydrogenase maturation factor HypA	Electron Transport chain	Etc
+P64421	Hydrogenase maturation factor HybF	Electron Transport chain	Etc
+P65197	Inner membrane-spanning protein YciB	Other	Oth
+P65207	2-keto-3-deoxygluconate permease 1 (KDG permease 1)	Transport	Tra
+P65363	Cell division topological specificity factor	Lipid and cell wall metabolism	Lpb
+P65540	Ion-translocating oxidoreductase complex subunit E (EC 7.-.-.-) (Rsx electron Transport complex subunit E)	Electron Transport chain	Etc
+P65542	Ion-translocating oxidoreductase complex subunit A (EC 7.-.-.-) (Rsx electron Transport complex subunit A)	Electron Transport chain	Etc
+P65559	Uncharacterized Nudix hydrolase YfcD (EC 3.6.-.-)	Other	Oth
+P65960	UPF0758 protein YicR	Other	Oth
+P65973	Recombination-associated protein RdgC	Other	Oth
+P66686	Ribonuclease P protein component (RNase P protein) (RNaseP protein) (EC 3.1.26.5) (Protein C5)	Translation and protein homeostasis	Rib
+P66738	Ribosome-recycling factor (RRF) (Ribosome-releasing factor)	Translation and protein homeostasis	Rib
+P67179	Probable transcriptional regulatory protein YebC	Other	Oth
+P67218	Ribosome maturation factor RimP	Translation and protein homeostasis	Rib
+P67246	Ribosome rescue factor SmrB (EC 3.1.-.-)	Translation and protein homeostasis	Rib
+P67270	GTP cyclohydrolase 1 type 2 homolog	Carbon metabolism	Cbn
+P67481	DNA gyrase inhibitor YacG	Other	Oth
+P67557	Glucans biosynthesis protein G	Lipid and cell wall metabolism	Lpb
+P67605	Pole-localizer protein TmaR	Other	Oth
+P67617	Probable Fe(2+)-trafficking protein	Electron Transport chain	Etc
+P67649	ATP-dependent Clp protease adapter protein ClpS	Translation and protein homeostasis	Rib
+P67651	Regulator of ribonuclease activity A	Translation and protein homeostasis	Rib
+P67686	Universal stress protein B	Other	Oth
+P67688	Ribosomal protein L11 methyltransferase (L11 Mtase) (EC 2.1.1.-)	Translation and protein homeostasis	Rib
+P67693	Cell division protein ZapD (Z ring-associated protein D)	Lipid and cell wall metabolism	Lpb
+P67710	Transcriptional regulator MntR (Manganese Transport regulator)	Other	Oth
+P67714	Nucleoid-associated protein YejK	Other	Oth
+P67735	HTH-type transcriptional repressor NanR	Other	Oth
+P69226	Translation initiation factor IF-1	Translation and protein homeostasis	Rib
+P69343	Invasion protein InvF (Transcriptional regulator InvF)	Flagellum and motility including its regulation	Fla
+Q06400	Probable Transporter YedE	Transport	Tra
+Q08021	Uncharacterized N-acetyltransferase YjgM (EC 2.3.1.-)	Translation and protein homeostasis	Rib
+Q08022	Inner membrane protein YjgN (ORF X)	Other	Oth
+Q56017	Protein ApaG (Protein CorD)	Other	Oth
+Q56030	Probable lipoprotein EnvE	Lipid and cell wall metabolism	Lpb
+Q56032	Probable lipoprotein EnvF	Lipid and cell wall metabolism	Lpb
+Q56072	Probable amino-acid metabolite efflux pump	Transport	Tra
+Q56106	Lysine-N-methylase (EC 2.1.1.-) (Lysine N-methyltransferase)	Translation and protein homeostasis	Rib
+Q56108	Glutaredoxin-like protein NrdH	Translation and protein homeostasis	Rib
+Q56143	Regulatory protein SoxS	Other	Oth
+Q7CP67	UPF0391 membrane protein YtjA	Other	Oth
+Q7CP73	Multidrug resistance protein MdtM	Transport	Tra
+Q7CP84	Metalloprotease PmbA	Translation and protein homeostasis	Rib
+Q7CP88	Translocation and assembly module subunit TamA (AutoTransporter assembly factor TamA)	Lipid and cell wall metabolism	Lpb
+Q7CP89	Polyamine export protein	Transport	Tra
+Q7CP91	Peptidyl-prolyl cis-trans isomerase (EC 5.2.1.8)	Translation and protein homeostasis	Rib
+Q7CP93	HTH-type transcriptional regulator UlaR	Other	Oth
+Q7CP96	Protein HflC	Translation and protein homeostasis	Rib
+Q7CP98	Guanidinium exporter	Transport	Tra
+Q7CPA2	Divalent-cation tolerance protein CutA	Other	Oth
+Q7CPB8	HTH-type transcriptional repressor FabR	Other	Oth
+Q7CPB9	Morphology and auto-aggregation control protein	Other	Oth
+Q7CPC1	HTH-type transcriptional repressor CytR	Other	Oth
+Q7CPC7	Probable acyltransferase FabY	Lipid and cell wall metabolism	Lpb
+Q7CPD8	Macrodomain Ori protein	Other	Oth
+Q7CPE7	Phosphate-specific Transport system accessory protein PhoU	Other	Oth
+Q7CPE9	Cytochrome c peroxidase (EC 1.11.1.5)	Electron Transport chain	Etc
+Q7CPF1	Small heat shock protein IbpA (16 kDa heat shock protein A)	Translation and protein homeostasis	Rib
+Q7CPG0	Purine ribonucleoside efflux pump NepI	Transport	Tra
+Q7CPH1	GPH family Transport protein	Transport	Tra
+Q7CPH3	Probable endoribonuclease YicC (EC 3.1.26.-)	Translation and protein homeostasis	Rib
+Q7CPH7	Glutaredoxin	Translation and protein homeostasis	Rib
+Q7CPI0	Mannitol operon repressor (Mannitol repressor protein)	Other	Oth
+Q7CPI5	Outer membrane lipoprotein	Lipid and cell wall metabolism	Lpb
+Q7CPI7	Cellulose biosynthesis protein BcsG	Lipid and cell wall metabolism	Lpb
+Q7CPI8	Cellulose biosynthesis protein BcsF	Lipid and cell wall metabolism	Lpb
+Q7CPJ2	Phosphate Transporter	Transport	Tra
+Q7CPJ4	Probable queuosine precursor Transporter (Q precursor Transporter)	Transport	Tra
+Q7CPJ7	RNA polymerase sigma factor RpoH (RNA polymerase sigma-32 factor)	Other	Oth
+Q7CPK2	Quercetin 2,3-dioxygenase (EC 1.13.11.24) (Pirin-like protein YhhW)	Carbon metabolism	Cbn
+Q7CPK3	HTH-type transcriptional regulator GntR (Gluconate utilization system GNT-I transcriptional repressor)	Other	Oth
+Q7CPK5	Probable [Fe-S]-dependent transcriptional repressor	Other	Oth
+Q7CPK6	Fe(2+) Transport protein A (Ferrous iron Transport protein A)	Transport	Tra
+Q7CPL9	Methyltransferase (EC 2.1.1.-)	Translation and protein homeostasis	Rib
+Q7CPM3	Rod shape-determining protein MreD	Lipid and cell wall metabolism	Lpb
+Q7CPM4	Ribonuclease G	Translation and protein homeostasis	Rib
+Q7CPM8	p-hydroxybenzoic acid efflux pump subunit AaeA (pHBA efflux pump protein A)	Transport	Tra
+Q7CPN3	Serine endoprotease DegS (EC 3.4.21.107) (Site-1 protease DegS) (Site-1-type intramembrane protease)	Translation and protein homeostasis	Rib
+Q7CPN4	Stringent starvation protein B	Other	Oth
+Q7CPP0	Lipopolysaccharide export system protein LptC	Lipid and cell wall metabolism	Lpb
+Q7CPP8	RNA-binding protein YhbY	Translation and protein homeostasis	Rib
+Q7CPQ1	Lipoprotein NlpI	Lipid and cell wall metabolism	Lpb
+Q7CPS6	Biopolymer Transport protein ExbD	Transport	Tra
+Q7CPS9	4Fe-4S ferredoxin-type domain-containing protein	Electron Transport chain	Etc
+Q7CPT0	Hydrogenase maturation factor HybG	Electron Transport chain	Etc
+Q7CPT9	MFS family galactose:proton symporter	Transport	Tra
+Q7CPU3	Zn-dependent proteases with possible chaperone function	Translation and protein homeostasis	Rib
+Q7CPU7	Small-conductance mechanosensitive channel	Transport	Tra
+Q7CPU9	Cell division protein ZapA (Z ring-associated protein ZapA)	Lipid and cell wall metabolism	Lpb
+Q7CPV1	FAD assembly factor SdhE	Electron Transport chain	Etc
+Q7CPV2	Antitoxin VapB	Translation and protein homeostasis	Rib
+Q7CPV3	Transcriptional repressor RcnR	Other	Oth
+Q7CPV9	Glycine cleavage system transcriptional activator (Gcv operon activator)	Carbon metabolism	Cbn
+Q7CPW2	L-fucose operon activator	Other	Oth
+Q7CPW8	3-oxo-tetronate 4-phosphate decarboxylase (EC 4.1.1.104)	Carbon metabolism	Cbn
+Q7CPX9	Hydrogenase maturation factor HypC	Electron Transport chain	Etc
+Q7CPY1	Formate hydrogenlyase subunit 2 (Hydrogenase-3 component B)	Electron Transport chain	Etc
+Q7CPY6	Membrane-bound lytic murein transglycosylase B (EC 3.2.1.-)	Lipid and cell wall metabolism	Lpb
+Q7CPZ3	Outer membrane protein assembly factor BamE	Lipid and cell wall metabolism	Lpb
+Q7CPZ4	Protein GrpE (HSP-70 cofactor)	Translation and protein homeostasis	Rib
+Q7CQ04	tRNA/rRNA methyltransferase (EC 2.1.1.-)	Translation and protein homeostasis	Rib
+Q7CQ05	Autonomous glycyl radical cofactor	Carbon metabolism	Cbn
+Q7CQ10	HTH-type transcriptional regulator IscR	Other	Oth
+Q7CQ11	Iron-sulfur cluster assembly scaffold protein IscU	Electron Transport chain	Etc
+Q7CQ12	Iron-binding protein IscA (Iron-sulfur cluster assembly protein)	Electron Transport chain	Etc
+Q7CQ14	Protein IscX	Electron Transport chain	Etc
+Q7CQ15	Ancillary SecYEG translocon subunit	Translation and protein homeostasis	Rib
+Q7CQ21	DnaA regulatory inactivator Hda	Other	Oth
+Q7CQ24	UPF0370 protein YpfN	Other	Oth
+Q7CQ43	Phosphoesterase (EC 3.1.4.-)	Other	Oth
+Q7CQ60	Chaperone NapD (NapA signal peptide-binding chaperone NapD)	Translation and protein homeostasis	Rib
+Q7CQ98	tRNA hydroxylation protein P	Translation and protein homeostasis	Rib
+Q7CQB1	APC family amino acid Transport protein	Transport	Tra
+Q7CQC0	Aromatic amino acid permease	Transport	Tra
+Q7CQC2	Bacterial non-heme ferritin-like protein	Other	Oth
+Q7CQD5	PhoP/PhoQ regulator MgrB	Other	Oth
+Q7CQD9	ATP-dependent DNA helicase YoaA (EC 5.6.2.3)	Other	Oth
+Q7CQE8	Ribosome-binding ATPase YchF	Translation and protein homeostasis	Rib
+Q7CQF1	Regulator of RpoS	Other	Oth
+Q7CQG3	Peptidase (EC 3.4.21.-)	Translation and protein homeostasis	Rib
+Q7CQG6	Lipopolysaccharide assembly protein B	Lipid and cell wall metabolism	Lpb
+Q7CQH2	Membrane Transporter of cations	Transport	Tra
+Q7CQI8	Acid stress chaperone HdeB	Translation and protein homeostasis	Rib
+Q7CQJ0	Stationary-phase-induced ribosome-associated protein (SRA) (30S ribosomal protein S22)	Translation and protein homeostasis	Rib
+Q7CQJ1	Peroxiredoxin OsmC (Osmotically-inducible protein C)	Translation and protein homeostasis	Rib
+Q7CQJ9	Serine protease (EC 3.4.21.-)	Translation and protein homeostasis	Rib
+Q7CQK4	Putative arginine/ornithine antiporter	Transport	Tra
+Q7CQK5	Transcription modulator YdgT (H-NS/StpA-binding protein 2) (OriC-binding nucleoid-associated protein)	Other	Oth
+Q7CQK9	Glutaredoxin	Translation and protein homeostasis	Rib
+Q7CQL0	Cyclopropane-fatty-acyl-phospholipid synthase (EC 2.1.1.79)	Lipid and cell wall metabolism	Lpb
+Q7CQP4	Putative NAD(P)H nitroreductase (EC 1.-.-.-)	Carbon metabolism	Cbn
+Q7CQP8	Leucine efflux protein	Transport	Tra
+Q7CQR0	Purine nucleoside phosphoramidase (Histidine triad nucleotide binding protein HinT)	Carbon metabolism	Cbn
+Q7CQR9	Probable phosphatase YcdX (EC 3.1.3.-)	Other	Oth
+Q7CQT0	Heat shock protein HspQ	Translation and protein homeostasis	Rib
+Q7CQT6	tRNA 5-carboxymethoxyuridine methyltransferase (EC 2.1.1.-) (cmo5U methyltransferase)	Translation and protein homeostasis	Rib
+Q7CQU0	Formate Transporter FocA	Transport	Tra
+Q7CQU4	Replication-associated recombination protein A	Other	Oth
+Q7CQU7	Cold shock-like protein CspD	Translation and protein homeostasis	Rib
+Q7CQV7	Periplasmic protein	Other	Oth
+Q7CQV8	Outer membrane protein X	Lipid and cell wall metabolism	Lpb
+Q7CQW8	Multidrug efflux pump accessory protein AcrZ (AcrAB-TolC multidrug efflux pump accessory protein AcrZ) (Acridine resistance protein Z)	Transport	Tra
+Q7CQW9	Peptidoglycan-associated lipoprotein (PAL)	Lipid and cell wall metabolism	Lpb
+Q7CQX0	Tol-Pal system protein TolR	Lipid and cell wall metabolism	Lpb
+Q7CQX1	Tol-Pal system protein TolQ	Lipid and cell wall metabolism	Lpb
+Q7CQY0	Dipeptide permease D	Transport	Tra
+Q7CQY1	Negative modulator of initiation of replication	Other	Oth
+Q7CQZ2	Ribosomal silencing factor RsfS	Translation and protein homeostasis	Rib
+Q7CQZ7	Regulator of nucleoside diphosphate kinase	Other	Oth
+Q7CR05	Bactoprenol-linked glucose translocase	Lipid and cell wall metabolism	Lpb
+Q7CR18	DNA base-flipping protein (Alkyltransferase-like protein ATL)	Other	Oth
+Q7CR19	Ammonium Transporter	Transport	Tra
+Q7CR20	Nitrogen regulatory protein P-II 1	Other	Oth
+Q7CR24	Uncharacterized protein YbaV	Other	Oth
+Q7CR30	Putative transcriptional regulator of 2-aminoethylphosphonate degradation operons	Other	Oth
+Q7CR42	Alkyl hydroperoxide reductase protein C22 (Thioredoxin peroxidase)	Translation and protein homeostasis	Rib
+Q7CR46	Anti-adapter protein IraP	Other	Oth
+Q7CR54	Periplasmic protein	Other	Oth
+Q7CR60	Membrane-bound lytic murein transglycosylase D (EC 4.2.2.n1) (Murein hydrolase D) (Regulatory protein DniR)	Lipid and cell wall metabolism	Lpb
+Q7CR66	Iron-sulfur cluster insertion protein ErpA	Electron Transport chain	Etc
+Q7CR80	Cell division protein FtsA	Lipid and cell wall metabolism	Lpb
+Q7CR84	Cell division protein FtsL	Lipid and cell wall metabolism	Lpb
+Q7CR86	Co-chaperone protein DjlA	Translation and protein homeostasis	Rib
+Q7CR92	Peptidyl-prolyl cis-trans isomerase (EC 5.2.1.8)	Translation and protein homeostasis	Rib
+Q7CR95	Transcriptional activator protein NhaR (Na(+)/H(+) antiporter regulatory protein)	Other	Oth
+Q7CR96	5'-nucleotidase	Carbon metabolism	Cbn
+Q7CRA3	thr operon leader peptide (thr operon attenuator)	Translation and protein homeostasis	Rib
+Q7DAN4	Fertility inhibition protein (Conjugal transfer repressor)	Other	Oth
+Q8XFG8	Peptidyl-prolyl cis-trans isomerase (PPIase) (EC 5.2.1.8)	Translation and protein homeostasis	Rib
+Q8XFS5	Lipopolysaccharide assembly protein A	Lipid and cell wall metabolism	Lpb
+Q8XGT7	Cytochrome c-type biogenesis protein	Electron Transport chain	Etc
+Q8ZJV0	Protein Smp	Other	Oth
+Q8ZJX4	Probable succinate Transporter subunit YjjB	Transport	Tra
+Q8ZJX5	Replicative helicase loader DnaC (DNA replication protein DnaC)	Other	Oth
+Q8ZJY8	Endonuclease R (EC 3.1.21.3)	Other	Oth
+Q8ZJY9	Endoribonuclease SymE (EC 3.1.-.-)	Translation and protein homeostasis	Rib
+Q8ZK08	Probable transcriptional regulatory protein YeeN	Other	Oth
+Q8ZK12	site-specific DNA-methyltransferase (adenine-specific) (EC 2.1.1.72)	Other	Oth
+Q8ZK23	5-keto-D-gluconate 5-reductase (EC 1.1.1.69)	Carbon metabolism	Cbn
+Q8ZK37	Arginine repressor	Other	Oth
+Q8ZK71	Peptide methionine sulfoxide reductase MsrA (Protein-methionine-S-oxide reductase) (EC 1.8.4.11) (Peptide-methionine (S)-S-oxide reductase) (Peptide Met(O) reductase)	Translation and protein homeostasis	Rib
+Q8ZK76	Iron-sulfur cluster repair protein YtfE	Electron Transport chain	Etc
+Q8ZKA2	23S rRNA (guanosine-2'-O-)-methyltransferase RlmB (EC 2.1.1.185) (23S rRNA (guanosine2251 2'-O)-methyltransferase) (23S rRNA Gm2251 2'-O-methyltransferase)	Translation and protein homeostasis	Rib
+Q8ZKA4	Protein HflK	Translation and protein homeostasis	Rib
+Q8ZKA6	tRNA threonylcarbamoyladenosine biosynthesis protein TsaE (t(6)A37 threonylcarbamoyladenosine biosynthesis protein TsaE)	Translation and protein homeostasis	Rib
+Q8ZKB2	Periplasmic binding protein	Transport	Tra
+Q8ZKB5	Outer membrane lipoprotein Blc	Lipid and cell wall metabolism	Lpb
+Q8ZKC2	C4-dicarboxylate Transporter	Transport	Tra
+Q8ZKE9	Proton/glutamate-aspartate symporter	Transport	Tra
+Q8ZKF1	Formate-dependent nitrite reductase complex subunit	Electron Transport chain	Etc
+Q8ZKF3	Thiosulfate reductase electron transfer subunit PhsB (Thiosulfate reductase subunit beta)	Electron Transport chain	Etc
+Q8ZKF8	Cation/acetate symporter ActP (Acetate permease) (Acetate Transporter ActP)	Transport	Tra
+Q8ZKG1	CPA1 family Na:H Transport protein	Transport	Tra
+Q8ZKG4	Anti-FlhC(2)FlhD(4) factor YdiV (EC 3.1.4.52)	Flagellum and motility including its regulation	Fla
+Q8ZKJ9	Bactoprenol-linked glucose translocase	Lipid and cell wall metabolism	Lpb
+Q8ZKL0	Pantothenate precursors Transporter PanS	Transport	Tra
+Q8ZKM2	protein-N(pi)-phosphohistidine--D-fructose phosphotransferase (EC 2.7.1.202)	Carbon metabolism	Cbn
+Q8ZKM5	protein-N(pi)-phosphohistidine--D-fructose phosphotransferase (EC 2.7.1.202)	Carbon metabolism	Cbn
+Q8ZKM7	General PTS family enzyme I (EC 2.7.3.9)	Carbon metabolism	Cbn
+Q8ZKM8	Fructose-6-phosphate aldolase (EC 4.1.2.-)	Carbon metabolism	Cbn
+Q8ZKN1	5'-nucleotidase	Carbon metabolism	Cbn
+Q8ZKN3	Small-conductance mechanosensitive channel	Transport	Tra
+Q8ZKP1	Cell division protein ZapB	Lipid and cell wall metabolism	Lpb
+Q8ZKP2	Glycerol uptake facilitator protein (Aquaglyceroporin)	Transport	Tra
+Q8ZKR0	HTH-type transcriptional repressor STM4068	Other	Oth
+Q8ZKR5	Periplasmic protein CpxP	Other	Oth
+Q8ZKS7	Sulfur carrier protein FdhD	Electron Transport chain	Etc
+Q8ZKT0	Protein FdhE	Electron Transport chain	Etc
+Q8ZKT5	UPF0761 membrane protein YihY	Other	Oth
+Q8ZKV4	Protein for a late step of protoheme IX synthesis	Electron Transport chain	Etc
+Q8ZKW1	Low affinity potassium Transport system protein Kup (Kup system potassium uptake protein)	Transport	Tra
+Q8ZKW3	Regulatory protein ViaA (VWA interacting with AAA+ ATPase)	Other	Oth
+Q8ZKW6	tRNA uridine 5-carboxymethylaminomethyl modification enzyme MnmG (Glucose-inhibited division protein A)	Translation and protein homeostasis	Rib
+Q8ZKY0	HTH-type transcriptional regulator YidZ	Other	Oth
+Q8ZKY1	Multidrug resistance protein MdtL	Transport	Tra
+Q8ZKY2	RNA-directed DNA polymerase (EC 2.7.7.49)	Other	Oth
+Q8ZKY8	Sugar phosphatase YidA (EC 3.1.3.23)	Carbon metabolism	Cbn
+Q8ZL00	Cytochrome c-type biogenesis protein	Electron Transport chain	Etc
+Q8ZL03	Small heat shock protein IbpB (16 kDa heat shock protein B)	Translation and protein homeostasis	Rib
+Q8ZL04	Putative Transport protein YidE	Transport	Tra
+Q8ZL35	alpha-D-xyloside xylohydrolase (EC 3.2.1.177)	Carbon metabolism	Cbn
+Q8ZL37	Sodium/glutamate symporter	Transport	Tra
+Q8ZL40	tRNA (guanosine(18)-2'-O)-methyltransferase (EC 2.1.1.34) (tRNA [Gm18] methyltransferase)	Translation and protein homeostasis	Rib
+Q8ZL55	Membrane protein	Other	Oth
+Q8ZL63	L-lactate permease	Transport	Tra
+Q8ZL70	Selenocysteine-specific elongation factor (SelB translation factor)	Translation and protein homeostasis	Rib
+Q8ZL93	O-acetyltransferase WecH (EC 2.3.1.-)	Lipid and cell wall metabolism	Lpb
+Q8ZLB6	Cellulose biosynthesis protein BcsQ	Lipid and cell wall metabolism	Lpb
+Q8ZLB8	Cellulose synthase operon protein C	Lipid and cell wall metabolism	Lpb
+Q8ZLB9	Anti-FlhC(2)FlhD(4) factor YdiV	Flagellum and motility including its regulation	Fla
+Q8ZLC1	Anti-FlhC(2)FlhD(4) factor YdiV	Flagellum and motility including its regulation	Fla
+Q8ZLC6	Lysozyme (EC 3.2.1.17)	Lipid and cell wall metabolism	Lpb
+Q8ZLD6	Dipeptide and tripeptide permease B	Transport	Tra
+Q8ZLD7	Universal stress protein A	Other	Oth
+Q8ZLE4	Uncharacterized MFS-type Transporter YhhS	Transport	Tra
+Q8ZLE8	Ribosomal RNA small subunit methyltransferase D (EC 2.1.1.171)	Translation and protein homeostasis	Rib
+Q8ZLH5	Rhomboid protease GlpG (EC 3.4.21.105) (Intramembrane serine protease)	Translation and protein homeostasis	Rib
+Q8ZLI0	RNA 3'-terminal phosphate cyclase (RNA cyclase) (RNA-3'-phosphate cyclase) (EC 6.5.1.4)	Translation and protein homeostasis	Rib
+Q8ZLI1	Antitoxin DinJ	Translation and protein homeostasis	Rib
+Q8ZLI2	mRNA interferase toxin YafQ (Endoribonuclease YafQ) (Toxin YafQ)	Translation and protein homeostasis	Rib
+Q8ZLI7	Fe/S biogenesis protein NfuA	Electron Transport chain	Etc
+Q8ZLJ2	Transcription elongation factor GreB (Transcript cleavage factor GreB)	Translation and protein homeostasis	Rib
+Q8ZLJ4	33 kDa chaperonin (Heat shock protein 33 homolog) (HSP33)	Translation and protein homeostasis	Rib
+Q8ZLJ5	Heat shock protein 15	Translation and protein homeostasis	Rib
+Q8ZLK3	Cell division protein DamX	Lipid and cell wall metabolism	Lpb
+Q8ZLK7	Protein TsgA	Translation and protein homeostasis	Rib
+Q8ZLL2	Probable ATP-binding protein YheS	Other	Oth
+Q8ZLL3	Glutathione-regulated potassium-efflux system protein KefB (K(+)/H(+) antiporter)	Transport	Tra
+Q8ZLL4	Peptidyl-prolyl cis-trans isomerase (EC 5.2.1.8)	Translation and protein homeostasis	Rib
+Q8ZLL6	Peptidyl-prolyl cis-trans isomerase (EC 5.2.1.8)	Translation and protein homeostasis	Rib
+Q8ZLM3	HTH-type transcriptional regulator ZntR (Zn(II)-responsive regulator of zntA)	Other	Oth
+Q8ZLM7	Peptide deformylase (PDF) (EC 3.5.1.88) (Polypeptide deformylase)	Translation and protein homeostasis	Rib
+Q8ZLN4	Efflux pump membrane Transporter	Transport	Tra
+Q8ZLN5	Transmembrane protein affecting septum formation and cell membrane permeability	Lipid and cell wall metabolism	Lpb
+Q8ZLN9	Sodium/pantothenate symporter (Pantothenate permease)	Transport	Tra
+Q8ZLP2	Anti-FlhC(2)FlhD(4) factor YdiV	Flagellum and motility including its regulation	Fla
+Q8ZLP3	Cell shape-determining protein MreC (Cell shape protein MreC)	Lipid and cell wall metabolism	Lpb
+Q8ZLP5	p-hydroxybenzoic acid efflux pump subunit AaeB (pHBA efflux pump protein B)	Transport	Tra
+Q8ZLQ0	2-(5''-triphosphoribosyl)-3'-dephosphocoenzyme-A synthase (EC 2.4.2.52)	Carbon metabolism	Cbn
+Q8ZLQ1	peptidase Do (EC 3.4.21.107) (Protease Do)	Translation and protein homeostasis	Rib
+Q8ZLQ2	Z-ring associated protein G (Cell division protein ZapG)	Lipid and cell wall metabolism	Lpb
+Q8ZLQ3	Cell division protein ZapE (Z ring-associated protein ZapE)	Lipid and cell wall metabolism	Lpb
+Q8ZLR1	Cytosine permease	Transport	Tra
+Q8ZLR6	Glyoxalase	Carbon metabolism	Cbn
+Q8ZLR8	RNase adapter protein RapZ	Translation and protein homeostasis	Rib
+Q8ZLR9	Lipopolysaccharide export system protein LptA	Lipid and cell wall metabolism	Lpb
+Q8ZLT1	Ribosome-binding factor A	Translation and protein homeostasis	Rib
+Q8ZLT5	Aromatic amino acid permease	Transport	Tra
+Q8ZLT7	Inner membrane protein	Other	Oth
+Q8ZLU2	DnaA initiator-associating protein DiaA	Other	Oth
+Q8ZLU4	Penicillin-binding protein activator LpoA (PBP activator LpoA)	Lipid and cell wall metabolism	Lpb
+Q8ZLU5	16S rRNA 2'-O-ribose C1402 methyltransferase RsmI	Translation and protein homeostasis	Rib
+Q8ZLW1	Threonine/serine Transporter TdcC (H(+)/threonine-serine symporter)	Transport	Tra
+Q8ZLW4	HAAAP family Transport protein	Transport	Tra
+Q8ZLX1	Serine/threonine Transporter SstT (Na(+)/serine-threonine symporter)	Transport	Tra
+Q8ZLX2	Manganese exporter Alx	Transport	Tra
+Q8ZLX5	23S rRNA m2G1835 methyltransferase RlmG	Translation and protein homeostasis	Rib
+Q8ZLX6	2,4-dieonyl-coa reductase (EC 1.3.1.34)	Carbon metabolism	Cbn
+Q8ZLZ0	Thiol:disulfide interchange protein DsbL	Translation and protein homeostasis	Rib
+Q8ZLZ8	NADPH:quinone oxidoreductase MdaB (EC 1.6.5.10)	Electron Transport chain	Etc
+Q8ZM03	UPF0313 protein YgiQ	Other	Oth
+Q8ZM09	Uncharacterized oxidoreductase YghA	Electron Transport chain	Etc
+Q8ZM17	Processing element for hydrogenase-2	Electron Transport chain	Etc
+Q8ZM27	Anti-adapter protein IraD	Other	Oth
+Q8ZM36	Virulence protein STM3117	Other	Oth
+Q8ZM38	Nucleoside permease NupG	Transport	Tra
+Q8ZM44	Heme chaperone HemW	Electron Transport chain	Etc
+Q8ZM47	Pyridoxal phosphate homeostasis protein	Amino acid biosynthesis	Aab
+Q8ZM50	Putative pre-16S rRNA nuclease (EC 3.1.-.-)	Translation and protein homeostasis	Rib
+Q8ZM52	Ribosomal RNA small subunit methyltransferase E (EC 2.1.1.193)	Translation and protein homeostasis	Rib
+Q8ZM68	Arginine exporter protein ArgO	Transport	Tra
+Q8ZM72	Xaa-Pro aminopeptidase (EC 3.4.11.9)	Translation and protein homeostasis	Rib
+Q8ZM80	tRNA-modifying protein YgfZ	Translation and protein homeostasis	Rib
+Q8ZM94	Nickel/cobalt efflux system RcnA	Transport	Tra
+Q8ZMA0	L-arabinose: proton symport protein	Transport	Tra
+Q8ZMA5	Lysophospholipid Transporter LplT	Transport	Tra
+Q8ZMC0	Membrane-bound lytic murein transglycosylase A (EC 4.2.2.n1)	Lipid and cell wall metabolism	Lpb
+Q8ZMC1	tRNA threonylcarbamoyladenosine dehydratase	Translation and protein homeostasis	Rib
+Q8ZMC3	Cysteine desulfurase (EC 2.8.1.7)	Amino acid biosynthesis	Aab
+Q8ZMD1	HAAAP family serine Transport protein	Transport	Tra
+Q8ZMD8	D-glucarate dehydratase (EC 4.2.1.40)	Carbon metabolism	Cbn
+Q8ZME3	Antitoxin ParD	Translation and protein homeostasis	Rib
+Q8ZME6	Helicase	Other	Oth
+Q8ZMG4	L-threonate dehydrogenase (EC 1.1.1.411)	Carbon metabolism	Cbn
+Q8ZMI7	Hydrogenase maturation factor HypB	Electron Transport chain	Etc
+Q8ZMJ0	Hydrogenase 3, large subunit	Electron Transport chain	Etc
+Q8ZMJ1	Hydrogenase activity	Electron Transport chain	Etc
+Q8ZMJ3	Hydrogenase 3 maturation protease (EC 3.4.23.51)	Electron Transport chain	Etc
+Q8ZMJ6	Nitric oxide reductase FlRd-NAD(+) reductase (EC 1.18.1.-)	Electron Transport chain	Etc
+Q8ZMK5	Regulatory protein RecX	Other	Oth
+Q8ZMK8	MFS superfamily multidrug Transport protein	Transport	Tra
+Q8ZMK9	Multidrug resistance secretion protein	Transport	Tra
+Q8ZML6	L-alanine exporter AlaE	Transport	Tra
+Q8ZMS3	Site-specific DNA-methyltransferase (EC 2.1.1.72)	Other	Oth
+Q8ZMS4	Probable replication endonuclease from prophage-like region (EC 3.1.-.-)	Other	Oth
+Q8ZMT7	Lysozyme (EC 3.2.1.17)	Lipid and cell wall metabolism	Lpb
+Q8ZMW1	DNA repair protein RecN (Recombination protein N)	Other	Oth
+Q8ZMW8	Outer membrane protein assembly factor BamD	Lipid and cell wall metabolism	Lpb
+Q8ZMX1	Alpha-ketoglutarate permease	Transport	Tra
+Q8ZMX4	Thioredoxin	Translation and protein homeostasis	Rib
+Q8ZMX5	Cysteine/O-acetylserine efflux protein	Transport	Tra
+Q8ZMX8	tRNA1(Val) (adenine(37)-N6)-methyltransferase (EC 2.1.1.223)	Translation and protein homeostasis	Rib
+Q8ZMY0	Anti-sigma-E factor RseA	Other	Oth
+Q8ZMY9	Lysozyme (EC 3.2.1.17)	Lipid and cell wall metabolism	Lpb
+Q8ZN33	POT family, di-/tripeptide Transport protein	Transport	Tra
+Q8ZN34	Cadaverine/lysine antiporter	Transport	Tra
+Q8ZN35	Transcriptional activator of cad operon	Other	Oth
+Q8ZN38	Nickel/cobalt efflux system	Transport	Tra
+Q8ZN41	Co-chaperone protein HscB (Hsc20)	Translation and protein homeostasis	Rib
+Q8ZN42	Chaperone protein HscA (Hsc66)	Translation and protein homeostasis	Rib
+Q8ZN48	Anaerobic dimethylsulfoxide reductase	Electron Transport chain	Etc
+Q8ZN67	Anti-FlhC(2)FlhD(4) factor YdiV	Flagellum and motility including its regulation	Fla
+Q8ZN68	Arsenate reductase (EC 1.20.4.1)	Electron Transport chain	Etc
+Q8ZN72	Outer membrane protein assembly factor BamC	Lipid and cell wall metabolism	Lpb
+Q8ZN92	Uncharacterized HTH-type transcriptional regulator YfeR	Other	Oth
+Q8ZN99	Anti-FlhC(2)FlhD(4) factor YdiV	Flagellum and motility including its regulation	Fla
+Q8ZNA0	Nucleoside permease	Transport	Tra
+Q8ZNA5	Long-chain fatty acid Transport protein (Outer membrane FadL protein)	Transport	Tra
+Q8ZNB8	Uncharacterized MFS-type Transporter YfcJ	Transport	Tra
+Q8ZNC1	Cell division protein DedD	Lipid and cell wall metabolism	Lpb
+Q8ZND7	UPF0208 membrane protein YfbV	Other	Oth
+Q8ZND9	Uncharacterized Transporter YfbS	Transport	Tra
+Q8ZNE1	Probable HTH-type transcriptional regulator LrhA	Other	Oth
+Q8ZNG6	Glycerol-3-phosphate Transporter	Transport	Tra
+Q8ZNH4	Ecotin	Other	Oth
+Q8ZNH5	Ferredoxin-type protein NapF	Electron Transport chain	Etc
+Q8ZNH9	Cytochrome c-type protein	Electron Transport chain	Etc
+Q8ZNI0	Cytochrome c-type biogenesis protein	Electron Transport chain	Etc
+Q8ZNJ7	Bcr/CflA family efflux Transporter	Transport	Tra
+Q8ZNK1	Anti-FlhC(2)FlhD(4) factor YdiV	Flagellum and motility including its regulation	Fla
+Q8ZNK7	UPF0324 inner membrane protein YeiH	Other	Oth
+Q8ZNL0	Outer membrane porin	Transport	Tra
+Q8ZNL2	Phosphoserine phosphatase (EC 3.1.3.3)	Amino acid biosynthesis	Aab
+Q8ZNQ4	Heat shock protein (Hsp70/DnaK)	Translation and protein homeostasis	Rib
+Q8ZNQ8	UPF0053 protein YegH	Other	Oth
+Q8ZNR7	Multidrug-efflux Transporter	Transport	Tra
+Q8ZNS7	Porin	Transport	Tra
+Q8ZNS8	Cell division protein DrpB (Division ring protein B)	Lipid and cell wall metabolism	Lpb
+Q8ZNT1	Very short patch repair endonuclease (EC 3.1.-.-)	Other	Oth
+Q8ZNV0	PF03932 family protein CutC	Other	Oth
+Q8ZNV9	Murein DD-endopeptidase MepM	Lipid and cell wall metabolism	Lpb
+Q8ZNW7	Protein YebF	Other	Oth
+Q8ZNX1	Copper resistance protein C	Transport	Tra
+Q8ZNX2	Copper resistance protein D	Transport	Tra
+Q8ZP00	Manganese exporter MntP	Transport	Tra
+Q8ZP01	UPF0266 membrane protein YobD	Other	Oth
+Q8ZP05	UPF0053 inner membrane protein YoaE	Other	Oth
+Q8ZP06	Anti-FlhC(2)FlhD(4) factor YdiV (EC 3.1.4.52)	Flagellum and motility including its regulation	Fla
+Q8ZP09	Ribonuclease D (RNase D) (EC 3.1.13.5)	Translation and protein homeostasis	Rib
+Q8ZP10	Septum site-determining protein MinD (Cell division inhibitor MinD)	Lipid and cell wall metabolism	Lpb
+Q8ZP14	Na(+)/H(+) antiporter NhaB (Sodium/proton antiporter NhaB)	Transport	Tra
+Q8ZP18	Resistance protein MccF	Other	Oth
+Q8ZP31	C4-dicarboxylic acid Transporter DauA	Transport	Tra
+Q8ZP44	Phosphoesterase	Other	Oth
+Q8ZP49	UPF0259 membrane protein YciC	Other	Oth
+Q8ZP50	Outer membrane protein W	Transport	Tra
+Q8ZP54	Exoribonuclease 2 (EC 3.1.13.1)	Translation and protein homeostasis	Rib
+Q8ZP64	UPF0283 membrane protein YcjF	Other	Oth
+Q8ZP71	Aldo/keto reductase family	Carbon metabolism	Cbn
+Q8ZP84	Universal stress protein E	Other	Oth
+Q8ZP86	Methyl-accepting chemotaxis protein	Flagellum and motility including its regulation	Fla
+Q8ZP87	ATP-dependent RNA helicase DbpA (EC 3.6.4.13)	Translation and protein homeostasis	Rib
+Q8ZP95	RNA helicase (EC 3.6.4.13)	Translation and protein homeostasis	Rib
+Q8ZP97	Cytochrome b(561) (EC 1.10.2.-)	Electron Transport chain	Etc
+Q8ZPA0	ABC-type Transport system probable membrane spanning protein	Transport	Tra
+Q8ZPA1	ABC-type polar amino acid Transport system	Transport	Tra
+Q8ZPA2	Amino acid ABC Transporter permease component	Transport	Tra
+Q8ZPA6	Secreted effector protein SteB (Salmonella translocated effector B)	Flagellum and motility including its regulation	Fla
+Q8ZPB3	Glucans biosynthesis protein D	Lipid and cell wall metabolism	Lpb
+Q8ZPB5	Oxidase	Electron Transport chain	Etc
+Q8ZPB6	Aminoglycoside N(6')-acetyltransferase type 1 (EC 2.3.1.82)	Other	Oth
+Q8ZPB7	Putative epimerase LsrE	Carbon metabolism	Cbn
+Q8ZPC2	K+-tellurite ethidium and proflavin Transport protein	Transport	Tra
+Q8ZPD7	Secreted effector protein SteA (Salmonella translocated effector A)	Flagellum and motility including its regulation	Fla
+Q8ZPH6	Hydrogenase maturation factor HypA	Electron Transport chain	Etc
+Q8ZPH7	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+Q8ZPI0	Voltage-dependent anion channel-forming protein YneE	Transport	Tra
+Q8ZPJ2	UPF0060 membrane protein YnfA	Other	Oth
+Q8ZPJ4	UPF0257 lipoprotein YnfC	Lipid and cell wall metabolism	Lpb
+Q8ZPK0	Tat proofreading chaperone DmsD (DMSO reductase maturation protein)	Translation and protein homeostasis	Rib
+Q8ZPK9	Acid shock protein	Other	Oth
+Q8ZPL4	Outer membrane protein N	Lipid and cell wall metabolism	Lpb
+Q8ZPM3	Ion-translocating oxidoreductase complex subunit D (EC 7.-.-.-)	Electron Transport chain	Etc
+Q8ZPN4	Uncharacterized Transporter YdhK	Transport	Tra
+Q8ZPP0	Bcr/CflA family efflux Transporter	Transport	Tra
+Q8ZPQ0	LysM domain protein	Lipid and cell wall metabolism	Lpb
+Q8ZPQ1	Cysteine desulfuration protein SufE	Electron Transport chain	Etc
+Q8ZPR6	Probable acyl-CoA dehydrogenase YdiO	Carbon metabolism	Cbn
+Q8ZPT1	Endonuclease (EC 3.1.30.-)	Other	Oth
+Q8ZPU6	Excinuclease cho (EC 3.1.25.-)	Other	Oth
+Q8ZPU7	Periplasmic chaperone Spy (Spheroplast protein Y)	Translation and protein homeostasis	Rib
+Q8ZPV6	Protease 4 (Endopeptidase IV) (Signal peptide peptidase)	Translation and protein homeostasis	Rib
+Q8ZPW2	Serine/threonine kinase YeaG (EC 2.7.11.1)	Other	Oth
+Q8ZPW4	Diguanylate cyclase (EC 2.7.7.65)	Other	Oth
+Q8ZPZ1	Ribosomal large subunit pseudouridine synthase E (EC 5.4.99.20)	Translation and protein homeostasis	Rib
+Q8ZPZ5	High frequency lysogenization protein HflD homolog	Translation and protein homeostasis	Rib
+Q8ZQ10	Outer membrane receptor for Fe(III)-coprogen	Transport	Tra
+Q8ZQ13	Endolytic murein transglycosylase (EC 4.2.2.29)	Lipid and cell wall metabolism	Lpb
+Q8ZQ18	[Ribosomal protein uS5]-alanine N-acetyltransferase (EC 2.3.1.267)	Translation and protein homeostasis	Rib
+Q8ZQ19	Multidrug resistance protein MdtH	Transport	Tra
+Q8ZQ25	Multidrug resistance protein MdtG	Transport	Tra
+Q8ZQ26	Glucans biosynthesis glucosyltransferase H (EC 2.4.1.-)	Lipid and cell wall metabolism	Lpb
+Q8ZQ27	Glucans biosynthesis protein C (EC 2.1.-.-)	Lipid and cell wall metabolism	Lpb
+Q8ZQ46	Putative tartrate Transporter	Transport	Tra
+Q8ZQ53	Copper resistance transcriptional regulatory protein	Other	Oth
+Q8ZQ54	Sensor protein (EC 2.7.13.3)	Other	Oth
+Q8ZQ55	Dipeptidase (EC 3.4.-.-)	Translation and protein homeostasis	Rib
+Q8ZQ64	23S rRNA m5C1962 methyltransferase RlmI	Translation and protein homeostasis	Rib
+Q8ZQ65	DNA 3'-5' helicase (EC 5.6.2.4)	Other	Oth
+Q8ZQ68	Macrodomain Ter protein	Other	Oth
+Q8ZQ69	Endopeptidase La (EC 3.4.21.53)	Translation and protein homeostasis	Rib
+Q8ZQ70	Ribosome modulation factor (RMF)	Translation and protein homeostasis	Rib
+Q8ZQ75	Cell division protein ZapC	Lipid and cell wall metabolism	Lpb
+Q8ZQ78	Abasic site processing protein (EC 3.4.-.-)	Other	Oth
+Q8ZQ99	Lysozyme (EC 3.2.1.17)	Lipid and cell wall metabolism	Lpb
+Q8ZQB4	Murein endopeptidase K	Lipid and cell wall metabolism	Lpb
+Q8ZQB5	Periplasmic protein	Other	Oth
+Q8ZQB6	Chromosome partition protein MukE	Other	Oth
+Q8ZQB8	Envelope biogenesis factor ElyC	Lipid and cell wall metabolism	Lpb
+Q8ZQC5	Zn-dependent protease with chaperone function (EC 3.4.24.-)	Translation and protein homeostasis	Rib
+Q8ZQD0	Pyruvate formate-lyase-activating enzyme (EC 1.97.1.4)	Carbon metabolism	Cbn
+Q8ZQD2	Uncharacterized MFS-type Transporter YcaD	Transport	Tra
+Q8ZQD4	Outer-membrane lipoprotein carrier protein	Lipid and cell wall metabolism	Lpb
+Q8ZQE3	ATP-dependent Clp protease ATP-binding subunit ClpA	Translation and protein homeostasis	Rib
+Q8ZQE5	Membrane protein	Other	Oth
+Q8ZQF3	N-acetylmuramoyl-L-alanine amidase (EC 3.5.1.28)	Lipid and cell wall metabolism	Lpb
+Q8ZQF7	Superoxide dismutase [Cu-Zn] (EC 1.15.1.1)	Other	Oth
+Q8ZQK4	Putative Transport protein YbjL	Transport	Tra
+Q8ZQK8	Multidrug Transporter MdfA	Transport	Tra
+Q8ZQL6	Electron transfer flavoprotein-ubiquinone oxidoreductase (ETF-QO) (EC 1.5.5.1)	Electron Transport chain	Etc
+Q8ZQL8	Electron transfer flavoprotein subunit alpha	Electron Transport chain	Etc
+Q8ZQL9	Electron transfer flavoprotein subunit beta	Electron Transport chain	Etc
+Q8ZQN4	Ribosomal RNA large subunit methyltransferase F (EC 2.1.1.181)	Translation and protein homeostasis	Rib
+Q8ZQP0	UPF0194 membrane protein YbhG	Other	Oth
+Q8ZQP1	Probable multidrug ABC Transporter ATP-binding protein YbhF	Transport	Tra
+Q8ZQP2	Transport permease protein	Transport	Tra
+Q8ZQR0	Histidine utilization repressor	Other	Oth
+Q8ZQS5	2-(5''-triphosphoribosyl)-3'-dephosphocoenzyme-A synthase (EC 2.4.2.52)	Carbon metabolism	Cbn
+Q8ZQT3	Zinc Transporter ZitB	Transport	Tra
+Q8ZQT4	Cell division coordinator CpoB	Lipid and cell wall metabolism	Lpb
+Q8ZQT5	Tol-Pal system protein TolB	Lipid and cell wall metabolism	Lpb
+Q8ZQW7	Putrescine Transporter PotE	Transport	Tra
+Q8ZQX1	Flavodoxin 1	Electron Transport chain	Etc
+Q8ZQX4	Uncharacterized lipoprotein ChiQ	Lipid and cell wall metabolism	Lpb
+Q8ZQZ4	2-keto-3-deoxygluconate permease 2 (KDG permease 2)	Transport	Tra
+Q8ZR16	RNase I (EC 3.1.27.6)	Translation and protein homeostasis	Rib
+Q8ZR22	Thiol:disulfide interchange protein	Translation and protein homeostasis	Rib
+Q8ZR35	Enterobactin exporter EntS	Transport	Tra
+Q8ZR52	Mechanosensing system component YbdG (Mechanosensitive channel homolog YbdG)	Transport	Tra
+Q8ZR56	Oxidoreductase	Electron Transport chain	Etc
+Q8ZR64	Probable cyclic di-GMP phosphodiesterase STM0551 (EC 3.1.4.52)	Other	Oth
+Q8ZR86	HTH-type transcriptional repressor AllR	Other	Oth
+Q8ZR99	CPA2 family Transport protein	Transport	Tra
+Q8ZRA1	Acetyl esterase (EC 3.1.1.-)	Other	Oth
+Q8ZRA5	Small-conductance mechanosensitive channel	Transport	Tra
+Q8ZRB0	Anti-FlhC(2)FlhD(4) factor YdiV (EC 3.1.4.52)	Flagellum and motility including its regulation	Fla
+Q8ZRB6	HMP-PP phosphatase (EC 3.6.1.-)	Carbon metabolism	Cbn
+Q8ZRB8	Periplasmic chaperone PpiD (Periplasmic folding chaperone)	Translation and protein homeostasis	Rib
+Q8ZRD3	Transcription antitermination protein NusB	Translation and protein homeostasis	Rib
+Q8ZRD9	S-adenosylmethionine:tRNA ribosyltransferase-isomerase (EC 2.4.99.17)	Translation and protein homeostasis	Rib
+Q8ZRE2	Nuclease SbcCD subunit D	Other	Oth
+Q8ZRE3	Nuclease SbcCD subunit C	Other	Oth
+Q8ZRF6	D-alanyl-D-alanine-carboxypeptidase/endopeptidase AmpH	Lipid and cell wall metabolism	Lpb
+Q8ZRG9	Efflux pump membrane Transporter	Transport	Tra
+Q8ZRH6	Anti-FlhC(2)FlhD(4) factor YdiV (EC 3.1.4.52)	Flagellum and motility including its regulation	Fla
+Q8ZRM4	UPF0294 protein YafD	Other	Oth
+Q8ZRM7	Methylglyoxal reductase DkgB (EC 1.1.1.-)	Carbon metabolism	Cbn
+Q8ZRN2	tRNA (adenine(37)-N6)-methyltransferase	Translation and protein homeostasis	Rib
+Q8ZRN5	tRNA(Ile)-lysidine synthase (EC 6.3.4.19)	Translation and protein homeostasis	Rib
+Q8ZRP0	Outer membrane protein assembly factor BamA	Lipid and cell wall metabolism	Lpb
+Q8ZRQ2	Outer membrane protein receptor / Transporter for ferrichrome, colicin M, and phages T1, T5, and phi80	Transport	Tra
+Q8ZRQ5	RNA 2',3'-cyclic phosphodiesterase (EC 3.1.4.58)	Translation and protein homeostasis	Rib
+Q8ZRQ6	Sugar fermentation stimulation protein A	Carbon metabolism	Cbn
+Q8ZRQ7	Glutamyl-Q tRNA(Asp) synthetase (EC 6.1.1.-)	Translation and protein homeostasis	Rib
+Q8ZRR8	Transport permease protein	Transport	Tra
+Q8ZRU0	Cell division protein FtsZ	Lipid and cell wall metabolism	Lpb
+Q8ZRU8	16S rRNA m(4)C1402 methyltransferase RsmH	Translation and protein homeostasis	Rib
+Q8ZRU9	Transcriptional regulator MraZ	Other	Oth
+Q8ZRV0	HTH-type transcriptional regulator SgrR	Other	Oth
+Q8ZRV7	DNA polymerase (EC 2.7.7.7)	Other	Oth
+Q8ZRW8	Ferredoxin-like protein FixX	Electron Transport chain	Etc
+Q8ZRW9	Protein FixC	Electron Transport chain	Etc
+Q8ZRX0	Protein FixA	Electron Transport chain	Etc
+Q8ZRX1	L-carnitine/gamma-butyrobetaine antiporter	Transport	Tra
+Q8ZRX4	Crotonobetaine/carnitine--CoA ligase (EC 6.2.1.48)	Carbon metabolism	Cbn
+Q8ZRX6	Carnitine operon protein CaiE	Carbon metabolism	Cbn
+Q8ZRZ3	Na(+)/H(+) antiporter NhaA (Sodium/proton antiporter NhaA)	Transport	Tra
+Q8ZS09	Chitinase (EC 3.2.1.14)	Lipid and cell wall metabolism	Lpb
+Q93GL6	tRNA(fMet)-specific endonuclease VapC (EC 3.1.-.-)	Translation and protein homeostasis	Rib
+Q93GL9	TraT complement resistance protein	Other	Oth
+Q93GP5	Uncharacterized protein YubM	Other	Oth
+Q93GQ3	Methyltransferase (EC 2.1.1.-)	Translation and protein homeostasis	Rib
+Q93GS9	Phospholipase D (EC 3.1.4.4)	Lipid and cell wall metabolism	Lpb
+Q93IM6	Putative ion-Transport protein YfeO	Transport	Tra
+Q9F0N8	Anti-adapter protein IraM (Sigma S-regulator RssC)	Other	Oth
+Q9FA48	Nickel/cobalt efflux system	Transport	Tra
+Q9KIB9	Secreted effector protein SifB	Flagellum and motility including its regulation	Fla
+Q9L6M1	Transcription antitermination protein RfaH	Other	Oth
+Q9L6N6	Homoserine/homoserine lactone efflux protein	Transport	Tra
+Q9L6N7	Threonine efflux protein	Transport	Tra
+Q9L6P1	Protein RarD	Other	Oth
+Q9L6Q5	96% identity with E. coli hemY protein (HEMY)	Carbon metabolism	Cbn
+Q9L6Q9	Lipid III flippase	Lipid and cell wall metabolism	Lpb
+Q9L6R2	Glucose-1-phosphate thymidylyltransferase (EC 2.7.7.24)	Carbon metabolism	Cbn
+Q9L7R3	Porin OmpL	Transport	Tra
+Q9L7R4	Putative sulfoquinovose importer	Transport	Tra
+Q9L7R5	Putative 2,3-dihydroxypropane-1-sulfonate exporter	Transport	Tra
+Q9L9I6	Regulator of sigma D	Other	Oth
+Q9RM66	Universal stress protein C	Other	Oth
+Q9RPU4	Homoprotocatechuate degradative operon repressor	Other	Oth
+Q9S4Y7	HTH-type transcriptional activator AllS	Other	Oth
+Q9X6G2	Ribosomal RNA small subunit methyltransferase J (EC 2.1.1.242)	Translation and protein homeostasis	Rib
+H9L408	Fimbrial subunit	Flagellum and motility including its regulation	Fla
+H9L409	Minor fimbrial subunit	Flagellum and motility including its regulation	Fla
+H9L411	Periplasmic fimbrial chaperone	Flagellum and motility including its regulation	Fla
+H9L412	Fimbrial subunit	Flagellum and motility including its regulation	Fla
+H9L413	Membrane protein	Lipid and cell wall metabolism	Lpb
+H9L414	Salmonella plasmid virulence: outer membrane protein	Lipid and cell wall metabolism	Lpb
+H9L417	Response regulator	Other	Oth
+H9L420	Gifsy-1 prophage protein (Gifsy-2 prophage putative regulatory protein)	Other	Oth
+H9L421	Conjugative transfer: assembly	Other	Oth
+H9L422	Gifsy-2 prophage probable minor tail protein	Other	Oth
+H9L423	Gifsy-2 prophage probable minor tail protein	Other	Oth
+H9L424	Cytoplasmic protein	Other	Oth
+H9L425	Invasol SirA	Other	Oth
+H9L426	Secretion system chaparone	Flagellum and motility including its regulation	Fla
+H9L429	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+H9L430	Relaxosome protein TraY	Other	Oth
+H9L432	Inner membrane protein	Other	Oth
+H9L434	Inner membrane protein	Other	Oth
+H9L437	Cytoplasmic protein	Other	Oth
+H9L439	Plasmid-encoded fimbriae regulation	Flagellum and motility including its regulation	Fla
+H9L441	Gifsy-2 prophage protein	Other	Oth
+H9L444	Gifsy-1 prophage protein (Gifsy-2 prophage putative regulatory protein)	Other	Oth
+H9L445	Gifsy-1 prophage protein (Gifsy-2 prophage protein)	Other	Oth
+H9L446	Secretion system effector	Flagellum and motility including its regulation	Fla
+H9L447	Gifsy-2 prophage protein	Other	Oth
+H9L448	Gifsy-2 prophage protein	Other	Oth
+H9L450	Conjugative transfer: regulation	Other	Oth
+H9L453	Transcriptional regulator	Other	Oth
+H9L454	Permease of the Na+:galactoside symporter family	Transport	Tra
+H9L455	AutoTransported protein	Flagellum and motility including its regulation	Fla
+H9L457	LysR family transcriptional regulator	Other	Oth
+H9L458	Cytoplasmic protein	Other	Oth
+H9L459	Phage-tail assembly protein-like protein	Other	Oth
+H9L462	Catalase	Other	Oth
+H9L464	Cytoplasmic protein	Other	Oth
+H9L465	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+H9L466	Bacterial regulatory proteins, luxR family	Other	Oth
+H9L467	Resolvase	Other	Oth
+H9L468	Gifsy-1 prophage protein (Gifsy-2 prophage protein)	Other	Oth
+H9L469	Transmembrane protein	Other	Oth
+H9L471	Regulatory proteins, merR family	Other	Oth
+H9L472	SsrAB activated protein	Other	Oth
+H9L473	Regulator of sigma E (Sigma 24) factor	Other	Oth
+H9L474	Transcriptional regulator	Other	Oth
+H9L475	Plasmid-encoded fimbriae regulatory	Flagellum and motility including its regulation	Fla
+H9L476	Transposase	Other	Oth
+H9L480	Secretion system apparatus	Flagellum and motility including its regulation	Fla
+H9L481	Homolog of virK	Other	Oth
+H9L482	Fimbrial subunit	Flagellum and motility including its regulation	Fla
+H9L485	Protein TraL	Other	Oth
+H9L488	Colanic acid polymerase	Lipid and cell wall metabolism	Lpb
+H9L489	SsrAB activated protein	Other	Oth
+H9L491	Secretion system chaparone	Flagellum and motility including its regulation	Fla
+H9L496	Secretion system apparatus	Flagellum and motility including its regulation	Fla
+H9L497	Export protein	Other	Oth
+H9L498	Plasmid-encoded fimbriae major fimbrial subunit	Flagellum and motility including its regulation	Fla
+H9L4A0	Secretion system effector	Flagellum and motility including its regulation	Fla
+H9L4A5	NCS2 family uracil Transport protein	Transport	Tra
+H9L4A6	Transcriptional regulatory protein	Other	Oth
+H9L4A8	Fimbrial subunit	Flagellum and motility including its regulation	Fla
+H9L4A9	Minor fimbrial subunit	Flagellum and motility including its regulation	Fla
+H9L4B1	Inner membrane protein	Other	Oth
+H9L4B3	Sugar fermentation stimulation protein B (Ner-like protein)	Carbon metabolism	Cbn
+H9L4B4	Cytoplasmic protein	Other	Oth
+H9L4B5	Suppression of copper sensitivity: putative copper binding protein	Other	Oth
+H9L4B8	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+H9L4B9	Cytoplasmic protein	Other	Oth
+H9L4C1	Suppression of copper sensitivity protein	Other	Oth
+H9L4C4	Cytoplasmic protein	Other	Oth
+O54290	Inner membrane protein YcdZ	Other	Oth
+O68927	Leader peptidase HopD	Translation and protein homeostasis	Rib
+O87663	Uncharacterized protein YadU	Other	Oth
+P0A1S6	Uncharacterized protein YaeQ	Other	Oth
+P0A1T0	Uncharacterized protein YmdA	Other	Oth
+P0A1T8	Uncharacterized protein YigF	Other	Oth
+P0A1U4	Uncharacterized protein YjaG	Other	Oth
+P0A1U8	Uncharacterized protein YiiY	Other	Oth
+P0A1V0	Uncharacterized protein YtgA	Other	Oth
+P0A1W0	pyr operon leader peptide (pyrBI operon attenuator)	Translation and protein homeostasis	Rib
+P0A214	Multiple antibiotic resistance protein MarB	Other	Oth
+P0A239	Secretion system apparatus protein SsaP	Flagellum and motility including its regulation	Fla
+P0A2L1	UPF0047 protein YjbQ	Other	Oth
+P0A2L7	UPF0125 protein YfjF	Other	Oth
+P0A2M3	UPF0181 protein YoaH	Other	Oth
+P0A2P4	UPF0270 protein YheU	Other	Oth
+P0AA34	Putative sulfur carrier protein YedF	Amino acid biosynthesis	Aab
+P0C0T3	Protein DsrB	Electron Transport chain	Etc
+P0C5Y6	UPF0509 protein YciZ	Other	Oth
+P0CI68	mgtA leader peptide (Regulatory leader peptide for mgtA)	Translation and protein homeostasis	Rib
+P0CL15	Invasion protein IagB	Flagellum and motility including its regulation	Fla
+P0CL44	Oxygen-regulated invasion protein OrgA	Flagellum and motility including its regulation	Fla
+P16656	Uncharacterized protein YcjE	Other	Oth
+P26389	Colanic acid biosynthesis protein WcaM	Lipid and cell wall metabolism	Lpb
+P37414	Uncharacterized protein pSLT049	Other	Oth
+P37463	Citrate utilization protein B	Carbon metabolism	Cbn
+P37771	Uncharacterized protein YhfG	Other	Oth
+P40195	Uncharacterized protein YfeK	Other	Oth
+P40196	Uncharacterized protein YfeL	Other	Oth
+P40784	Tail fiber assembly protein homolog from lambdoid prophage Fels-1	Other	Oth
+P40822	Uncharacterized lipoprotein YceB	Lipid and cell wall metabolism	Lpb
+P40824	Uncharacterized protein YibR	Other	Oth
+P55886	Uncharacterized protein YigA	Other	Oth
+P57015	Uncharacterized protein YifB	Other	Oth
+P60084	Protein Syd	Other	Oth
+P60817	UPF0304 protein YfbU	Other	Oth
+P60822	UPF0306 protein YhbP	Other	Oth
+P60997	his operon leader peptide (his operon attenuator peptide)	Translation and protein homeostasis	Rib
+P62362	UPF0319 protein YccT	Other	Oth
+P62527	ilv operon leader peptide (ilvGMEDA operon attenuator peptide)	Translation and protein homeostasis	Rib
+P64267	Protein gns	Other	Oth
+P64437	Uncharacterized protein YbgS	Other	Oth
+P64501	Uncharacterized protein YebO	Other	Oth
+P65641	Protein bdm homolog	Other	Oth
+P66822	Protein Smg	Other	Oth
+P67091	Universal stress protein F	Other	Oth
+P67093	Universal stress protein G	Other	Oth
+P67286	UPF0145 protein YbjQ	Other	Oth
+P67334	UPF0178 protein YaiI	Other	Oth
+P67349	UPF0213 protein YhbQ	Other	Oth
+P67366	UPF0227 protein YcfP	Other	Oth
+P67537	UPF0250 protein YbeD	Other	Oth
+P67551	UPF0253 protein YaeP	Other	Oth
+P74854	Secretion system apparatus protein SsaL	Flagellum and motility including its regulation	Fla
+P74855	Secretion system apparatus protein SsaM	Flagellum and motility including its regulation	Fla
+P74858	Secretion system apparatus protein SsaO	Flagellum and motility including its regulation	Fla
+Q06399	Uncharacterized lipoprotein YedD	Other	Oth
+Q1G0K7	Gifsy-2 prophage protein	Other	Oth
+Q1G0L5	Gifsy-2 prophage excisionase	Other	Oth
+Q4AAY3	Fels-2 prophage protein	Other	Oth
+Q4AAY4	Fels-2 prophage protein	Other	Oth
+Q4AAY5	Gifsy-1 prophage protein	Other	Oth
+Q4AAY6	Gifsy-1 prophage protein	Other	Oth
+Q4AAY7	Gifsy-1 prophage protein	Other	Oth
+Q4AAY8	Gifsy-1 prophage protein	Other	Oth
+Q4AAY9	Gifsy-1 prophage protein	Other	Oth
+Q4AAZ0	Gifsy-1 prophage protein	Other	Oth
+Q56109	Protein NrdI	Electron Transport chain	Etc
+Q7CP62	Inner membrane protein	Other	Oth
+Q7CP64	Protein CreA (Catabolite regulation protein A)	Other	Oth
+Q7CP68	Osmotically-inducible protein Y	Other	Oth
+Q7CP69	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+Q7CP70	Cytoplasmic protein	Other	Oth
+Q7CP71	Cytoplasmic protein	Other	Oth
+Q7CP72	Inner membrane protein	Other	Oth
+Q7CP74	Permease	Transport	Tra
+Q7CP75	LysR family transcriptional regulator	Other	Oth
+Q7CP77	UPF0386 protein YjhX	Other	Oth
+Q7CP79	Inner membrane protein	Other	Oth
+Q7CP80	CopG family helix-turn-helix protein	Other	Oth
+Q7CP81	Inner membrane protein	Other	Oth
+Q7CP82	Cytoplasmic protein	Other	Oth
+Q7CP83	Cytoplasmic protein	Other	Oth
+Q7CP87	Gamma-glutamylcyclotransferase family protein	Amino acid biosynthesis	Aab
+Q7CP90	Transcriptional regulator	Other	Oth
+Q7CP95	Inner membrane protein	Other	Oth
+Q7CP99	Entericidin B	Other	Oth
+Q7CPA0	Outer membrane lipoprotein	Lipid and cell wall metabolism	Lpb
+Q7CPA3	LuxR family bacterial regulatory proteins	Other	Oth
+Q7CPA4	Protein YjdM	Other	Oth
+Q7CPA6	Regulator of melibiose operon	Other	Oth
+Q7CPA7	Cytoplasmic protein	Other	Oth
+Q7CPA8	Inner membrane protein	Other	Oth
+Q7CPA9	Inner membrane protein	Other	Oth
+Q7CPB1	Inner membrane protein	Other	Oth
+Q7CPB2	UPF0337 protein YjbJ	Other	Oth
+Q7CPB5	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+Q7CPB6	Cytoplasmic protein	Other	Oth
+Q7CPB7	Cytoplasmic protein	Other	Oth
+Q7CPC2	Inner membrane protein	Other	Oth
+Q7CPC5	Branched-chain amino acid permease	Transport	Tra
+Q7CPD1	Cytoplasmic protein	Other	Oth
+Q7CPD2	Spot 42 RNA, inhibition of DNA synthesis	Other	Oth
+Q7CPD3	Protein YihD	Other	Oth
+Q7CPD6	Inner membrane protein	Other	Oth
+Q7CPE0	Initiation of chromosome replication	Other	Oth
+Q7CPE8	Cytoplasmic protein	Other	Oth
+Q7CPF2	IlvB operon leader peptide	Translation and protein homeostasis	Rib
+Q7CPF4	DeoR family regulatory protein	Other	Oth
+Q7CPF6	L-fucose permease	Transport	Tra
+Q7CPF7	GntR family regulatory protein	Other	Oth
+Q7CPG1	Uncharacterized protein YicS	Other	Oth
+Q7CPG6	Inner membrane protein	Other	Oth
+Q7CPH2	NCS2 family purine/xanthine Transport protein	Transport	Tra
+Q7CPH6	Uncharacterized protein YibN	Other	Oth
+Q7CPH9	Cytoplasmic protein	Other	Oth
+Q7CPI3	Acetyltransferase	Other	Oth
+Q7CPI4	Outer membrane lipoprotein	Lipid and cell wall metabolism	Lpb
+Q7CPI9	Cytoplasmic protein	Other	Oth
+Q7CPJ0	tRNA-processing ribonuclease	Translation and protein homeostasis	Rib
+Q7CPJ3	Inner membrane lipoprotein DcrB	Other	Oth
+Q7CPJ5	Inner membrane protein	Other	Oth
+Q7CPJ8	Cytoplasmic protein	Other	Oth
+Q7CPK1	Phosphotriesterase	Other	Oth
+Q7CPK8	Outer membrane lipoprotein	Lipid and cell wall metabolism	Lpb
+Q7CPL0	Cytoplasmic protein	Other	Oth
+Q7CPL1	Cytoplasmic protein	Other	Oth
+Q7CPL2	Regulator	Other	Oth
+Q7CPL8	Outer membrane lipoprotein	Lipid and cell wall metabolism	Lpb
+Q7CPM5	Suppresses inhibitory activity of CsrA	Other	Oth
+Q7CPM6	LysR family transcriptional regulator	Other	Oth
+Q7CPM7	Protein AaeX	Transport	Tra
+Q7CPM9	Cytoplasmic protein	Other	Oth
+Q7CPN0	Periplasmic protein	Other	Oth
+Q7CPN5	FeS oxidoreductase	Electron Transport chain	Etc
+Q7CPN6	Cytoplasmic protein	Other	Oth
+Q7CPP5	Acid stress protein IbaG	Other	Oth
+Q7CPQ3	Uncharacterized N-acetyltransferase YhbS	Translation and protein homeostasis	Rib
+Q7CPQ5	Intracellular proteinase	Translation and protein homeostasis	Rib
+Q7CPQ9	Cytoplasmic protein	Other	Oth
+Q7CPR0	Inner membrane protein	Other	Oth
+Q7CPR1	Inner membrane protein	Other	Oth
+Q7CPR2	Inner membrane protein	Other	Oth
+Q7CPR3	Inner membrane protein	Other	Oth
+Q7CPR4	Periplasmic protein	Other	Oth
+Q7CPR8	SH3 domain protein	Other	Oth
+Q7CPS0	Glutathionylspermidine synthase	Amino acid biosynthesis	Aab
+Q7CPS1	UPF0441 protein YgiB	Other	Oth
+Q7CPS3	Probable quinol monooxygenase YgiN	Electron Transport chain	Etc
+Q7CPS5	Inner membrane protein	Other	Oth
+Q7CPS7	Cytoplasmic protein	Other	Oth
+Q7CPT3	Permease	Transport	Tra
+Q7CPT6	Inner membrane protein	Other	Oth
+Q7CPT8	Integral membrane resistance protein	Other	Oth
+Q7CPU0	Uncharacterized protein YqgB	Other	Oth
+Q7CPU4	Inner membrane protein	Other	Oth
+Q7CPU8	Periplasmic immunogenic protein	Other	Oth
+Q7CPV0	Hemolysin	Other	Oth
+Q7CPV4	Inner membrane protein	Other	Oth
+Q7CPV5	Positive LysR family transcriptional regulator	Other	Oth
+Q7CPV6	Integral membrane Transport protein	Transport	Tra
+Q7CPV7	SufE protein probably involved in Fe-S center assembly	Electron Transport chain	Etc
+Q7CPV8	Lipoprotein	Lipid and cell wall metabolism	Lpb
+Q7CPW0	Small membrane protein	Other	Oth
+Q7CPW6	Inner membrane protein	Other	Oth
+Q7CPW9	Acetyltransferase	Translation and protein homeostasis	Rib
+Q7CPY0	Transcriptional repressor of hyc and hyp operons	Other	Oth
+Q7CPY2	Hydrogenase 3	Electron Transport chain	Etc
+Q7CPY3	Electron Transport protein (FeS center) from formate to hydrogen	Electron Transport chain	Etc
+Q7CPY4	Transcriptional repressor for glucitol operon	Other	Oth
+Q7CPY5	Glucitol (Srl) operon regulatory protein	Other	Oth
+Q7CPY7	Phosphoglucomutase	Carbon metabolism	Cbn
+Q7CPY8	Inner membrane protein	Other	Oth
+Q7CPY9	Transcriptional repressor MprA (Protein EmrR)	Other	Oth
+Q7CPZ0	YqaE family Transport protein	Transport	Tra
+Q7CPZ1	GntR family transcriptional repressor	Other	Oth
+Q7CPZ2	Oligoketide cyclase/lipid Transport protein	Lipid and cell wall metabolism	Lpb
+Q7CPZ5	Membrane protein	Other	Oth
+Q7CPZ6	Cytochrome c-type biogenesis protein	Electron Transport chain	Etc
+Q7CPZ9	Uncharacterized protein	Other	Oth
+Q7CQ00	Ribosome associated factor	Translation and protein homeostasis	Rib
+Q7CQ02	Outer membrane lipoprotein	Lipid and cell wall metabolism	Lpb
+Q7CQ09	MFS family Transport protein	Transport	Tra
+Q7CQ22	PerM family permease	Transport	Tra
+Q7CQ26	Cytoplasmic protein	Other	Oth
+Q7CQ27	Iron-dependent peroxidase	Other	Oth
+Q7CQ28	Negative regulator	Other	Oth
+Q7CQ29	Periplasmic protein	Other	Oth
+Q7CQ31	Inner membrane protein	Other	Oth
+Q7CQ32	Lipoprotein	Lipid and cell wall metabolism	Lpb
+Q7CQ33	UPF0381 protein YfcZ	Other	Oth
+Q7CQ34	Probable membrane Transporter protein	Transport	Tra
+Q7CQ35	Cytoplasmic protein	Other	Oth
+Q7CQ39	Aspartate-semialdehyde dehydrogenase	Amino acid biosynthesis	Aab
+Q7CQ40	DedA family	Other	Oth
+Q7CQ42	Membrane protein required for colicin V production	Other	Oth
+Q7CQ45	Integral membrane protein	Other	Oth
+Q7CQ48	Cytoplasmic protein	Other	Oth
+Q7CQ54	Protein ElaA	Other	Oth
+Q7CQ55	Inner membrane protein	Other	Oth
+Q7CQ58	MFS family Transport protein	Transport	Tra
+Q7CQ59	Uncharacterized ferredoxin-like protein YfaE	Electron Transport chain	Etc
+Q7CQ68	Virulence protein MsgA-like protein	Other	Oth
+Q7CQ70	UPF0352 protein YejL	Other	Oth
+Q7CQ72	ATP-dependent helicase	Other	Oth
+Q7CQ73	Cytoplasmic protein	Other	Oth
+Q7CQ76	Cobalamin synthesis protein	Other	Oth
+Q7CQ77	Inner membrane protein	Other	Oth
+Q7CQ79	Inner membrane protein	Other	Oth
+Q7CQ80	Transmembrane protein	Other	Oth
+Q7CQ82	LysR family transcriptional regulator	Other	Oth
+Q7CQ83	Sugar Transporter	Transport	Tra
+Q7CQ85	Cytoplasmic protein	Other	Oth
+Q7CQ87	DedA family, membrane protein	Other	Oth
+Q7CQ88	Transport protein	Transport	Tra
+Q7CQ90	UPF0387 membrane protein YohO	Other	Oth
+Q7CQ91	Lipoprotein	Lipid and cell wall metabolism	Lpb
+Q7CQ92	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+Q7CQ93	Fimbrial-like protein	Flagellum and motility including its regulation	Fla
+Q7CQ94	Periplasmic protein	Other	Oth
+Q7CQ95	GntR family regulatory protein	Other	Oth
+Q7CQ96	MFS family Transport protein	Transport	Tra
+Q7CQA9	Protein YeeZ	Other	Oth
+Q7CQB0	LysR family transcriptional regulator	Other	Oth
+Q7CQB3	Cytoplasmic protein	Other	Oth
+Q7CQB7	Cytoplasmic protein	Other	Oth
+Q7CQC1	Cytoplasmic protein	Other	Oth
+Q7CQC3	Cytoplasmic protein	Other	Oth
+Q7CQC5	Inner membrane protein YecN	Other	Oth
+Q7CQC6	Cytoplasmic protein	Other	Oth
+Q7CQC7	Isochorismatase	Carbon metabolism	Cbn
+Q7CQD3	Inner membrane protein	Other	Oth
+Q7CQD6	Cytoplasmic protein	Other	Oth
+Q7CQE1	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+Q7CQE2	Fumarylacetoacetate (FAA) hydrolase family protein	Carbon metabolism	Cbn
+Q7CQE3	Cytoplasmic protein	Other	Oth
+Q7CQE5	Transglycosylase-associated protein	Lipid and cell wall metabolism	Lpb
+Q7CQE6	Hydrogenase-1 protein	Electron Transport chain	Etc
+Q7CQE7	Hydrogenase maturation protease	Electron Transport chain	Etc
+Q7CQE9	Cation Transport regulator	Transport	Tra
+Q7CQF0	Protein YchN	Other	Oth
+Q7CQF4	UPF0056 inner membrane protein	Other	Oth
+Q7CQF5	Protein YciI	Other	Oth
+Q7CQF6	Ferredoxin	Electron Transport chain	Etc
+Q7CQF8	Cytoplasmic protein	Other	Oth
+Q7CQF9	Cytoplasmic protein	Other	Oth
+Q7CQG0	Cytoplasmic protein	Other	Oth
+Q7CQG1	Uncharacterized protein YciO	Other	Oth
+Q7CQG2	Oxoacyl-(Acyl carrier protein) reductase	Lipid and cell wall metabolism	Lpb
+Q7CQG4	Protein YciN	Other	Oth
+Q7CQG7	DeoR family regulatory protein	Other	Oth
+Q7CQG8	Phage shock protein	Other	Oth
+Q7CQG9	Phage shock protein	Other	Oth
+Q7CQH0	Inner membrane protein	Other	Oth
+Q7CQH3	Cytoplasmic protein	Other	Oth
+Q7CQH4	Heat shock protein hslJ	Translation and protein homeostasis	Rib
+Q7CQH5	Outer membrane lipoprotein	Lipid and cell wall metabolism	Lpb
+Q7CQH6	DeoR family transcriptional repressor of sgc operon	Other	Oth
+Q7CQH9	Periplasmic protein	Other	Oth
+Q7CQI6	GntR family regulatory protein	Other	Oth
+Q7CQI7	Outer membrane lipoprotein	Lipid and cell wall metabolism	Lpb
+Q7CQJ2	GntR family regulatory protein	Other	Oth
+Q7CQJ3	Hydrogenase	Electron Transport chain	Etc
+Q7CQJ4	Cytoplasmic protein	Other	Oth
+Q7CQJ5	GntR family regulatory protein	Other	Oth
+Q7CQJ6	Cytoplasmic protein	Other	Oth
+Q7CQJ7	UPF0482 protein YnfB	Other	Oth
+Q7CQJ8	MFS familty Transport protein	Transport	Tra
+Q7CQK2	Membrane Transport protein	Transport	Tra
+Q7CQK6	Inner membrane protein	Other	Oth
+Q7CQK8	TetR/AcrR family transcriptional repressor	Other	Oth
+Q7CQN6	Cytoplasmic protein	Other	Oth
+Q7CQN8	Probable ketoamine kinase YniA	Carbon metabolism	Cbn
+Q7CQN9	Regulator	Other	Oth
+Q7CQP1	Transcriptional repressor of cel operon	Other	Oth
+Q7CQP3	Osmotically-inducible putative lipoprotein OsmE (Activator of ntr-like gene protein)	Other	Oth
+Q7CQP5	Cytoplasmic protein	Other	Oth
+Q7CQP6	Scaffolding protein for murein-synthesizing holoenzyme	Lipid and cell wall metabolism	Lpb
+Q7CQP7	Inner membrane protein	Other	Oth
+Q7CQQ1	Inner membrane protein	Other	Oth
+Q7CQQ5	Outer membrane lipoprotein	Lipid and cell wall metabolism	Lpb
+Q7CQQ9	Outer membrane lipoprotein	Lipid and cell wall metabolism	Lpb
+Q7CQR2	UPF0502 protein YceH	Other	Oth
+Q7CQR3	Glutaredoxin 2	Translation and protein homeostasis	Rib
+Q7CQR4	Inner membrane protein	Other	Oth
+Q7CQR6	Acidic protein suppresses mutants lacking function of protein export	Other	Oth
+Q7CQR7	Outer membrane lipoprotein	Lipid and cell wall metabolism	Lpb
+Q7CQR8	Oxidoreductase component	Electron Transport chain	Etc
+Q7CQS0	Protein PhoH (Phosphate starvation-inducible protein PsiH)	Other	Oth
+Q7CQS3	Chaperone modulatory protein CbpM	Translation and protein homeostasis	Rib
+Q7CQS6	Pathogenicity island encoded protein: SPI5	Other	Oth
+Q7CQT1	Cytoplasmic protein	Other	Oth
+Q7CQT3	Inner membrane protein YccF	Other	Oth
+Q7CQT4	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+Q7CQT5	Paraquat-inducible protein A	Other	Oth
+Q7CQT7	Methyltransferase activator Trm112 homolog	Translation and protein homeostasis	Rib
+Q7CQU6	Transcriptional regulator, lysR family	Other	Oth
+Q7CQU9	Nucleoside-diphosphate-sugar epimerase	Carbon metabolism	Cbn
+Q7CQV3	Cytoplasmic protein	Other	Oth
+Q7CQV6	Hydrolase of the HAD superfamily	Carbon metabolism	Cbn
+Q7CQW3	Periplasmic protein	Other	Oth
+Q7CQW4	ABC superfamily (Membrane) Transport protein	Transport	Tra
+Q7CQW5	Inner membrane protein	Other	Oth
+Q7CQX6	Glycosyl transferase	Lipid and cell wall metabolism	Lpb
+Q7CQX7	Cytoplasmic protein	Other	Oth
+Q7CQX8	Phage integrase	Other	Oth
+Q7CQX9	Cytoplasmic protein	Other	Oth
+Q7CQY2	LexA regulated, putative SOS response	Other	Oth
+Q7CQY7	PhoH-like protein	Other	Oth
+Q7CQZ4	LysR family transcriptional regulator	Other	Oth
+Q7CQZ5	RNA chaperone, negative regulator of cspA transcription	Translation and protein homeostasis	Rib
+Q7CQZ8	Cytoplasmic protein	Other	Oth
+Q7CR04	Periplasmic protein	Other	Oth
+Q7CR06	Cytoplasmic protein	Other	Oth
+Q7CR10	Uncharacterized ABC Transporter ATP-binding protein YbbA	Transport	Tra
+Q7CR11	Oxidoreductase (EC 1.-.-.-)	Electron Transport chain	Etc
+Q7CR12	Inner membrane protein YbbJ	Other	Oth
+Q7CR13	Inner membrane protein	Other	Oth
+Q7CR14	Inner membrane protein	Other	Oth
+Q7CR15	AcrAB operon repressor (TetR/AcrR family)	Other	Oth
+Q7CR16	Cytoplasmic protein	Other	Oth
+Q7CR21	DNA-binding transcriptional activator DecR	Other	Oth
+Q7CR23	Esterase	Lipid and cell wall metabolism	Lpb
+Q7CR25	DNA-binding transcriptional regulator BolA	Other	Oth
+Q7CR36	Inner membrane protein	Other	Oth
+Q7CR37	Regulatory protein	Other	Oth
+Q7CR38	VOC domain-containing protein	Other	Oth
+Q7CR45	Induced by phosphate starvation	Other	Oth
+Q7CR47	Inner membrane protein	Other	Oth
+Q7CR49	Periplasmic protein	Other	Oth
+Q7CR50	Cytoplasmic protein	Other	Oth
+Q7CR53	Peptide chain release factor	Translation and protein homeostasis	Rib
+Q7CR55	Homology to Shigella VirG protein	Flagellum and motility including its regulation	Fla
+Q7CR56	Fimbriae subunit	Flagellum and motility including its regulation	Fla
+Q7CR57	Cytoplasmic protein	Other	Oth
+Q7CR64	UPF0325 protein YaeH	Other	Oth
+Q7CR65	Inner membrane protein	Other	Oth
+Q7CR72	Periplasmic protein	Other	Oth
+Q7CR73	LysR family transcriptional regulator	Other	Oth
+Q7CR74	Periplasmic protein	Other	Oth
+Q7CR75	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+Q7CR79	Prelipin peptidase dependent protein	Lipid and cell wall metabolism	Lpb
+Q7CR88	Secreted protein	Other	Oth
+Q7CR89	Outer membrane lipoprotein	Lipid and cell wall metabolism	Lpb
+Q7CR90	Transcriptional regulator of cai and fix operon	Other	Oth
+Q7CR94	Cytoplasmic protein	Other	Oth
+Q7CRA1	Positive sigma H regulator	Other	Oth
+Q7CRA2	Regulatory protein	Other	Oth
+Q7DAP0	Cytoplasmic protein	Other	Oth
+Q7DAP1	Alpha-helical coiled coil protein	Other	Oth
+Q7DAP4	Integrase protein	Other	Oth
+Q7DAP8	Anti-FlhC(2)FlhD(4) factor YdiV	Flagellum and motility including its regulation	Fla
+Q7DAP9	Resolvase	Other	Oth
+Q7DAR1	Replication of plasmid	Other	Oth
+Q8KNN5	YsdA	Other	Oth
+Q8RSN8	Putative Transporter protein	Transport	Tra
+Q8XEK9	Permease	Transport	Tra
+Q8XEU4	YbbM family Transport protein, metal resistance protein	Transport	Tra
+Q8XEY4	Cytoplasmic protein	Other	Oth
+Q8XEZ2	Gifsy-1 prophage protein (Gifsy-2 prophage putative regulatory protein)	Other	Oth
+Q8XF26	Gifsy-1 prophage protein (Gifsy-2 prophage exodeoxyribonuclease)	Other	Oth
+Q8XF29	Fels-2 prophage protein	Other	Oth
+Q8XFJ8	Cytoplasmic protein (Gifsy-2 prophage protein)	Other	Oth
+Q8XGS7	Gifsy-1 prophage protein (Gifsy-2 prophage protein)	Other	Oth
+Q8ZJT7	Periplasmic protein	Other	Oth
+Q8ZJT8	Inner membrane protein	Other	Oth
+Q8ZJT9	Fimbrial chaparone protein	Flagellum and motility including its regulation	Fla
+Q8ZJU2	Fimbrial subunit	Flagellum and motility including its regulation	Fla
+Q8ZJU3	Major fimbrial subunit	Flagellum and motility including its regulation	Fla
+Q8ZJU4	Tolerance to colicin E2 protein	Other	Oth
+Q8ZJV2	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+Q8ZJV3	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+Q8ZJV4	Fimbrial chaparone protein	Flagellum and motility including its regulation	Fla
+Q8ZJV5	Fimbrial usher protein	Flagellum and motility including its regulation	Fla
+Q8ZJV6	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+Q8ZJV9	Cytoplasmic protein	Other	Oth
+Q8ZJW0	Pyruvate formate lyase activating enzyme	Carbon metabolism	Cbn
+Q8ZJW1	Hydrolase	Other	Oth
+Q8ZJW2	Phosphoesterase	Carbon metabolism	Cbn
+Q8ZJW7	Inner membrane protein	Other	Oth
+Q8ZJW9	Ferric hydrozamate Transport protein	Transport	Tra
+Q8ZJX0	Cytoplasmic protein	Other	Oth
+Q8ZJX1	Transcriptional regulator (Activator) of bgl operon	Other	Oth
+Q8ZJX2	LuxR/UhpA family transcriptional regulator	Other	Oth
+Q8ZJX3	Membrane protein	Other	Oth
+Q8ZJX7	Glucosamine-fructose-6-phosphate aminotransferase	Carbon metabolism	Cbn
+Q8ZJX8	Glucosamine-fructose-6-phosphate aminotransferase	Carbon metabolism	Cbn
+Q8ZJY3	NtrC family transcriptional regulator, ATPase domain protein	Other	Oth
+Q8ZJY6	Cobalamin synthesis protein	Other	Oth
+Q8ZJY7	Restriction of methylated adenine	Other	Oth
+Q8ZJZ0	Inner membrane protein	Other	Oth
+Q8ZJZ1	Cytoplasmic protein	Other	Oth
+Q8ZJZ2	Cytoplasmic protein	Other	Oth
+Q8ZJZ4	Inner membrane protein	Other	Oth
+Q8ZJZ5	Inner membrane protein	Other	Oth
+Q8ZJZ6	Sugar Transporter	Transport	Tra
+Q8ZJZ7	Inner membrane protein	Other	Oth
+Q8ZK01	Transcriptional repressor for uxu operon	Other	Oth
+Q8ZK02	Dienelactone hydrolase	Carbon metabolism	Cbn
+Q8ZK03	Inner membrane protein or exported	Other	Oth
+Q8ZK04	Cytoplasmic protein	Other	Oth
+Q8ZK05	Inner membrane protein	Other	Oth
+Q8ZK06	Cytoplasmic protein	Other	Oth
+Q8ZK07	SAM-dependent methyltransferase	Translation and protein homeostasis	Rib
+Q8ZK09	Inner membrane protein	Other	Oth
+Q8ZK10	Cytoplasmic protein	Other	Oth
+Q8ZK11	ATPase involved in DNA repair	Other	Oth
+Q8ZK13	ABC-type sugar/spermidine/putrescine Transport systems, ATPase component	Transport	Tra
+Q8ZK14	Cytoplasmic protein	Other	Oth
+Q8ZK15	Cytoplasmic protein	Other	Oth
+Q8ZK16	ATP-dependent Lon protease	Translation and protein homeostasis	Rib
+Q8ZK17	Mrr restriction endonuclease	Other	Oth
+Q8ZK18	Superfamily I DNA helicases	Other	Oth
+Q8ZK19	Integrase	Other	Oth
+Q8ZK22	L-idonate 5-dehydrogenase	Carbon metabolism	Cbn
+Q8ZK24	GntP family L-idonate Transport protein	Transport	Tra
+Q8ZK25	L-idonate regulator	Other	Oth
+Q8ZK28	Cytoplasmic protein	Other	Oth
+Q8ZK32	Cytoplasmic protein	Other	Oth
+Q8ZK36	Arginine repressor	Other	Oth
+Q8ZK38	Cytoplasmic protein	Other	Oth
+Q8ZK39	Transposase	Other	Oth
+Q8ZK41	Phosphotransferase system mannitol/fructose-specific IIA domain (Ntr-type)	Carbon metabolism	Cbn
+Q8ZK42	Periplasmic protein	Other	Oth
+Q8ZK45	Inner membrane protein	Other	Oth
+Q8ZK46	Cytoplasmic protein	Other	Oth
+Q8ZK47	Endonuclease	Other	Oth
+Q8ZK49	Permease	Transport	Tra
+Q8ZK51	Thiamine pyrophosphate-requiring enzyme	Carbon metabolism	Cbn
+Q8ZK54	Cytoplasmic protein	Other	Oth
+Q8ZK55	Uncharacterized MFS-type Transporter STM4428	Transport	Tra
+Q8ZK59	Arabinose operon regulatory protein	Other	Oth
+Q8ZK60	Cytoplasmic protein	Other	Oth
+Q8ZK63	Sugar (And Other) Transporter	Transport	Tra
+Q8ZK64	Sugar (And Other) Transporter	Transport	Tra
+Q8ZK65	Transcriptional regulator	Other	Oth
+Q8ZK68	Imidazolonepropionase and related amidohydrolases	Amino acid biosynthesis	Aab
+Q8ZK69	Pemease	Transport	Tra
+Q8ZK70	Periplasmic protein	Other	Oth
+Q8ZK72	Cytoplasmic protein	Other	Oth
+Q8ZK73	Transcriptional regulator	Other	Oth
+Q8ZK75	Cationic amino acid Transporter	Transport	Tra
+Q8ZK77	APC family D-alanine/D-serine/glycine Transport protein	Transport	Tra
+Q8ZK78	Cell envelope opacity-associated protein A	Lipid and cell wall metabolism	Lpb
+Q8ZK79	Threonine/homoserine exporter RhtA	Transport	Tra
+Q8ZK83	Cytoplasmic protein	Other	Oth
+Q8ZK84	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+Q8ZK94	Acyl-CoA dehydrogenase	Carbon metabolism	Cbn
+Q8ZK95	Glutathionylspermidine synthase	Amino acid biosynthesis	Aab
+Q8ZKA0	Phage shock protein A	Other	Oth
+Q8ZKB7	Entericidin A	Other	Oth
+Q8ZKC0	Transporter	Transport	Tra
+Q8ZKC1	Suppresses F exclusion of bacteriophage T7	Other	Oth
+Q8ZKC4	MerR family bacterial regulatory protein	Other	Oth
+Q8ZKC5	MerR family bacterial regulatory protein	Other	Oth
+Q8ZKC6	Acetyltransferase	Translation and protein homeostasis	Rib
+Q8ZKC7	CopG family helix-turn-helix protein	Other	Oth
+Q8ZKC9	AraC-type DNA-binding domain-containing protein	Other	Oth
+Q8ZKD4	Component of anaerobic dehydrogenases	Electron Transport chain	Etc
+Q8ZKE4	Transcriptional activator of adiA	Other	Oth
+Q8ZKF0	Component of formate-dependent nitrite reductase complex	Electron Transport chain	Etc
+Q8ZKF2	Formate dependent nitrate reductase	Electron Transport chain	Etc
+Q8ZKF4	Formate-dependent nitrite reductase	Electron Transport chain	Etc
+Q8ZKG0	LysR family transcriptional regulator	Other	Oth
+Q8ZKG2	Xanthine/uracil permease family	Transport	Tra
+Q8ZKG7	ABC exporter outer membrane component-like protein	Transport	Tra
+Q8ZKG8	Methyl-accepting chemotaxis protein	Flagellum and motility including its regulation	Fla
+Q8ZKI8	Soluble lytic murein transglycosylase	Lipid and cell wall metabolism	Lpb
+Q8ZKJ2	Phage tail sheath protein	Other	Oth
+Q8ZKJ3	Phage tail core protein	Other	Oth
+Q8ZKJ4	Phage tail protein	Other	Oth
+Q8ZKJ5	Methyl-accepting chemotaxis protein	Flagellum and motility including its regulation	Fla
+Q8ZKJ8	Phage baseplate component	Other	Oth
+Q8ZKK0	Phage glycosyltransferase	Other	Oth
+Q8ZKK2	Phage baseplate protein	Other	Oth
+Q8ZKK3	Phage baseplate protein	Other	Oth
+Q8ZKK4	Phage tail protein	Other	Oth
+Q8ZKK5	Phage tail fiber protein H	Other	Oth
+Q8ZKM1	AraC/XylS family regulator	Other	Oth
+Q8ZKM3	Pyruvate formate lyase activating enzyme 2 (EC 1.97.1.4)	Carbon metabolism	Cbn
+Q8ZKM4	Pyruvate formate lyase II (EC 2.3.1.54)	Carbon metabolism	Cbn
+Q8ZKM6	PTS system fructose-like IIC component	Carbon metabolism	Cbn
+Q8ZKN6	Arylsulfate sulfotransferase	Carbon metabolism	Cbn
+Q8ZKQ7	Mannose-6-phosphate isomerase	Carbon metabolism	Cbn
+Q8ZKR1	ADP-ribosylglycohydrolase	Other	Oth
+Q8ZKR3	Permease of the Na+:galactoside symporter family	Transport	Tra
+Q8ZKS3	HTH cro/C1-type domain-containing protein	Other	Oth
+Q8ZKT1	MerR family bacterial regulatory protein	Other	Oth
+Q8ZKT2	Acetyl esterase	Carbon metabolism	Cbn
+Q8ZKT6	Glycerol-3-phosphate regulon repressor	Other	Oth
+Q8ZKU2	Membrane-associated metal-dependent hydrolase	Other	Oth
+Q8ZKU7	Endonuclease	Other	Oth
+Q8ZKV0	Molybdopterin-guanine dinucleotide biosynthesis protein B	Other	Oth
+Q8ZKV2	Arylsulfatase regulator	Other	Oth
+Q8ZKV5	GntR family regulatory protein	Other	Oth
+Q8ZKV6	MFS family Transport protein	Transport	Tra
+Q8ZKV7	Ribose operon repressor	Other	Oth
+Q8ZKW5	Regulatory protein AsnC	Other	Oth
+Q8ZKW7	Membrane-bound ATP synthase subunit, F1-F0-type proton-ATPase	Electron Transport chain	Etc
+Q8ZKW9	Permease	Transport	Tra
+Q8ZKX2	Dipeptide/oligopeptide/nickel ABC-type Transport systems	Transport	Tra
+Q8ZKX7	Phosphatase/phosphohexomutase	Carbon metabolism	Cbn
+Q8ZKX8	Xanthine/uracil permeases family	Transport	Tra
+Q8ZKY5	LysR family transcriptional regulator	Other	Oth
+Q8ZKY6	Mandelate racemase	Carbon metabolism	Cbn
+Q8ZKY7	Permease	Transport	Tra
+Q8ZKY9	Galactonate operon transcriptional repressor	Other	Oth
+Q8ZKZ2	MFS family D-galactonate Transport protein	Transport	Tra
+Q8ZKZ4	TorS/TorR regulatory periplasmic sensor	Other	Oth
+Q8ZL09	Gnt family Transport protein	Transport	Tra
+Q8ZL10	LysR family transcriptional activator	Other	Oth
+Q8ZL12	MFS family multidrug Transport protein	Transport	Tra
+Q8ZL20	Sugar (Pentulose and hexulose) kinase	Carbon metabolism	Cbn
+Q8ZL21	Fructose-bisphosphate aldolase class-II	Carbon metabolism	Cbn
+Q8ZL25	NtrC family transcriptional regulator	Other	Oth
+Q8ZL45	LysR family transcriptional regulator	Other	Oth
+Q8ZL57	Permease	Transport	Tra
+Q8ZL59	Transcriptional regulator	Other	Oth
+Q8ZL62	Transcriptional GntR family regulator for lct operon	Other	Oth
+Q8ZL68	Glutathione S-transferase	Translation and protein homeostasis	Rib
+Q8ZL71	Transcriptional regulator	Other	Oth
+Q8ZL74	Arabinose operon regulatory protein	Other	Oth
+Q8ZL84	IclR family transcriptional repressor	Other	Oth
+Q8ZL85	Oxidoreductase	Electron Transport chain	Etc
+Q8ZL89	Xylose operon regulatory protein	Other	Oth
+Q8ZLA0	Transcriptional regulator	Other	Oth
+Q8ZLA3	Acetyltransferase	Translation and protein homeostasis	Rib
+Q8ZLA5	Lipase	Lipid and cell wall metabolism	Lpb
+Q8ZLA7	PQQ enzyme repeat protein	Other	Oth
+Q8ZLA8	Xanthine permease	Transport	Tra
+Q8ZLB3	HAAAP family Transport protein	Transport	Tra
+Q8ZLC3	MFS family Transport protein	Transport	Tra
+Q8ZLC4	LysR family transcriptional regulator	Other	Oth
+Q8ZLC9	GntR family regulatory protein	Other	Oth
+Q8ZLD0	Phosphosugar isomerase	Carbon metabolism	Cbn
+Q8ZLD1	Sugar kinases	Carbon metabolism	Cbn
+Q8ZLD5	Phosphatase	Carbon metabolism	Cbn
+Q8ZLE0	ABC-type multidrug Transport system	Transport	Tra
+Q8ZLE1	Inner membrane Transport permease YhhJ	Transport	Tra
+Q8ZLE3	PerM family permease	Transport	Tra
+Q8ZLF1	Homology to death-on-curing protein of phage P1	Other	Oth
+Q8ZLG3	Low affinity gluconate permease	Transport	Tra
+Q8ZLG8	Bacterial transcriptional regulator	Other	Oth
+Q8ZLH6	Transcriptional repressor of the glp operon	Other	Oth
+Q8ZLH7	Sigma N (Sigma 54)-dependent regulator of rtcBA expression	Other	Oth
+Q8ZLI6	High-affinity gluconate permease in GNT I system	Transport	Tra
+Q8ZLI8	DNA utilization protein YhgH (Protein GntX)	Other	Oth
+Q8ZLJ1	RNase R	Translation and protein homeostasis	Rib
+Q8ZLK2	Transport protein	Transport	Tra
+Q8ZLL1	Hydrolase	Carbon metabolism	Cbn
+Q8ZLL5	Protein SlyX	Other	Oth
+Q8ZLM9	DNA topoisomerase	Other	Oth
+Q8ZLN6	Transcriptional repressor for envCD (AcrEF)	Other	Oth
+Q8ZLP4	Protease	Translation and protein homeostasis	Rib
+Q8ZLP7	GntR family regulatory protein	Other	Oth
+Q8ZLP8	GntR family regulatory protein	Other	Oth
+Q8ZLP9	Cation Transporter	Transport	Tra
+Q8ZLQ5	Stringent starvation protein A	Other	Oth
+Q8ZLS2	CacA family Na:Ca Transport protein	Transport	Tra
+Q8ZLT8	Luciferase-like monooxygenase	Other	Oth
+Q8ZLU1	Nucleoside-diphosphate-sugar epimerase	Carbon metabolism	Cbn
+Q8ZLU6	Transcriptional regulator of sugar metabolism	Other	Oth
+Q8ZLV4	Phosphofructokinase	Carbon metabolism	Cbn
+Q8ZLV5	Aga operon transcriptional repressor	Other	Oth
+Q8ZLW0	Transcriptional activator of tdc operon	Other	Oth
+Q8ZLW7	LysR family transcriptional regulator	Other	Oth
+Q8ZLW8	Glutathione S-transferase	Translation and protein homeostasis	Rib
+Q8ZLX3	Dehydrogenase	Carbon metabolism	Cbn
+Q8ZLY0	Transcriptional regulator	Other	Oth
+Q8ZLY1	Transporter	Transport	Tra
+Q8ZLZ1	Arylsulfate sulfotransferase	Carbon metabolism	Cbn
+Q8ZLZ2	Arylsulfate sulfotransferase	Carbon metabolism	Cbn
+Q8ZLZ7	Esterase	Lipid and cell wall metabolism	Lpb
+Q8ZM04	Diadenosine tetraphosphate (Ap4A) hydrolase	Translation and protein homeostasis	Rib
+Q8ZM05	Cation Transporter	Transport	Tra
+Q8ZM08	AraC/XylS family transcriptional regulator	Other	Oth
+Q8ZM12	ATP-dependent RNA helicase-like protein	Translation and protein homeostasis	Rib
+Q8ZM13	UPF0114 protein YqhA	Other	Oth
+Q8ZM15	Cytochrome Ni/Fe component of hydrogenase-2	Electron Transport chain	Etc
+Q8ZM18	Hydrogenase	Electron Transport chain	Etc
+Q8ZM19	Ferrichrome-binding periplasmic protein	Transport	Tra
+Q8ZM21	Glutathione S-transferase	Translation and protein homeostasis	Rib
+Q8ZM22	Methyl-accepting chemotaxis protein	Flagellum and motility including its regulation	Fla
+Q8ZM24	Amidohydrolase	Carbon metabolism	Cbn
+Q8ZM25	Xylanase	Carbon metabolism	Cbn
+Q8ZM30	Amino acid Transporter	Transport	Tra
+Q8ZM32	Response regulator	Other	Oth
+Q8ZM33	Arylsulfatase regulator	Other	Oth
+Q8ZM48	Bacterial type II secretion system protein E domain-containing protein	Flagellum and motility including its regulation	Fla
+Q8ZM49	Transcriptional regulator	Other	Oth
+Q8ZM53	DNA-specific endonuclease I (EC 3.1.21.1)	Other	Oth
+Q8ZM57	GntR family regulatory protein	Other	Oth
+Q8ZM58	Mannitol dehydrogenase	Carbon metabolism	Cbn
+Q8ZM59	Zinc-binding dehydrogenase	Carbon metabolism	Cbn
+Q8ZM61	Mannitol dehydrogenase	Carbon metabolism	Cbn
+Q8ZM62	Hydrolase or acyltransferase	Carbon metabolism	Cbn
+Q8ZM83	Metalloendopeptidase	Other	Oth
+Q8ZM87	Ail and ompX-like protein	Other	Oth
+Q8ZM89	Fimbrial-like protein	Flagellum and motility including its regulation	Fla
+Q8ZM91	Fimbrial chaparone protein	Flagellum and motility including its regulation	Fla
+Q8ZM96	LysR family transcriptional regulator	Other	Oth
+Q8ZMA3	Transcriptional regulator	Other	Oth
+Q8ZMA6	Protein tas	Other	Oth
+Q8ZMA7	POT family peptide Transport protein	Transport	Tra
+Q8ZMB0	Prepilin peptidase dependent protein A	Flagellum and motility including its regulation	Fla
+Q8ZMB1	Prepilin peptidase dependent protein B	Flagellum and motility including its regulation	Fla
+Q8ZMB3	Prepilin peptidase dependent protein C	Flagellum and motility including its regulation	Fla
+Q8ZMD6	MFS superfamily D-glucarate permease	Transport	Tra
+Q8ZMD7	MFS superfamily D-glucarate permease	Transport	Tra
+Q8ZME8	Transposase	Other	Oth
+Q8ZMF4	Aminopeptidase in alkaline phosphatase isozyme conversion (EC 3.4.11.-)	Translation and protein homeostasis	Rib
+Q8ZMG2	Transcriptional regulator	Other	Oth
+Q8ZMG3	Regulatory protein, deoR family	Other	Oth
+Q8ZMG6	Endonuclease	Other	Oth
+Q8ZMG7	Nucleoside-diphosphate-sugar epimerase	Carbon metabolism	Cbn
+Q8ZMG8	Permease	Transport	Tra
+Q8ZMG9	LysR family transcriptional regulator	Other	Oth
+Q8ZMH0	Permease	Transport	Tra
+Q8ZMH5	ABC-type Transport system	Transport	Tra
+Q8ZMI5	Hydrogenase expression/formation protein	Electron Transport chain	Etc
+Q8ZMI6	Hydrogenase maturation factor	Electron Transport chain	Etc
+Q8ZMI8	Hydrogenase 3, membrane subunit	Electron Transport chain	Etc
+Q8ZMI9	Hydrogenase 3, membrane subunit	Electron Transport chain	Etc
+Q8ZMJ2	Protein for processing of HycE	Electron Transport chain	Etc
+Q8ZMK7	Glycoporin	Other	Oth
+Q8ZML3	GntR family regulatory protein	Other	Oth
+Q8ZML7	Rhodanese-related sulfurtransferase	Other	Oth
+Q8ZML8	ArsR family regulatory protein	Other	Oth
+Q8ZML9	Potassium binding protein Kbp	Transport	Tra
+Q8ZMM0	RpoS dependent gamma-aminobutyrate Transport protein	Transport	Tra
+Q8ZMM6	Transcription activator	Other	Oth
+Q8ZMM7	VirK-like protein	Other	Oth
+Q8ZMN1	Hydrolase of the alpha/beta superfamily	Carbon metabolism	Cbn
+Q8ZMN2	Enterochelin esterase-like protein (Fes)	Other	Oth
+Q8ZMN4	Glycosyl transferase	Lipid and cell wall metabolism	Lpb
+Q8ZMN5	Transposase	Other	Oth
+Q8ZMN6	Transposase	Other	Oth
+Q8ZMN7	Superfamily I DNA and RNA helicase	Other	Oth
+Q8ZMN9	Transposase	Other	Oth
+Q8ZMP0	Integrase core domain protein	Other	Oth
+Q8ZMP1	Integrase	Other	Oth
+Q8ZMP4	Integrase	Other	Oth
+Q8ZMP5	Dipeptide/oligopeptide/nickel ABC-type Transport systems, periplasmic component	Transport	Tra
+Q8ZMQ0	Hexulose 6 phosphate synthase	Carbon metabolism	Cbn
+Q8ZMQ1	Dehydrogenase	Carbon metabolism	Cbn
+Q8ZMQ6	Transcriptional regulator	Other	Oth
+Q8ZMQ8	Excinuclease ATPase subunit	Other	Oth
+Q8ZMR4	Fels-2 prophage protein	Other	Oth
+Q8ZMR5	Fels-2 prophage protein	Other	Oth
+Q8ZMR6	Fels-2 prophage protein	Other	Oth
+Q8ZMR7	Fels-2 prophage protein	Other	Oth
+Q8ZMR8	Fels-2 prophage protein	Other	Oth
+Q8ZMR9	Fels-2 prophage protein	Other	Oth
+Q8ZMS0	Fels-2 prophage protein	Other	Oth
+Q8ZMS1	Fels-2 prophage protein	Other	Oth
+Q8ZMS2	Fels-2 prophage protein	Other	Oth
+Q8ZMS5	Fels-2 prophage protein	Other	Oth
+Q8ZMS6	Fels-2 prophage protein	Other	Oth
+Q8ZMS7	Fels-2 prophage protein	Other	Oth
+Q8ZMS8	Fels-2 prophage protein	Other	Oth
+Q8ZMS9	Fels-2 prophage protein	Other	Oth
+Q8ZMT0	Fels-2 prophage protein	Other	Oth
+Q8ZMT1	Fels-2 prophage protein	Other	Oth
+Q8ZMT2	Fels-2 prophage protein	Other	Oth
+Q8ZMT3	Fels-2 prophage protein	Other	Oth
+Q8ZMT4	Fels-2 prophage protein	Other	Oth
+Q8ZMT5	Fels-2 prophage protein	Other	Oth
+Q8ZMT6	Fels-2 prophage protein	Other	Oth
+Q8ZMT8	Fels-2 prophage protein	Other	Oth
+Q8ZMT9	Fels-2 prophage protein	Other	Oth
+Q8ZMU0	Fels-2 prophage protein	Other	Oth
+Q8ZMU1	Fels-2 prophage protein	Other	Oth
+Q8ZMU2	Fels-2 prophage protein	Other	Oth
+Q8ZMU3	Fels-2 prophage protein	Other	Oth
+Q8ZMU4	Fels-2 prophage protein	Other	Oth
+Q8ZMU5	Fels-2 prophage protein	Other	Oth
+Q8ZMU6	Fels-2 prophage protein	Other	Oth
+Q8ZMU7	Fels-2 prophage protein	Other	Oth
+Q8ZMU8	Fels-2 prophage protein	Other	Oth
+Q8ZMU9	Fels-2 prophage protein	Other	Oth
+Q8ZMV0	Fels-2 prophage protein	Other	Oth
+Q8ZMV1	Fels-2 prophage protein	Other	Oth
+Q8ZMV2	Fels-2 prophage protein	Other	Oth
+Q8ZMV3	Fels-2 prophage protein	Other	Oth
+Q8ZMV4	Fels-2 prophage protein	Other	Oth
+Q8ZMV5	Fels-2 prophage protein	Other	Oth
+Q8ZMV6	Fels-2 prophage protein	Other	Oth
+Q8ZMV7	Membrane fusion protein (MFP) family protein	Transport	Tra
+Q8ZMV9	Outer membrane efflux protein	Transport	Tra
+Q8ZMW4	Diguanylate cyclase/phosphodiesterase	Other	Oth
+Q8ZMX3	tRNA-uridine aminocarboxypropyltransferase (EC 2.5.1.25)	Translation and protein homeostasis	Rib
+Q8ZMX6	LysR family transcriptional regulator	Other	Oth
+Q8ZMY1	Gifsy-1 prophage protein	Other	Oth
+Q8ZMY2	Gifsy-1 prophage protein	Other	Oth
+Q8ZMY3	Gifsy-1 prophage protein	Other	Oth
+Q8ZMY4	Gifsy-1 prophage protein	Other	Oth
+Q8ZMY5	Gifsy-1 prophage protein	Other	Oth
+Q8ZMY6	Gifsy-1 prophage	Other	Oth
+Q8ZMY7	Gifsy-1 prophage protein	Other	Oth
+Q8ZMY8	Gifsy-1 prophage protein	Other	Oth
+Q8ZMZ0	Gifsy-1 prophage protein	Other	Oth
+Q8ZMZ1	Gifsy-1 prophage protein	Other	Oth
+Q8ZMZ2	Gifsy-1 prophage protein	Other	Oth
+Q8ZMZ3	Gifsy-1 prophage protein	Other	Oth
+Q8ZMZ4	Gifsy-1 prophage protein	Other	Oth
+Q8ZMZ5	Gifsy-1 prophage protein	Other	Oth
+Q8ZMZ6	Gifsy-1 prophage protein	Other	Oth
+Q8ZMZ7	Gifsy-1 prophage protein	Other	Oth
+Q8ZMZ8	Gifsy-1 prophage protein	Other	Oth
+Q8ZMZ9	Gifsy-1 prophage protein	Other	Oth
+Q8ZN00	Gifsy-1 prophage protein	Other	Oth
+Q8ZN01	Gifsy-1 prophage	Other	Oth
+Q8ZN02	Gifsy-1 prophage protein	Other	Oth
+Q8ZN03	Gifsy-1 prophage protein	Other	Oth
+Q8ZN04	Gifsy-1 prophage protein	Other	Oth
+Q8ZN05	Gifsy-1 prophage protein	Other	Oth
+Q8ZN06	Gifsy-1 prophage protein	Other	Oth
+Q8ZN07	Gifsy-1 prophage protein	Other	Oth
+Q8ZN08	Gifsy-1 prophage protein	Other	Oth
+Q8ZN09	Gifsy-1 prophage protein	Other	Oth
+Q8ZN10	Gifsy-1 prophage protein	Other	Oth
+Q8ZN11	Gifsy-1 prophage protein	Other	Oth
+Q8ZN12	Gifsy-1 prophage protein	Other	Oth
+Q8ZN13	Gifsy-1 prophage protein	Other	Oth
+Q8ZN14	Gifsy-1 prophage protein	Other	Oth
+Q8ZN15	Gifsy-1 prophage protein	Other	Oth
+Q8ZN16	Gifsy-1 prophage protein	Other	Oth
+Q8ZN17	Gifsy-1 prophage protein	Other	Oth
+Q8ZN18	Gifsy-1 prophage leucine-rich repeat protein	Other	Oth
+Q8ZN20	Ferredoxin	Electron Transport chain	Etc
+Q8ZN21	LysR family transcriptional regulator	Other	Oth
+Q8ZN24	ABC superfamily Transport protein	Transport	Tra
+Q8ZN31	Transcriptional regulator of two-component regulator protein (EBP family)	Other	Oth
+Q8ZN46	Alpha-2-macroglobulin	Other	Oth
+Q8ZN49	Anaerobic dimethylsulfoxide reductase	Electron Transport chain	Etc
+Q8ZN50	Dimethylsulfoxide reductase	Electron Transport chain	Etc
+Q8ZN51	Polyferredoxin	Electron Transport chain	Etc
+Q8ZN61	IS3-like transposase	Other	Oth
+Q8ZN69	Glycerate kinase	Carbon metabolism	Cbn
+Q8ZN70	Glycine cleavage system transcriptional repressor	Other	Oth
+Q8ZN76	Glutaredoxin family protein	Translation and protein homeostasis	Rib
+Q8ZN91	Na+-dependent Transporter	Transport	Tra
+Q8ZN95	MFS superfamily xanthosine permease	Transport	Tra
+Q8ZN96	Regulator for XapA	Other	Oth
+Q8ZNA4	Transport	Transport	Tra
+Q8ZNA8	Phosphohistidine phosphatase (EC 3.1.3.-)	Other	Oth
+Q8ZNB6	Putative helix-turn-helix regulatory protein	Other	Oth
+Q8ZNC7	Amino acid Transporter	Transport	Tra
+Q8ZNC8	Sugar nucleotide epimerase	Carbon metabolism	Cbn
+Q8ZNC9	Glutathione S-transferase	Translation and protein homeostasis	Rib
+Q8ZND1	Transcriptional regulator	Other	Oth
+Q8ZNE5	von Willebrand factor, vWF type A domain protein	Other	Oth
+Q8ZNF7	CinA-like protein	Other	Oth
+Q8ZNF8	Transcriptional regulator	Other	Oth
+Q8ZNG1	Cytoplasmic protein	Other	Oth
+Q8ZNG8	LysR family transcriptional regulator	Other	Oth
+Q8ZNG9	GntR family regulatory protein	Other	Oth
+Q8ZNH0	Permease	Transport	Tra
+Q8ZNH1	Dehydratase protein	Carbon metabolism	Cbn
+Q8ZNH7	Ferredoxin-type protein NapG	Electron Transport chain	Etc
+Q8ZNH8	Ferredoxin-type protein	Electron Transport chain	Etc
+Q8ZNI3	Tail fiber protein of phage	Other	Oth
+Q8ZNI4	Tail fiber protein of phage	Other	Oth
+Q8ZNI6	Phage protein	Other	Oth
+Q8ZNI7	Phage protein	Other	Oth
+Q8ZNI9	Phage protein	Other	Oth
+Q8ZNJ0	Phage protein	Other	Oth
+Q8ZNJ1	Tail fiber assembly protein	Other	Oth
+Q8ZNJ3	Acetylation of the O-antigen (LPS)	Lipid and cell wall metabolism	Lpb
+Q8ZNJ4	SsrB-regulated factor	Other	Oth
+Q8ZNK8	LysR family transcriptional regulator	Other	Oth
+Q8ZNK9	APC family lysine-specific permease	Transport	Tra
+Q8ZNL4	Transcriptional regulator	Other	Oth
+Q8ZNL9	Vancomycin sensitivity protein	Other	Oth
+Q8ZNM5	Oxidoreductase UcpA	Electron Transport chain	Etc
+Q8ZNN3	16.9 kd lipoprotein	Lipid and cell wall metabolism	Lpb
+Q8ZNN6	Periplasmic chaperone protein	Translation and protein homeostasis	Rib
+Q8ZNN9	Sugar kinase	Carbon metabolism	Cbn
+Q8ZNP0	Glycohydrolase	Lipid and cell wall metabolism	Lpb
+Q8ZNP3	Tir chaperone	Flagellum and motility including its regulation	Fla
+Q8ZNQ7	Suppressor of ompF assembly mutants	Other	Oth
+Q8ZNS3	Branched chain amino acid Transport protein	Transport	Tra
+Q8ZNS4	Endoprotease	Translation and protein homeostasis	Rib
+Q8ZNS9	Hydrolase	Other	Oth
+Q8ZNT2	Permease	Transport	Tra
+Q8ZNT6	50S ribosomal protein	Translation and protein homeostasis	Rib
+Q8ZNU1	Cell wall-associated hydrolase	Lipid and cell wall metabolism	Lpb
+Q8ZNU2	Glucose-6-phosphate dehydrogenase	Carbon metabolism	Cbn
+Q8ZNU6	Ribose 5-phosphate isomerase (EC 5.3.1.6)	Carbon metabolism	Cbn
+Q8ZNU7	Intracellular protease/amidase	Translation and protein homeostasis	Rib
+Q8ZNW1	HTH-type transcriptional regulator HexR	Other	Oth
+Q8ZNW6	DNA damage-inducible gene in SOS regulon, dependent on cyclic AMP and H-NS	Other	Oth
+Q8ZNW9	Protease II (EC 3.4.21.83)	Translation and protein homeostasis	Rib
+Q8ZNX0	Amidohydrolase	Carbon metabolism	Cbn
+Q8ZNX5	Phage integrase protein	Other	Oth
+Q8ZNX6	RecE-like protein	Other	Oth
+Q8ZNX7	Glycoside hydrolase family 19 protein	Carbon metabolism	Cbn
+Q8ZNX8	Phage-tail assembly protein-like protein	Other	Oth
+Q8ZNY3	Mutator family transposase	Other	Oth
+Q8ZNY6	Acetyltransferase	Translation and protein homeostasis	Rib
+Q8ZNZ6	Transport protein	Transport	Tra
+Q8ZNZ7	HTH-type transcriptional regulator KdgR	Other	Oth
+Q8ZNZ9	23S rRNA m1G745 methyltransferase	Translation and protein homeostasis	Rib
+Q8ZP25	Thiol-disulfide isomerase and thioredoxin	Translation and protein homeostasis	Rib
+Q8ZP32	CaCA family, sodium-calcium/proton antiporter	Transport	Tra
+Q8ZP33	Invasin	Flagellum and motility including its regulation	Fla
+Q8ZP47	Voltage-gated potassium channel	Transport	Tra
+Q8ZP48	Putative double-stranded DNA mimic protein YciU	Other	Oth
+Q8ZP58	Diguanylate cyclase/phosphodiesterase domain 2	Other	Oth
+Q8ZP59	Transcription activator	Other	Oth
+Q8ZP60	Phage shock protein	Other	Oth
+Q8ZP61	Phage shock protein	Other	Oth
+Q8ZP62	Phage shock protein	Other	Oth
+Q8ZP63	ATPase	Other	Oth
+Q8ZP69	2'-hydroxyisoflavone reductase	Carbon metabolism	Cbn
+Q8ZP70	LysR family transcriptional regulator	Other	Oth
+Q8ZP72	Short-chain alcohol dehydrogenase	Carbon metabolism	Cbn
+Q8ZP73	AraC family bacterial regulatory helix-turn-helix protein	Other	Oth
+Q8ZP76	Bacterial regulatory helix-turn-helix protein, araC family	Other	Oth
+Q8ZP77	Serine/threonine protein kinase	Other	Oth
+Q8ZP78	Invasin-like protein intimin	Flagellum and motility including its regulation	Fla
+Q8ZP80	Thiol peroxidase	Translation and protein homeostasis	Rib
+Q8ZP82	Transcriptional regulator	Other	Oth
+Q8ZP90	Reverse transcriptase	Other	Oth
+Q8ZP98	SAM-dependent methyltransferase	Translation and protein homeostasis	Rib
+Q8ZPA7	Transcriptional repressor FrmR	Other	Oth
+Q8ZPB0	LysR family transcriptional regulator	Other	Oth
+Q8ZPB2	Carboxylic ester hydrolase (EC 3.1.1.-)	Lipid and cell wall metabolism	Lpb
+Q8ZPB8	Nucleoside triphosphatase	Translation and protein homeostasis	Rib
+Q8ZPC0	Acetyl transferase (EC 2.3.1.-)	Translation and protein homeostasis	Rib
+Q8ZPC1	Nucleoside-diphosphate-sugar pyrophosphorylases	Carbon metabolism	Cbn
+Q8ZPC3	Methyltransferase	Translation and protein homeostasis	Rib
+Q8ZPC5	Benzoate membrane Transport protein	Transport	Tra
+Q8ZPC7	Collagenase (EC 3.4.-.-)	Lipid and cell wall metabolism	Lpb
+Q8ZPC8	GntR family regulatory protein	Other	Oth
+Q8ZPD4	NADP-dependent oxidoreductase	Carbon metabolism	Cbn
+Q8ZPD5	Outer membrane receptor	Transport	Tra
+Q8ZPE2	Transcriptional regulator, TetR family	Other	Oth
+Q8ZPE4	Permease	Transport	Tra
+Q8ZPF4	Na+/H+ antiporter	Transport	Tra
+Q8ZPG0	Translation initiation inhibitor	Translation and protein homeostasis	Rib
+Q8ZPG1	S-adenosylmethionine:tRNA-ribosyltransferase-isomerase	Translation and protein homeostasis	Rib
+Q8ZPG2	MarR-family transcriptional regulator	Other	Oth
+Q8ZPG4	Multidrug efflux protein	Transport	Tra
+Q8ZPG6	Transport protein	Transport	Tra
+Q8ZPG7	Zinc-binding dehydrogenase	Carbon metabolism	Cbn
+Q8ZPG8	Hydrolase	Carbon metabolism	Cbn
+Q8ZPH2	Hydrogenase maturation protease	Translation and protein homeostasis	Rib
+Q8ZPH3	Hydrogenase protein	Electron Transport chain	Etc
+Q8ZPH4	Hydrogenase	Electron Transport chain	Etc
+Q8ZPH5	Dehydrogenase protein	Carbon metabolism	Cbn
+Q8ZPH9	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+Q8ZPI4	LysR family transcriptional regulator	Other	Oth
+Q8ZPI5	MFS family Transport protein	Transport	Tra
+Q8ZPI9	Transport protein	Transport	Tra
+Q8ZPJ9	Dimethylsulfoxide reductase	Electron Transport chain	Etc
+Q8ZPK7	Transcriptional repressor of ptsG and ptsHI	Other	Oth
+Q8ZPK8	LysR family transcriptional regulator	Other	Oth
+Q8ZPN3	Multidrug resistance efflux pump	Transport	Tra
+Q8ZPN5	Aldo/keto reductase	Carbon metabolism	Cbn
+Q8ZPN6	Oxidoreductase	Electron Transport chain	Etc
+Q8ZPN8	Cell wall-associated hydrolase	Lipid and cell wall metabolism	Lpb
+Q8ZPN9	LysR family transcriptional regulator	Other	Oth
+Q8ZPP4	Secretion system apparatus protein	Flagellum and motility including its regulation	Fla
+Q8ZPP8	Amino acid permease	Transport	Tra
+Q8ZPQ2	Iron-sulfur component of FhuF stability protein	Electron Transport chain	Etc
+Q8ZPQ3	Transport protein	Transport	Tra
+Q8ZPQ4	ABC Transporter	Transport	Tra
+Q8ZPQ5	HesB-like domain protein	Translation and protein homeostasis	Rib
+Q8ZPQ6	Na+-dicarboxylate symporter	Transport	Tra
+Q8ZPR0	Permease	Transport	Tra
+Q8ZPR2	MFS family Transport protein	Transport	Tra
+Q8ZPR3	MFS family Transport protein	Transport	Tra
+Q8ZPR7	Transcription regulator, AraC family	Other	Oth
+Q8ZPR8	Electron transfer flavoprotein	Electron Transport chain	Etc
+Q8ZPR9	Electron transfer flavoprotein	Electron Transport chain	Etc
+Q8ZPS0	Protein FixC	Electron Transport chain	Etc
+Q8ZPS1	Ferredoxin-like protein	Electron Transport chain	Etc
+Q8ZPS2	Plant pathogenicity factor-like protein	Other	Oth
+Q8ZPT4	Salt-induced outer membrane protein	Lipid and cell wall metabolism	Lpb
+Q8ZPT8	LexA regulated protein	Other	Oth
+Q8ZPT9	Kinase-like protein	Other	Oth
+Q8ZPU0	Cell division activator CedA	Lipid and cell wall metabolism	Lpb
+Q8ZPW0	Aldehyde reductase	Carbon metabolism	Cbn
+Q8ZPW1	Arylsulfatase regulator	Other	Oth
+Q8ZPW8	Regulator (AraC/XylS family)	Other	Oth
+Q8ZPW9	MFS family Transport protein (Amino acid/amine Transport)	Transport	Tra
+Q8ZPX2	Hemolysin	Other	Oth
+Q8ZPX3	Nitric oxide reductase	Electron Transport chain	Etc
+Q8ZPY6	Molecular chaperone (Small heat shock protein)	Translation and protein homeostasis	Rib
+Q8ZQ04	Transcriptional repressor (TetR/AcrR family)	Other	Oth
+Q8ZQ11	Metal-dependent hydrolase	Other	Oth
+Q8ZQ20	DNA damage-inducible protein I	Other	Oth
+Q8ZQ32	Sugar Transport protein	Transport	Tra
+Q8ZQ35	Sodium/glucose coTransporter	Transport	Tra
+Q8ZQ36	Transcriptional regulator	Other	Oth
+Q8ZQ38	Transcriptional repressor (TetR/AcrR family)	Other	Oth
+Q8ZQ42	Suppression of copper sensitivity protein	Other	Oth
+Q8ZQ43	Suppression of copper sensitivity protein	Other	Oth
+Q8ZQ45	Arabinose operon regulatory protein	Other	Oth
+Q8ZQ56	Pathogenicity island encoded protein: SPI5	Other	Oth
+Q8ZQ58	Pathogenicity island encoded protein: SPI5	Other	Oth
+Q8ZQ61	TEGT family carrier	Transport	Tra
+Q8ZQ62	AraC family bacterial regulatory protein	Other	Oth
+Q8ZQ66	Efflux (PET) family Transporter	Transport	Tra
+Q8ZQ77	Gifsy-2 prophage protein	Other	Oth
+Q8ZQ80	Gifsy-2 prophage tail fiber assembly like-protein	Other	Oth
+Q8ZQ81	Gifsy-2 prophage probable tail fiber protein	Other	Oth
+Q8ZQ82	Gifsy-2 prophage host specificity protein J, phage lambda	Other	Oth
+Q8ZQ83	Gifsy-2 prophage probable tail assembly protein	Other	Oth
+Q8ZQ84	Gifsy-2 prophage probable tail assembly protein	Other	Oth
+Q8ZQ85	Gifsy-2 prophage attachment and invasion protein homolog	Flagellum and motility including its regulation	Fla
+Q8ZQ86	Gifsy-2 prophage probable minor tail protein	Other	Oth
+Q8ZQ87	Gifsy-2 prophage probable minor tail protein	Other	Oth
+Q8ZQ88	Gifsy-2 prophage probable minor tail protein	Other	Oth
+Q8ZQ89	Gifsy-2 prophage probable major tail protein	Other	Oth
+Q8ZQ90	Gifsy-2 prophage probable minor tail protein	Other	Oth
+Q8ZQ91	Gifsy-2 prophage probable minor tail protein	Other	Oth
+Q8ZQ92	Gifsy-2 prophage probable ATP-binding sugar Transporter-like protein	Transport	Tra
+Q8ZQ93	Gifsy-2 prophage putative RecA/RadA recombinase	Other	Oth
+Q8ZQ94	ATP-dependent Clp protease proteolytic subunit	Translation and protein homeostasis	Rib
+Q8ZQ95	Gifsy-2 prophage protein	Other	Oth
+Q8ZQ96	Gifsy-2 prophage protein	Other	Oth
+Q8ZQ97	Gifsy-2 prophage protein	Other	Oth
+Q8ZQ98	Gifsy-2 prophage protein	Other	Oth
+Q8ZQA0	Gifsy-2 prophage protein	Other	Oth
+Q8ZQA1	Gifsy-2 prophage protein	Other	Oth
+Q8ZQA2	Gifsy-2 prophage protein	Other	Oth
+Q8ZQA3	Gifsy-2 prophage protein	Other	Oth
+Q8ZQA4	Gifsy-2 prophage putative molecular chaperone, DnaJ family	Translation and protein homeostasis	Rib
+Q8ZQA5	Gifsy-2 prophage protein	Other	Oth
+Q8ZQA6	Gifsy-2 prophage protein	Other	Oth
+Q8ZQA7	Gifsy-2 prophage protein	Other	Oth
+Q8ZQA8	Gifsy-2 prophage protein	Other	Oth
+Q8ZQA9	Gifsy-2 prophage protein	Other	Oth
+Q8ZQB0	Gifsy-2 prophage integrase	Other	Oth
+Q8ZQB1	Transcriptional regulator, Lrp family	Other	Oth
+Q8ZQB2	Leucine response regulator	Other	Oth
+Q8ZQB9	MukF protein (Killing factor KicB)	Other	Oth
+Q8ZQD1	APC family, amino-acid Transporter	Transport	Tra
+Q8ZQE0	Homolog of slsA in STM	Other	Oth
+Q8ZQE2	Integrase protein	Other	Oth
+Q8ZQE6	Homology with RecF protein	Other	Oth
+Q8ZQE9	NADH oxidoreductase for hcp gene product	Electron Transport chain	Etc
+Q8ZQF2	Nucleoside-diphosphate-sugar epimerase	Carbon metabolism	Cbn
+Q8ZQF5	Fels-1 prophage minor tail protein	Other	Oth
+Q8ZQF6	Fels-1 prophage host specificity protein	Other	Oth
+Q8ZQF8	Fels-1 prophage tail assembly protein	Other	Oth
+Q8ZQF9	Fels-1 prophage tail assembly protein	Other	Oth
+Q8ZQG0	Fels-1 prophage minor tail protein	Other	Oth
+Q8ZQG1	Fels-1 prophage attachment and invasion protein	Flagellum and motility including its regulation	Fla
+Q8ZQG2	Fels-1 prophage minor tail protein	Other	Oth
+Q8ZQG3	Fels-1 prophage minor tail protein	Other	Oth
+Q8ZQG4	Fels-1 prophage minor tail protein	Other	Oth
+Q8ZQG5	Fels-1 prophage major tail protein	Other	Oth
+Q8ZQG6	Fels-1 prophage protein	Other	Oth
+Q8ZQG7	Fels-1 phage tail component	Other	Oth
+Q8ZQG8	Fels-1 prophage protein	Other	Oth
+Q8ZQG9	ATP-dependent Clp protease proteolytic subunit	Translation and protein homeostasis	Rib
+Q8ZQH0	Fels-1 prophage protein	Other	Oth
+Q8ZQH1	Fels-1 prophage protein	Other	Oth
+Q8ZQH2	Fels-1 prophage protein	Other	Oth
+Q8ZQH3	Fels-1 prophage protein	Other	Oth
+Q8ZQH4	Fels-1 prophage chitinase	Lipid and cell wall metabolism	Lpb
+Q8ZQH5	Fels-1 prophage protein	Other	Oth
+Q8ZQH6	Fels-1 Prophage Protein-like protein	Other	Oth
+Q8ZQH7	Fels-1 prophage protein	Other	Oth
+Q8ZQH8	Fels-1 prophage chaparone	Translation and protein homeostasis	Rib
+Q8ZQH9	Fels-1 prophage protein	Other	Oth
+Q8ZQI0	Fels-1 putative prophage DNA primase	Other	Oth
+Q8ZQI1	Fels-1 prophage DNA or RNA helicases of superfamily II	Other	Oth
+Q8ZQI2	Fels-1 prophage protein	Other	Oth
+Q8ZQI3	Fels-1 prophage protein	Other	Oth
+Q8ZQI4	Fels-1 prophage transcriptional regulator	Other	Oth
+Q8ZQI5	Fels-1 prophage protein	Other	Oth
+Q8ZQI6	Fels-1 prophage protein	Other	Oth
+Q8ZQI7	Fels-1 prophage protein	Other	Oth
+Q8ZQI8	Fels-1 prophage excisionase	Other	Oth
+Q8ZQI9	Fels-1 prophage integrase	Other	Oth
+Q8ZQJ2	Sulfatase	Lipid and cell wall metabolism	Lpb
+Q8ZQK5	Regulator (TetR/Acr family)	Other	Oth
+Q8ZQK6	Transport protein/putative regulator	Transport	Tra
+Q8ZQL0	Transcriptional repressor for deoxyribose operon (DeoR family)	Other	Oth
+Q8ZQL3	Dehydrogenase	Carbon metabolism	Cbn
+Q8ZQL5	LysR family transcriptional regulator	Other	Oth
+Q8ZQM5	Pyruvate formate lyase activating enzyme (EC 1.97.1.4)	Carbon metabolism	Cbn
+Q8ZQM6	Pyruvate formate lyase (EC 2.3.1.54)	Carbon metabolism	Cbn
+Q8ZQM8	Hydrolase of the HAD superfamily	Carbon metabolism	Cbn
+Q8ZQN0	Probable ATP-binding protein YbiT	Other	Oth
+Q8ZQN1	Di-and tricarboxylate Transporters	Transport	Tra
+Q8ZQN5	DnaK suppressor protein	Translation and protein homeostasis	Rib
+Q8ZQN9	Transcriptional repressor (TetR/AcrR family)	Other	Oth
+Q8ZQP9	Permease	Transport	Tra
+Q8ZQR5	Hydrolase of the HAD superfamily	Carbon metabolism	Cbn
+Q8ZQR8	Transcriptional repressor of modABCD operon (Molybdate uptake)	Other	Oth
+Q8ZQS3	ABC-type cobalamin/Fe3+-siderophores Transport system, ATPase component	Transport	Tra
+Q8ZQS4	ABC Transport protein	Transport	Tra
+Q8ZQS7	Cation Transporter	Transport	Tra
+Q8ZQS8	Transcriptional regulator, lysR family	Other	Oth
+Q8ZQS9	Transcriptional regulator, lysR family	Other	Oth
+Q8ZQT6	Tol protein, membrane spanning protein	Lipid and cell wall metabolism	Lpb
+Q8ZQT7	Acyl-CoA thioester hydrolase YbgC	Carbon metabolism	Cbn
+Q8ZQU8	Glycosyl transferase	Lipid and cell wall metabolism	Lpb
+Q8ZQU9	Glycosyltransferase, cell wall biogenesis	Lipid and cell wall metabolism	Lpb
+Q8ZQV0	Glycosyltransferase, cell wall biogenesis	Lipid and cell wall metabolism	Lpb
+Q8ZQV3	Glycosyl transferase	Lipid and cell wall metabolism	Lpb
+Q8ZQX2	LysR family transcriptional regulator	Other	Oth
+Q8ZQX9	Transcriptional repressor of nag (N-acetylglucosamine) operon (NagC/XylR family)	Other	Oth
+Q8ZQY6	Heatshock protein, homolog of hsp70 in Hsc66 subfamily	Translation and protein homeostasis	Rib
+Q8ZQY7	Molecular chaperone, DnaJ family	Translation and protein homeostasis	Rib
+Q8ZQY9	Molecular chaperone, DnaJ family	Translation and protein homeostasis	Rib
+Q8ZQZ3	Sigma-54 dependent transcriptional regulator	Other	Oth
+Q8ZR05	Hydrolase	Carbon metabolism	Cbn
+Q8ZR07	DcuC family, dicarboxylate Transporter	Transport	Tra
+Q8ZR17	Dehydrogenase	Carbon metabolism	Cbn
+Q8ZR18	Hydrogenase protein	Electron Transport chain	Etc
+Q8ZR19	Hydrogenase protein	Electron Transport chain	Etc
+Q8ZR20	Oxidoreductase protein	Electron Transport chain	Etc
+Q8ZR21	Component of anaerobic dehydrogenases	Electron Transport chain	Etc
+Q8ZR23	LysR family transcriptional regulator	Other	Oth
+Q8ZR24	3'-phosphoadenosine 5'-phosphosulfate sulfotransferase (PAPS reductase)/FAD synthetase	Carbon metabolism	Cbn
+Q8ZR25	Transcriptional regulator	Other	Oth
+Q8ZR26	Aminotransferase (EC 2.6.1.1)	Carbon metabolism	Cbn
+Q8ZR27	Glycerol dehydrogenase	Carbon metabolism	Cbn
+Q8ZR28	Carbon starvation protein	Other	Oth
+Q8ZR36	Ferric enterobactin (Enterochelin) Transporter	Transport	Tra
+Q8ZR39	Enterochelin esterase	Other	Oth
+Q8ZR50	Phosphosugar isomerases	Carbon metabolism	Cbn
+Q8ZR53	APC family, phenylalanene Transporter	Transport	Tra
+Q8ZR54	ATPase involved in DNA repair	Other	Oth
+Q8ZR57	Transcriptional regulator (AraC/XylS family)	Other	Oth
+Q8ZR59	histidine kinase (EC 2.7.13.3)	Other	Oth
+Q8ZR60	Glycosyltransferase	Lipid and cell wall metabolism	Lpb
+Q8ZR62	Transposase	Other	Oth
+Q8ZR63	Homology to integrase protein of phage	Other	Oth
+Q8ZR65	Membrane-bound metal-dependent hydrolases	Other	Oth
+Q8ZR67	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+Q8ZR75	Acyl-CoA synthetase, involved in protein Transport	Carbon metabolism	Cbn
+Q8ZR79	Transport protein	Transport	Tra
+Q8ZR80	NCS1 family, allantoin Transport protein	Transport	Tra
+Q8ZR82	Permease	Transport	Tra
+Q8ZR92	Thioredoxin protein	Translation and protein homeostasis	Rib
+Q8ZR93	ABC-type sugar/spermidine/putrescine Transport system, ATPase component	Transport	Tra
+Q8ZR94	Protein QmcA	Other	Oth
+Q8ZR98	MFS family of Transport protein	Transport	Tra
+Q8ZRA4	Transposase	Other	Oth
+Q8ZRA8	Acetyltransferase (EC 2.3.1.-)	Translation and protein homeostasis	Rib
+Q8ZRB1	Glycoprotein/polysaccharide metabolism	Lipid and cell wall metabolism	Lpb
+Q8ZRB7	ABC Transporter periplasmic binding protein	Transport	Tra
+Q8ZRC7	IS903 transposase	Other	Oth
+Q8ZRC8	MFS family Transporter	Transport	Tra
+Q8ZRD2	Oxidoreductase / K + channel protein	Other	Oth
+Q8ZRE4	MFS family, arabinose polymer Transporter	Transport	Tra
+Q8ZRE8	Protein of aro operon, regulated by aroR	Carbon metabolism	Cbn
+Q8ZRF1	Permease	Transport	Tra
+Q8ZRF5	ABC superfamily Transporter	Transport	Tra
+Q8ZRF8	Uncharacterized protein YaiT	Other	Oth
+Q8ZRF9	Transport protein	Transport	Tra
+Q8ZRG0	Transcription regulator, AraC family	Other	Oth
+Q8ZRG5	Copper chaperone	Other	Oth
+Q8ZRG6	Transcriptional regulator	Other	Oth
+Q8ZRG8	Cation efflux pump	Transport	Tra
+Q8ZRH3	Outer membrane protein homolog of ail and ompX	Lipid and cell wall metabolism	Lpb
+Q8ZRH5	Response regulator	Other	Oth
+Q8ZRH9	Fimbriae major subunit	Flagellum and motility including its regulation	Fla
+Q8ZRI0	Fimbriae chaparone	Flagellum and motility including its regulation	Fla
+Q8ZRI2	Fimbriae usher	Flagellum and motility including its regulation	Fla
+Q8ZRI3	Fimbriae chaparone	Flagellum and motility including its regulation	Fla
+Q8ZRI4	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+Q8ZRI6	LysR family transcriptional regulator	Other	Oth
+Q8ZRI8	Fumarylacetoacetate (FAA) hydrolase	Carbon metabolism	Cbn
+Q8ZRJ1	Permease	Transport	Tra
+Q8ZRJ3	IS3 transposase	Other	Oth
+Q8ZRJ6	Glutamine amidotransferase	Carbon metabolism	Cbn
+Q8ZRK1	Xylanase/chitin deacetylase	Lipid and cell wall metabolism	Lpb
+Q8ZRK3	Fimbriae assembly chaparone	Flagellum and motility including its regulation	Fla
+Q8ZRK4	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+Q8ZRK5	Integrase core domain protein	Other	Oth
+Q8ZRK6	Transposase	Other	Oth
+Q8ZRL3	Shiga-like toxin A subunit	Other	Oth
+Q8ZRM1	SAM-dependent methyltransferase	Translation and protein homeostasis	Rib
+Q8ZRM3	Methyltransferase in menaquinone/biotin biosynthesis	Carbon metabolism	Cbn
+Q8ZRM5	Drug efflux protein (Perhaps for chloramphenicol)	Transport	Tra
+Q8ZRM6	LysR family transcriptional regulator	Other	Oth
+Q8ZRN4	Modulator of Rho-dependent transcription termination	Other	Oth
+Q8ZRN6	Lactoylglutathione lyase	Carbon metabolism	Cbn
+Q8ZRN8	Endochitinase	Lipid and cell wall metabolism	Lpb
+Q8ZRP9	Minor fimbrial subunit	Flagellum and motility including its regulation	Fla
+Q8ZRQ4	ATP-dependent helicase	Other	Oth
+Q8ZRR2	Xylanase/chitin deacetylase	Lipid and cell wall metabolism	Lpb
+Q8ZRR3	PTS enzyme	Carbon metabolism	Cbn
+Q8ZRR4	Fimbrial subunit	Flagellum and motility including its regulation	Fla
+Q8ZRR7	Fimbriae	Flagellum and motility including its regulation	Fla
+Q8ZRR9	ABC-type multidrug Transport system, ATPase component	Transport	Tra
+Q8ZRS6	UPF0231 protein YacL	Other	Oth
+Q8ZRS7	Restriction endonuclease	Other	Oth
+Q8ZRS9	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+Q8ZRT3	Integral membrane protein	Other	Oth
+Q8ZRT4	Component in type IV pilin biogenesis	Flagellum and motility including its regulation	Fla
+Q8ZRV3	DedA family membrane protein	Other	Oth
+Q8ZRW4	Sulfatase	Lipid and cell wall metabolism	Lpb
+Q8ZRW7	MFS family Transport protein	Transport	Tra
+Q8ZRX7	Viral protein	Other	Oth
+Q8ZRY8	Nitrite reductase	Electron Transport chain	Etc
+Q8ZRZ1	Sodium galactoside symporter	Transport	Tra
+Q8ZRZ2	Glycosyl hydrolase	Carbon metabolism	Cbn
+Q8ZRZ4	Arylsulfatase	Lipid and cell wall metabolism	Lpb
+Q8ZRZ6	Arylsulfatase regulatory protein	Other	Oth
+Q8ZRZ8	Outer membrane or exported protein	Lipid and cell wall metabolism	Lpb
+Q8ZRZ9	Arylsulfatase	Lipid and cell wall metabolism	Lpb
+Q8ZS00	Transcription regulator	Other	Oth
+Q8ZS01	LysR family transcriptional regulator	Other	Oth
+Q8ZS02	Transcription regulator	Other	Oth
+Q8ZS03	Thiol-disulfide isomerase	Translation and protein homeostasis	Rib
+Q8ZS04	Fimbrial chaparone	Flagellum and motility including its regulation	Fla
+Q8ZS05	Fimbrial subunit	Flagellum and motility including its regulation	Fla
+Q8ZS08	Hydroxymethyltransferase	Carbon metabolism	Cbn
+Q8ZS10	Transcriptional regulator	Other	Oth
+Q8ZS12	Bacteriophage protein	Other	Oth
+Q8ZS13	LysR family transcriptional regulator	Other	Oth
+Q8ZS14	UPF0412 protein YaaI	Other	Oth
+Q8ZS16	Alanine/glycine Transport protein	Transport	Tra
+Q8ZS17	UPF0246 protein YaaA	Other	Oth
+Q93GL3	Conjugative transfer: fimbrial acetylation	Flagellum and motility including its regulation	Fla
+Q93GL4	Conjugative transfer: oriT nicking-unwinding	Other	Oth
+Q93GL7	Conjugative transfer	Other	Oth
+Q93GL8	Conjugative transfer: DNA Transport	Other	Oth
+Q93GM0	Conjugative transfer: surface exclusion	Other	Oth
+Q93GM1	Conjugative transfer: assembly abd aggregate stability	Other	Oth
+Q93GM2	Conjugative transfer: assembly	Other	Oth
+Q93GM3	Conjugative transfer	Other	Oth
+Q93GM4	Conjugative transfer: fimbrial synthesis	Flagellum and motility including its regulation	Fla
+Q93GM5	Conjugative transfer: assembly	Other	Oth
+Q93GM6	Conjugative transfer	Other	Oth
+Q93GM7	Conjugative transfer: aggregate stability	Other	Oth
+Q93GM8	Conjugative transfer: assembly	Other	Oth
+Q93GM9	Conjugative transfer protein	Other	Oth
+Q93GN0	Conjugative transfer: assembly	Other	Oth
+Q93GN1	Conjugative transfer: assembly	Other	Oth
+Q93GN2	Conjugative transfer	Other	Oth
+Q93GN3	Conjugative transfer: assembly	Other	Oth
+Q93GN4	Conjugative transfer protein	Other	Oth
+Q93GN5	Conjugative transfer	Other	Oth
+Q93GN6	Conjugative transfer: assembly	Other	Oth
+Q93GN7	Conjugative transfer protein	Other	Oth
+Q93GN8	Conjugative transfer	Other	Oth
+Q93GN9	Conjugative transfer: assembly	Other	Oth
+Q93GP0	Conjugative transfer: assembly	Other	Oth
+Q93GP1	Relaxosome protein TraM	Other	Oth
+Q93GP2	Transglycosylase	Lipid and cell wall metabolism	Lpb
+Q93GP3	Plasmid SOS inhibition	Other	Oth
+Q93GP4	Plasmid SOS inhibition	Other	Oth
+Q93GP6	UPF0401 protein YubL	Other	Oth
+Q93GQ6	Mutagenesis by UV and mutagens related to umuDC operon	Other	Oth
+Q93GQ7	Plasmid partition protein B	Other	Oth
+Q93GQ8	Plasmid partition protein A	Other	Oth
+Q93GR0	Integrase protein	Other	Oth
+Q93GR1	Phosphoribulokinase / uridine kinase family	Carbon metabolism	Cbn
+Q93GR2	Transposase, IS200-like	Other	Oth
+Q93GR3	Adhesin	Flagellum and motility including its regulation	Fla
+Q93GR5	Toxin CcdB (Cytotoxic protein CcdB) (Protein LetD)	Other	Oth
+Q93GR6	Toxin addiction system: antidote	Other	Oth
+Q93GR9	DNA replication	Other	Oth
+Q93GS3	SdiA-regulated gene putative outer membrane protein	Lipid and cell wall metabolism	Lpb
+Q93GS4	SdiA-regulated gene putative bacterial regulatory helix-turn-helix proteins, araC family	Other	Oth
+Q93GS5	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+Q93GS6	Replication initiation protein	Other	Oth
+Q93GS7	DNA replication	Other	Oth
+Q93GS8	Protein CopB	Other	Oth
+Q9L6L7	STMD1.8 protein	Other	Oth
+Q9L6L8	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+Q9L6N0	STMD1.23 protein	Other	Oth
+Q9L6P8	Inner membrane protein (STMD1.44 protein)	Other	Oth
+Q9L6P9	Cytoplasmic protein (STMD1.47 protein)	Other	Oth
+Q9L6Q0	Inner membrane protein (STMD1.48 protein)	Other	Oth
+Q9L6Q1	STMD1.49 protein	Other	Oth
+Q9L6R9	STMD1.77 protein	Other	Oth
+Q9L6S2	Inner membrane protein (STMD1.46 protein)	Other	Oth
+Q9L6S6	Cytoplasmic protein (STMD1.83 protein)	Other	Oth
+Q9L6S7	Cytoplasmic protein (STMD1.84 protein)	Other	Oth
+Q9L9I1	Inner membrane protein (Yjah)	Other	Oth
+Q9L9J2	Cytoplasmic protein (STMF1.19 protein)	Other	Oth
+Q9L9J4	STMF1.15 protein	Other	Oth
+Q9L9J5	Cytoplasmic protein (STMF1.40 protein)	Other	Oth
+Q9L9J6	Inner membrane protein (STMF1.14 protein)	Other	Oth
+Q9L9K2	Cytoplasmic protein (STMF1.42 protein)	Other	Oth
+Q9RN88	Mutant RpoS	Other	Oth
+Q9RN89	Mutant RpoS	Other	Oth
+Q9RN90	Mutant RpoS	Other	Oth
+Q9RN94	Mutant RpoS	Other	Oth
+Q9RN95	Mutant RpoS	Other	Oth
+Q9S4Z2	Outer membrane protein	Lipid and cell wall metabolism	Lpb
+Q9ZFU5	Uncharacterized protein YpfK	Other	Oth
+Q9ZFU6	Uncharacterized protein YpfL (ORF79)	Other	Oth
+V6B955	Proteolysis tag peptide encoded by tmRNA Salmo_enter_Stpaul	Translation and protein homeostasis	Rib
