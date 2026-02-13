@@ -50,7 +50,7 @@ def simulate(time, c_ex, c_ub, a_fla, kcat=None, Km=None, hc=None, remote=False)
         hc = pd.Series([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], index = enz)
 
     # protein size [1000 aa]
-    pro_size = pd.Series([1, 5, 10, 20, 7.5, 2, 5e3, 0.35], index = pro)
+    pro_size = pd.Series([1, 10, 10, 5, 7.5, 2, 5e3, 0.35], index = pro)
 
     # reaction stoichiometry matrix of met x enz
     stoich = pd.DataFrame([
@@ -81,7 +81,7 @@ def simulate(time, c_ex, c_ub, a_fla, kcat=None, Km=None, hc=None, remote=False)
     density = m.Param(value=8e6, name = "density")
 
     # specific surface area of membrane located components [µm^2]
-    spA = pd.Series([1e-4, 5e-5, 1e-4, 5e-4], index = mem + memP)
+    spA = pd.Series([1e-5, 5e-5, 1e-4, 5e-4], index = mem + memP)
 
     # area of membrane proteins as fraction of total surface
     surface_pro = m.Var(value=0.5, lb=0, ub=1, name = "surface_pro")
@@ -169,7 +169,7 @@ def simulate(time, c_ex, c_ub, a_fla, kcat=None, Km=None, hc=None, remote=False)
     m.Equation(sum(c[mem]) == c["lip"])
 
     # fix the mass fraction of maintenance proteins (or others)
-    m.Equation(a["Oth"] == 0.5)
+    m.Equation(a["Oth"] == 0.35)
 
     # force production of flagella
     m.Equation(a["Fla"] == a_fla)

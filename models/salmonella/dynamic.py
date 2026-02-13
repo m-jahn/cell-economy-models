@@ -50,7 +50,7 @@ def simulate(time, time_init, dist_init, c_init, c_ub, a_fla, kcat=None, Km=None
         hc = pd.Series([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], index = enz)
 
     # protein size [1000 aa]
-    pro_size = pd.Series([1, 5, 10, 20, 7.5, 2, 5e3, 0.35], index = pro)
+    pro_size = pd.Series([1, 10, 10, 5, 7.5, 2, 5e3, 0.35], index = pro)
 
     # reaction stoichiometry matrix of met x enz
     stoich = pd.DataFrame([
@@ -90,7 +90,7 @@ def simulate(time, time_init, dist_init, c_init, c_ub, a_fla, kcat=None, Km=None
     distance = m.Var(value = dist_init, lb = 0, ub = dist_init * 2, name = "distance")
 
     # specific surface area of membrane located components [µm^2]
-    spA = pd.Series([1e-4, 5e-5, 1e-4, 5e-4], index = mem + memP)
+    spA = pd.Series([1e-5, 5e-5, 1e-4, 5e-4], index = mem + memP)
 
     # area of membrane proteins as fraction of total surface
     surface_pro = m.Var(value=0.5, lb=0, ub=1, name = "surface_pro")
@@ -179,7 +179,7 @@ def simulate(time, time_init, dist_init, c_init, c_ub, a_fla, kcat=None, Km=None
     m.Equation(sum(c[mem]) == c["lip"])
 
     # fix the mass fraction of maintenance proteins (or others)
-    m.Equation(a["Oth"] == 0.5)
+    m.Equation(a["Oth"] == 0.35)
 
     # force production of flagella
     m.Equation(a["Fla"] == a_fla)
@@ -193,6 +193,18 @@ def simulate(time, time_init, dist_init, c_init, c_ub, a_fla, kcat=None, Km=None
     # external substrate concentration depends on distance to source
     m.Equation(cex == c_init * m.erfc( distance / (2 * m.sqrt(600 * time_init))))
 
+    # RATE OF CHANGE CONSTRAINTS
+    #
+    # Limit how fast cell dimensions can change to prevent unrealistic step changes
+    # max_length_change [µm/h], max_radius_change [µm/h]
+    max_length_change = m.Param(value=0.25)
+    max_radius_change = m.Param(value=0.05)
+
+    m.Equation(length.dt() <= max_length_change)
+    m.Equation(length.dt() >= -max_length_change)
+    m.Equation(radius.dt() <= max_radius_change)
+    m.Equation(radius.dt() >= -max_radius_change)
+    
     # SOLVING ----------------------------------------------------------
     #
     # objective: maximize specific growth rate

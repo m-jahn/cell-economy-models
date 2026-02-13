@@ -9,8 +9,10 @@ import pandas as pd # type: ignore
 import numpy as np # type: ignore
 import matplotlib.pyplot as plt # type: ignore
 import seaborn as sns # type: ignore
+import os
 import re
 import importlib
+from math import log2
 from glob import glob
 from models.salmonella import steadystate
 from models.salmonella import dynamic
@@ -38,36 +40,83 @@ c_ub_mem = pd.Series([1e6], index=mem)
 c_ub = pd.concat([c_ub_pro, c_ub_met, c_ub_mem])
 
 
-# 3. run parameter sampling
-# -------------------------
+# 3. Model fitting with proteomics data
+# -------------------------------------
+# The model was parametrized with kinetic data from literature where available.
+# (see table 'models/salmonella/parameters.csv').
+# In addition to that, we use MS derived protein abundances that were summed up for
+# each functional sector of the cellular economy model.
+# The kinetic parameters are randomly sampled and adjusted such that the error
+# between model prediction and actual experimentally observed size of proteome sectors
+# is minimized.
+#
+# Strategy: fit data to the Null mutant condition (no flagella expression)
+# First import proteomics data:
+df_mf = pd.read_csv("data/tables/sector_mass_fractions.tsv", delimiter="\t")
+df_mf = (df_mf.groupby(["condition", "sector_short"])
+    .agg("mean")
+    .reset_index()
+    .query("condition == 'EM16223'")
+    .filter(["sector_short", "mass_fraction", "mean_growth_rate"])
+)
+
 # perform parameter sampling to find stable sets and
 # improve solver performance (typical problem is over-constrainment)
 n_iterations = 0
-n_solves = 0
 outdir = "results/salmonella/sampling/"
+kcat = pd.Series([185, 102, 22, 122, 7.5, 5.5, 4e4], index=enz)
+Km = pd.Series([2.5, 0.02, 0.08, 0.3, 1.50, 0.35, 1.0], index=enz)
+hc = pd.Series([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], index=enz)
+a_fla = 0.002
+best_error = np.inf
 
-while n_solves < 1 and n_iterations <= 10:
+while n_iterations <= 50:
     n_iterations += 1
-    iter = "{0:03d}".format(n_iterations)  # "{0:02.2f}".format(0.0)
-    kcat = pd.Series(common.randomize([200, 500, 100, 10, 22, 20, 4e4]), index=enz)
-    Km = pd.Series(common.randomize([20, 0.05, 0.03, 1, 1, 0.5, 1.0]), index=enz)
-    hc = pd.Series([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], index=enz)
+    iter = "{0:03d}".format(n_iterations)
     try:
-        for a_fla in np.arange(0, 0.05, 0.01):
-            result_ss = steadystate.simulate(time, c_ex, c_ub, a_fla, kcat, Km, hc, remote)
+        result_ss = steadystate.simulate(time, c_ex, c_ub, a_fla, kcat, Km, hc, remote)
+        mass_predicted = result_ss.table.query("cex == 1.0").filter(["a_aab", "a_cbn", "a_etc", "a_fla", "a_lpb", "a_oth","a_rib", "a_tra"])
+        mass_measured = df_mf.set_index("sector_short").loc[["Aab", "Cbn", "Etc", "Fla", "Lpb", "Oth", "Rib", "Tra"], "mass_fraction"]
+        mu_pred = result_ss.table.query("cex == 1.0")["mu"].values[0]
+        df_sampling = pd.DataFrame({"sector": mass_measured.index, "predicted": mass_predicted.values.flatten(), "measured": mass_measured.values.flatten()})
+        df_sampling = pd.concat([df_sampling, pd.DataFrame({"sector": ["mu"], "predicted": mu_pred, "measured": [df_mf["mean_growth_rate"].values[0]]})], ignore_index=True)
+        df_sampling["abs_error"] = abs(df_sampling["predicted"] - df_sampling["measured"])
+        df_sampling["rel_error"] = list(map(lambda x: log2(x[0] / x[1]), zip(df_sampling["predicted"], df_sampling["measured"])))
+        error = np.sum(abs(df_sampling["rel_error"]))
+        if  (error < best_error and mu_pred < 2.0):
+            best_error = error.copy()
+            msg_error = f"""
+            ---
+            iteration {iter} with flagella {a_fla:.3f} and final
+            growth rate {mu_pred:.2f}
+            has error {error:.2f}
+            """
+            print(msg_error)
+            # save current best parameter set and adjust kinetic parameters
             result_ss.table.to_csv(outdir + "steady_state_iter_" + iter + "_flag_" + str(a_fla) + ".csv")
-        kinetic_params = pd.DataFrame({"kcat": kcat, "Km": Km, "hc": hc})
-        kinetic_params.to_csv(outdir + "kinetic_params_iter_" + iter + ".csv")
-        n_solves += 1
+            df_kinetic_params = pd.DataFrame({"kcat": kcat, "Km": Km, "hc": hc})
+            df_kinetic_params.to_csv(outdir + "kinetic_params.csv")
+            # write msg to log_file
+            with open(outdir + "parameter_sampling.log", "a") as log_file:
+                log_file.write(msg_error + "\n")
+                log_file.write(str(df_sampling) + "\n")
+                log_file.write(str(df_kinetic_params) + "\n")
+            kcat = pd.Series(common.randomize(kcat, 0.85, 1.15), index=enz)
+            Km = pd.Series(common.randomize(Km, 0.85, 1.15), index=enz)
+        else:
+            print(f"iteration {iter} with growth rate {mu_pred:.3f} has error {error:.2f}, not improving")
+            raise ValueError("not improving")
     except:
-        print("\n-------\nmodel not solvable, trying next parameter set")
+        print("\n---\nmodel not solvable, trying next parameter set")
+        kcat = pd.Series(common.randomize([185, 102, 22, 122, 7.5, 5.5, 4e4], 0.75, 1.25), index=enz)
+        Km = pd.Series(common.randomize([2.5, 0.02, 0.08, 0.3, 1.50, 0.35, 1.0], 0.75, 1.25), index=enz)
 
 
 # 4. run steady state model simulations
 # -------------------------------------
 #
 # import desired parameter set
-df_top_params = pd.read_csv("results/salmonella/sampling/top/kinetic_params_iter_01.csv", index_col=0)
+df_top_params = pd.read_csv("results/salmonella/sampling/top/kinetic_params_2026.csv", index_col=0)
 kcat = df_top_params.kcat
 Km = df_top_params.Km
 hc = df_top_params.hc
@@ -88,102 +137,64 @@ for a_fla in np.arange(0, 0.06, 0.01):
             retries += 1
     retries = 0
 
-
-# 4.2 simulate substrate limitation with and without ATP cost for flagella (adjust stoich matrix)
-outdir = "results/salmonella/rotation/"
-c_ex = np.round(2 ** np.arange(-3, 0, 0.5), 3)
-time = np.arange(0, len(c_ex), 1)
-kcat["Fla"] = 400 * 100
-retries = 0
-for a_fla in np.arange(0, 0.06, 0.01):
-    while retries <= max_retries:
-        try:
-            result_ss = steadystate.simulate(time, c_ex, c_ub, a_fla, kcat, Km, hc, remote)
-            result_ss.table.to_csv(outdir + "steady_state_flag_" + "{0:02.2f}".format(a_fla) + ".csv")
-            break
-        except:
-            print("\n-------\nmodel not solvable, varying parameter")
-            kcat["Fla"] = kcat["Fla"] + np.random.normal(1) / 100
-            retries += 1
-    retries = 0
-
-
-# 4.3 import result tables
-df_steadystate = []
-
+# import results
+df_climitation = []
 for file in sorted(glob(outdir + "steady_state*.csv")):
     df = pd.read_csv(file)
     df["type"] = "steady_state"
-    df["iteration"] = re.findall("(flag_[0-9]+\\.[0-9]+(\\_no_ATP)?)", file)[0][0]
+    df["iteration"] = re.findall("(flag_[0-9]+\\.[0-9]+)", file)[0]
     df = df.query("time != 0")
-    df_steadystate.append(df)
+    df_climitation.append(df)
 
-# combine into one df
-df_steadystate = pd.concat(df_steadystate, ignore_index=True)
-
-
-# 4.4 visualize results
-# set seaborn style
-sns.set_theme(style="ticks", font_scale=0.75)
+# combine into one df and plot
+df_climitation = pd.concat(df_climitation, ignore_index=True)
+common.plot_enzymes(df_climitation, outdir)
+common.plot_properties(df_climitation, outdir)
+common.plot_rates(df_climitation, outdir)
 
 
-# 4.4.1 growth rate, relative enzyme concentrations
-plt.figure(figsize=[8, 8])
-plt.subplots_adjust(wspace=0.5, hspace=0.7, top=0.925, bottom=0.075)
+# 4.2 simulate substrate limitation with and without rotational ATP cost for flagella
+# (set kcat of flagella to 0, but force protein cost)
+outdir = "results/salmonella/rotation/"
+for k, v in {"ATP": 4e4, "no_ATP": 0}.items():
+    kcat["Fla"] = v
+    retries = 0
+    for a_fla in np.arange(0, 0.06, 0.01):
+        while retries <= max_retries:
+            try:
+                result_ss = steadystate.simulate(time, c_ex, c_ub, a_fla, kcat, Km, hc, remote)
+                result_ss.table.to_csv(outdir + "steady_state_flag_" + "{0:02.2f}".format(a_fla) + f"_{k}.csv")
+                break
+            except:
+                print("\n-------\nmodel not solvable, varying parameter")
+                kcat["Fla"] = kcat["Fla"] + abs(np.random.normal(1) / 100)
+                retries += 1
+        retries = 0
+# set kcat back to orig value
+kcat["Fla"] = 4e4
 
-common.subplots(df_steadystate, xvar="time", yvar="mu", pos=1, ylim=[0, 1.0], title="growth rate")
-common.subplots(df_steadystate, xvar="time", yvar="a_tra", pos=2, ylim=[0, 0.5], title="carbon transport")
-common.subplots(df_steadystate, xvar="time", yvar="a_cbn", pos=3,ylim=[0, 0.01], title="carbon metabolism")
-common.subplots(df_steadystate, xvar="time", yvar="a_etc", pos=4, ylim=[0, 0.01], title="electron transport chain")
-common.subplots(df_steadystate, xvar="time", yvar="a_aab", pos=5, ylim=[0, 0.5], title="amino acid biosynthesis")
-common.subplots(df_steadystate, xvar="time", yvar="a_rib", pos=6, ylim=[0, 0.1], title="ribosomes")
-common.subplots(df_steadystate, xvar="time", yvar="a_lpb", pos=7, ylim=[0, 0.01], title="lipid biosynthesis")
-common.subplots(df_steadystate, xvar="time", yvar="a_fla", pos=8, ylim=[0, 0.5], title="flagella biosynthesis")
+# import results
+df_rotation = []
+for file in sorted(glob(outdir + "steady_state*.csv")):
+    df = pd.read_csv(file)
+    df["type"] = "steady_state"
+    df["iteration"] = re.findall("(flag_[0-9]+\\.[0-9]+(\\_no)?_ATP)", file)[0][0]
+    df = df.query("time != 0")
+    df_rotation.append(df)
 
-plt.savefig(outdir + "enzymes.png", dpi=182)
-plt.savefig(outdir + "enzymes.svg")
-
-
-# 4.4.2  physicochemical properties
-plt.figure(figsize=[8, 8])
-plt.subplots_adjust(wspace=0.5, hspace=0.7, top=0.925, bottom=0.075)
-
-common.subplots(df_steadystate, xvar="time", yvar="length", pos=1, ylim=[1, 6], title="length [µm]")
-common.subplots(df_steadystate, xvar="time", yvar="radius", pos=2, ylim=[0.2, 0.8], title="radius [µm]")
-common.subplots(df_steadystate, xvar="time", yvar="surface", pos=3, ylim=[0, 35], title="surface [µm^2]")
-common.subplots(df_steadystate, xvar="time", yvar="volume", pos=4, ylim=[0, 10.0], title="volume [µm^3]")
-common.subplots(df_steadystate, xvar="time", yvar="surface_pro", pos=5, ylim=[0, 1.0], title="relative area of mem proteins")
-common.subplots(df_steadystate, xvar="time", yvar="surface_lip", pos=6, ylim=[0, 1.0], title="relative area of mem lipids")
-common.subplots(df_steadystate, xvar="time", yvar="utilization", pos=7, ylim=[0, 1.1], title="utilization")
-common.subplots(df_steadystate, xvar="time", yvar="distance", pos=8, ylim=[0, 10000], title="distance to C source [µm]")
-
-plt.savefig(outdir + "properties.png", dpi=182)
-plt.savefig(outdir + "properties.svg")
-
-
-# 4.4.3 enzymatic rates
-plt.figure(figsize=[8, 8])
-plt.subplots_adjust(wspace=0.5, hspace=0.7, top=0.925, bottom=0.075)
-
-common.subplots(df_steadystate, xvar="time", yvar="v_tra", pos=1, ylim=[0, 1e7], title="V carbon transport")
-common.subplots(df_steadystate, xvar="time", yvar="v_cbn", pos=2, ylim=[0, 1e7], title="V carbon metabolism")
-common.subplots(df_steadystate, xvar="time", yvar="v_etc", pos=3, ylim=[0, 1e7], title="V electron transport chain")
-common.subplots(df_steadystate, xvar="time", yvar="v_aab", pos=4, ylim=[0, 1e7], title="V amino acid biosynthesis")
-common.subplots(df_steadystate, xvar="time", yvar="v_rib", pos=5, ylim=[0, 1e7], title="V ribosomes")
-common.subplots(df_steadystate, xvar="time", yvar="v_lpb", pos=6, ylim=[0, 1e7], title="V lipid biosynthesis")
-common.subplots(df_steadystate, xvar="time", yvar="v_fla", pos=7, ylim=[0, 2e7], title="V flagellum")
-common.subplots(df_steadystate, xvar="time", yvar="v_swim", pos=8, ylim=[0, 50], title="V swim [µm / s]")
-
-plt.savefig(outdir + "rates.png", dpi=182)
-plt.savefig(outdir + "rates.svg")
+# combine into one df and plot
+df_rotation = pd.concat(df_rotation, ignore_index=True)
+common.plot_enzymes(df_rotation, outdir)
+common.plot_properties(df_rotation, outdir)
+common.plot_rates(df_rotation, outdir)
 
 
-# 4.4.4 flagella with/without energy cost
-df_cost = df_steadystate[df_steadystate["time"] == 3.0]
-df_cost["a_fla"] = df_cost["a_fla"] * 100
+# 4.3 plot barchart of flagella with/without energy cost
+df_cost = df_rotation[df_rotation["cex"] == 1.0]
+df_cost["a_fla"] = round(df_cost["a_fla"] * 100)
 df_cost["energy cost"] = df_cost["iteration"].str.contains("no_ATP")
 df_cost["energy cost"] = df_cost["energy cost"].apply(
-    lambda x: "without ATP cost" if x else "with ATP cost"
+    lambda x: "without ATP cost (no rotation)" if x else "with ATP cost (rotation)"
 )
 plt.figure(figsize=[8, 3.5])
 plt.subplot(1, 2, 1)
@@ -195,19 +206,19 @@ ax = sns.barplot(
     hue=df_cost["energy cost"],
     palette=sns.color_palette("flare", n_colors=2),
 )
-ax.set(xlabel="% protein to flagellum", ylabel="growth rate [h^-1]")
+ax.set(xlabel="% protein to flagella", ylabel="growth rate [h^-1]")
 plt.legend(title="", fontsize="6", loc="lower right")
 plt.grid(axis="both")
 
 plt.subplot(1, 2, 2)
-plt.title("flagellar activity with increasing flagella", loc="left", fontsize=10)
+plt.title("relative growth penalty by rotation", loc="left", fontsize=10)
 ax = sns.barplot(
     x=df_cost["a_fla"].astype(str),
-    y=df_cost["v_fla"],
+    y=(max(df_cost["mu"]) - df_cost["mu"]) / max(df_cost["mu"]) * 100,
     hue=df_cost["energy cost"],
     palette=sns.color_palette("flare", n_colors=2),
 )
-ax.set(xlabel="% protein to flagellum", ylabel="V flagellum")
+ax.set(xlabel="% protein to flagella", ylabel="% reduction in growth")
 plt.legend(title="", fontsize="6", loc="lower right")
 plt.grid(axis="both")
 plt.savefig(outdir + "energy_vs_protein_cost.png", dpi=182)
@@ -219,92 +230,36 @@ plt.savefig(outdir + "energy_vs_protein_cost.svg")
 #
 # 5.1 simulate swimming at variable speed, depending on number of flagella
 importlib.reload(dynamic)
-outdir = "results/salmonella/swimming/"
-c_init = 5.0 # [mM]
-dist_init = 8000 # [µm]
-time_init = 3 * 3600 # [sec] only relevant for substrate gradient
-time =  np.concatenate([[0, 0.1], np.arange(0.5, 10, 0.5)]) # [h]
-retries = 0
-# common.diffusion_model(x = dist_init, t = time_init, D = 600, C0 = c_init)
-for a_fla in [0.001, 0.021, 0.051]: #np.arange(0.00, 0.06, 0.01):
-    while retries <= max_retries:
-        try:
-            result_ss = dynamic.simulate(time, time_init, dist_init, c_init, c_ub, a_fla, kcat, Km, hc, remote)
-            result_ss.table.to_csv(outdir + "dynamic_flag_" + "{0:02.2f}".format(a_fla) + ".csv")
-            break
-        except:
-            print("\n-------\nmodel not solvable, varying parameter")
-            c_init = c_init + np.random.normal(1) / 100
-            retries += 1
+for dist_init in [8250]:
+    outdir = f"results/salmonella/swimming/{dist_init}/"
+    os.makedirs(outdir, exist_ok=True)
+    c_init = 5.0 # [mM]
+    time_init = 3 * 3600 # [sec] only relevant for substrate gradient
+    time =  np.concatenate([[0, 0.1], np.arange(0.5, 10, 0.5)]) # [h]
     retries = 0
-
-
-# 5.2 import result tables
-df_dynamic = []
-
-for file in sorted(glob(outdir + "dynamic*.csv")):
-    df = pd.read_csv(file)
-    df["type"] = "steady_state"
-    df["iteration"] = re.findall("(flag_[0-9]+\\.[0-9]+(\\_no_ATP)?)", file)[0][0]
-    df = df.query("time != 0")
-    df_dynamic.append(df)
-
-# combine into one df
-df_combined = pd.concat(df_dynamic, ignore_index=True)
-df_combined = df_combined[df_combined["iteration"].str.contains("0\\.0[0-5]")]
-
-
-# 5.3 visualize results
-# set seaborn style
-sns.set_theme(style="ticks", font_scale=0.75)
-
-
-# 5.3.1 growth rate, biomass, enzyme concentrations
-plt.figure(figsize=[8, 8])
-plt.subplots_adjust(wspace=0.5, hspace=0.7, top=0.925, bottom=0.075)
-
-common.subplots(df_combined, xvar="time", yvar="mu", pos=1, ylim=[0, 1.0], title="growth rate")
-common.subplots(df_combined, xvar="time", yvar="a_tra", pos=2, ylim=[0, 0.5], title="carbon transport")
-common.subplots(df_combined, xvar="time", yvar="a_cbn", pos=3,ylim=[0, 0.01], title="carbon metabolism")
-common.subplots(df_combined, xvar="time", yvar="a_etc", pos=4, ylim=[0, 0.01], title="electron transport chain")
-common.subplots(df_combined, xvar="time", yvar="a_aab", pos=5, ylim=[0, 0.5], title="amino acid biosynthesis")
-common.subplots(df_combined, xvar="time", yvar="a_rib", pos=6, ylim=[0, 0.1], title="ribosomes")
-common.subplots(df_combined, xvar="time", yvar="a_lpb", pos=7, ylim=[0, 0.01], title="lipid biosynthesis")
-common.subplots(df_combined, xvar="time", yvar="a_fla", pos=8, ylim=[0, 0.5], title="flagella biosynthesis")
-
-plt.savefig(outdir + "enzymes.png", dpi=182)
-plt.savefig(outdir + "enzymes.svg")
-
-
-# 5.3.2  physicochemical properties
-plt.figure(figsize=[8, 8])
-plt.subplots_adjust(wspace=0.5, hspace=0.7, top=0.925, bottom=0.075)
-
-common.subplots(df_combined, xvar="time", yvar="length", pos=1, ylim=[1, 6], title="length [µm]")
-common.subplots(df_combined, xvar="time", yvar="radius", pos=2, ylim=[0.2, 0.8], title="radius [µm]")
-common.subplots(df_combined, xvar="time", yvar="surface", pos=3, ylim=[0, 35], title="surface [µm^2]")
-common.subplots(df_combined, xvar="time", yvar="volume", pos=4, ylim=[0, 10.0], title="volume [µm^3]")
-common.subplots(df_combined, xvar="time", yvar="surface_pro", pos=5, ylim=[0, 1.0], title="relative area of mem proteins")
-common.subplots(df_combined, xvar="time", yvar="surface_lip", pos=6, ylim=[0, 1.0], title="relative area of mem lipids")
-common.subplots(df_combined, xvar="time", yvar="utilization", pos=7, ylim=[0, 1.1], title="utilization")
-common.subplots(df_combined, xvar="time", yvar="distance", pos=8, ylim=[0, 10000], title="distance to C source [µm]")
-
-plt.savefig(outdir + "properties.png", dpi=182)
-plt.savefig(outdir + "properties.svg")
-
-
-# 5.3.3 enzymatic rates
-plt.figure(figsize=[8, 8])
-plt.subplots_adjust(wspace=0.5, hspace=0.7, top=0.925, bottom=0.075)
-
-common.subplots(df_combined, xvar="time", yvar="v_tra", pos=1, ylim=[0, 1e7], title="V carbon transport")
-common.subplots(df_combined, xvar="time", yvar="v_cbn", pos=2, ylim=[0, 1e7], title="V carbon metabolism")
-common.subplots(df_combined, xvar="time", yvar="v_etc", pos=3, ylim=[0, 1e7], title="V electron transport chain")
-common.subplots(df_combined, xvar="time", yvar="v_aab", pos=4, ylim=[0, 1e7], title="V amino acid biosynthesis")
-common.subplots(df_combined, xvar="time", yvar="v_rib", pos=5, ylim=[0, 1e7], title="V ribosomes")
-common.subplots(df_combined, xvar="time", yvar="v_lpb", pos=6, ylim=[0, 1e7], title="V lipid biosynthesis")
-common.subplots(df_combined, xvar="time", yvar="v_fla", pos=7, ylim=[0, 2e7], title="V flagellum")
-common.subplots(df_combined, xvar="time", yvar="v_swim", pos=8, ylim=[0, 50], title="V swim [µm / s]")
-
-plt.savefig(outdir + "rates.png", dpi=182)
-plt.savefig(outdir + "rates.svg")
+    for a_fla in np.concatenate([[0.005], np.arange(0.01, 0.06, 0.01)]):
+        while retries <= max_retries:
+            try:
+                result_ss = dynamic.simulate(time, time_init, dist_init, c_init, c_ub, a_fla, kcat, Km, hc, remote)
+                result_ss.table.to_csv(outdir + "dynamic_flag_" + "{0:02.3f}".format(a_fla) + ".csv")
+                break
+            except:
+                print("\n-------\nmodel not solvable, varying parameter")
+                c_init = c_init + abs(np.random.normal(1)) / 100
+                retries += 1
+        retries = 0
+    # 
+    # import result tables
+    df_dynamic = []
+    for file in sorted(glob(outdir + "dynamic*.csv")):
+        df = pd.read_csv(file)
+        df["type"] = "steady_state"
+        df["iteration"] = re.findall("(flag_[0-9]+\\.[0-9]+)", file)[0]
+        df = df.query("time != 0")
+        df_dynamic.append(df)
+    # 
+    # combine into one df and plot
+    df_combined = pd.concat(df_dynamic, ignore_index=True)
+    common.plot_enzymes(df_combined, outdir)
+    common.plot_properties(df_combined, outdir)
+    common.plot_rates(df_combined, outdir)
