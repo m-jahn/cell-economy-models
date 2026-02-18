@@ -25,6 +25,9 @@ def simulate(time, c_ex, c_ub, a_fla, kcat=None, Km=None, hc=None, remote=False)
     m.options.IMODE = 5
     m.options.REDUCE = 1
     m.options.MAX_ITER = 1000
+    m.options.RTOL = 1e-4
+    m.options.OTOL = 1e-4
+    m.options.SCALING = 1
     m.time = time
 
     # organize variables in sets to simplify indexing
@@ -108,7 +111,7 @@ def simulate(time, c_ex, c_ub, a_fla, kcat=None, Km=None, hc=None, remote=False)
     cex = m.Param(value = c_ex, name = "cex")
 
     # growth rate as variable that is to be maximized [h^-1]
-    mu = m.Var(value = 1, lb = 0, ub = 1.5, name = "mu")
+    mu = m.Var(value = 0.1, lb = 0.1, ub = 1.5, name = "mu")
 
     # fraction of utilized protein space (total aa content / allowed aa content)
     utilization = m.Var(value=0.1, lb=0, ub=1, name = "utilization")

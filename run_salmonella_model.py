@@ -166,7 +166,7 @@ for k, v in {"ATP": 4e4, "no_ATP": 0}.items():
                 result_ss.table.to_csv(outdir + "steady_state_flag_" + "{0:02.2f}".format(a_fla) + f"_{k}.csv")
                 break
             except:
-                print("\n-------\nmodel not solvable, varying parameter")
+                print("\n---\nmodel not solvable, varying parameter")
                 kcat["Fla"] = kcat["Fla"] + abs(np.random.normal(1) / 100)
                 retries += 1
         retries = 0
@@ -230,22 +230,26 @@ plt.savefig(outdir + "energy_vs_protein_cost.svg")
 #
 # 5.1 simulate swimming at variable speed, depending on number of flagella
 importlib.reload(dynamic)
-for dist_init in [8250]:
+for dist_init in [8500]:
     outdir = f"results/salmonella/swimming/{dist_init}/"
     os.makedirs(outdir, exist_ok=True)
-    c_init = 5.0 # [mM]
-    time_init = 3 * 3600 # [sec] only relevant for substrate gradient
+    c_init = 5.0 # [mM] max substrate conc at gradient boundary
+    time_init = 3 * 3600 # [sec] time for establishing substrate gradient
     time =  np.concatenate([[0, 0.1], np.arange(0.5, 10, 0.5)]) # [h]
     retries = 0
     for a_fla in np.concatenate([[0.005], np.arange(0.01, 0.06, 0.01)]):
+        # pre-run steady state model to find good starting values for dynamic model (fix length and radius!)
+        c_ex = round(common.diffusion_model(dist_init, time_init, 600, c_init), 3) # [mM]
+        result_ss = steadystate.simulate(time, c_ex, c_ub, a_fla, kcat, Km, hc, remote)
+        c_start = result_ss.c.apply(lambda x: round(x[1], 3))
         while retries <= max_retries:
             try:
-                result_ss = dynamic.simulate(time, time_init, dist_init, c_init, c_ub, a_fla, kcat, Km, hc, remote)
-                result_ss.table.to_csv(outdir + "dynamic_flag_" + "{0:02.3f}".format(a_fla) + ".csv")
+                result_dy = dynamic.simulate(time, time_init, dist_init, c_init, c_ub, a_fla, kcat, Km, hc, c_start, remote)
+                result_dy.table.to_csv(outdir + "dynamic_flag_" + "{0:02.3f}".format(a_fla) + ".csv")
                 break
             except:
-                print("\n-------\nmodel not solvable, varying parameter")
-                c_init = c_init + abs(np.random.normal(1)) / 100
+                print("\n---\nmodel not solvable, varying parameter")
+                c_init = c_init + round(abs(np.random.normal(1)) / 100, 3)
                 retries += 1
         retries = 0
     # 
@@ -263,3 +267,11 @@ for dist_init in [8250]:
     common.plot_enzymes(df_combined, outdir)
     common.plot_properties(df_combined, outdir)
     common.plot_rates(df_combined, outdir)
+    #
+    # export table with substrate gradient
+    pd.DataFrame({
+        "time_h": time_init / 3600,
+        "substrate_initial_mM": round(c_init, 1),
+        "dist_um": list(range(0, dist_init + 1, 100)),
+        "substrate_mM": [common.diffusion_model(d, time_init, 600, round(c_init, 1)) for d in range(0, dist_init + 1, 100)]
+    }).to_csv(outdir + "substrate_gradient.csv", index=False)

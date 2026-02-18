@@ -19,12 +19,15 @@ from models import common
 
 
 # INITIALIZE STEADY STATE MODEL ----------------------------------------
-def simulate(time, time_init, dist_init, c_init, c_ub, a_fla, kcat=None, Km=None, hc=None, remote=False):
+def simulate(time, time_init, dist_init, c_init, c_ub, a_fla, kcat=None, Km=None, hc=None, c=None, remote=False):
 
     m = GEKKO(remote = remote)
     m.options.IMODE = 5
     m.options.REDUCE = 1
     m.options.MAX_ITER = 1000
+    m.options.RTOL = 1e-4
+    m.options.OTOL = 1e-4
+    m.options.SCALING = 1
     m.time = time
 
     # organize variables in sets to simplify indexing
@@ -87,7 +90,7 @@ def simulate(time, time_init, dist_init, c_init, c_ub, a_fla, kcat=None, Km=None
     v_swim = m.Var(value = 10, lb = 0, ub = 35, name = "v_swim")
 
     # distance to the source of the substrate
-    distance = m.Var(value = dist_init, lb = 0, ub = dist_init * 2, name = "distance")
+    distance = m.Var(value = dist_init, lb = 0, ub = dist_init, name = "distance")
 
     # specific surface area of membrane located components [µm^2]
     spA = pd.Series([1e-5, 5e-5, 1e-4, 5e-4], index = mem + memP)
@@ -110,15 +113,14 @@ def simulate(time, time_init, dist_init, c_init, c_ub, a_fla, kcat=None, Km=None
 
     # list of concentration of all components (enzymes and metabolites)
     c = pd.Series(
-        [m.Var(value = 1e3, lb = 0, ub = c_ub[i], name = "c_" + i) for i in pro + met + mem],
+        [m.Var(value = c[i] if c is not None else 1e3, lb = 0, ub = c_ub[i], name = "c_" + i) for i in pro + met + mem],
         index = pro + met + mem)
 
     # cex is (time and location dependent) substrate concentration [mM]
-    #cex = m.Param(value = c_ex, name = "cex")
     cex = m.Var(value = 1, lb = 0, ub = 10, name = "cex")
     
     # growth rate as variable that is to be maximized [h^-1]
-    mu = m.Var(value = 1, lb = 0, ub = 1.5, name = "mu")
+    mu = m.Var(value = 0.1, lb = 0.1, ub = 1.5, name = "mu")
 
     # fraction of utilized protein space (total aa content / allowed aa content)
     utilization = m.Var(value=0.1, lb=0, ub=1, name = "utilization")
@@ -187,7 +189,7 @@ def simulate(time, time_init, dist_init, c_init, c_ub, a_fla, kcat=None, Km=None
     # swimming speed [µm s^-1], based on max speed with optimal number of flagella
     m.Equation(v_swim == v_swimmax * c["Fla"] / (c["Fla"] + 10))
 
-    # distance to source [], dynamically calculated from swimming speed and drift efficiency
+    # distance to source [µm], calculated from swimming speed and drift efficiency
     m.Equation(distance.dt() == -v_swim * 0.01 * 3600)
 
     # external substrate concentration depends on distance to source
@@ -195,16 +197,18 @@ def simulate(time, time_init, dist_init, c_init, c_ub, a_fla, kcat=None, Km=None
 
     # RATE OF CHANGE CONSTRAINTS
     #
-    # Limit how fast cell dimensions can change to prevent unrealistic step changes
-    # max_length_change [µm/h], max_radius_change [µm/h]
-    max_length_change = m.Param(value=0.25)
-    max_radius_change = m.Param(value=0.05)
+    # limit how fast cell dimensions can change in [µm/h], to prevent unrealistic step changes
+    m.Equation(abs(length.dt()) <= 0.25)
+    m.Equation(abs(radius.dt()) <= 0.05)
 
-    m.Equation(length.dt() <= max_length_change)
-    m.Equation(length.dt() >= -max_length_change)
-    m.Equation(radius.dt() <= max_radius_change)
-    m.Equation(radius.dt() >= -max_radius_change)
-    
+    # limit growth rate change to only increase when moving up gradient
+    m.Equations([mu.dt() >= 0])
+
+    # constrain protein concentration changes based on biological limits
+    # lower bound: proteins can decrease at most by growth-related dilution
+    m.Equations([c[i].dt() >= -mu * c[i] for i in pro])
+
+
     # SOLVING ----------------------------------------------------------
     #
     # objective: maximize specific growth rate

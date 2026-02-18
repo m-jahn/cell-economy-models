@@ -121,6 +121,6 @@ def plot_rates(df, outdir):
 #   C0 = initial concentration [mM]
 #   erfc = error function complement, erfc z = 1 - erf z
 #   D = diffusion coefficient of glucose in water = 600 µm^2 / s (Bionumbers ID:104089)
-def diffusion_model(x, t=3600, D=600, C0=5):
+def diffusion_model(x, t=3600, D=600, C0=5.0):
     C = C0 * math.erfc(x / (2 * math.sqrt(D * t)))
     return C
