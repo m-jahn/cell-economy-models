@@ -60,7 +60,6 @@ suppressPackageStartupMessages({
   library(KEGGREST)
   library(ggpubr)
   library(ggrepel)
-  library(fgsea)
   library(grDevices)
   library(ggh4x)
   library(colorspace)
