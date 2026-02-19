@@ -534,8 +534,8 @@ plot_mass_frac_bars <- df_mass_frac %>%
   custom_theme() +
   scale_fill_manual(values = rev(custom_colors)) +
   labs(
-    title = "Mean mass fraction of sectors across conditions",
-    x = "",
+    title = "Mean mass fraction of sectors per strain",
+    x = "Strain",
     y = "Mean mass fraction",
     fill = "Sector"
   ) +
@@ -548,8 +548,8 @@ plot_mass_frac_points <- df_mass_frac %>%
   custom_theme() +
   scale_color_manual(values = rev(custom_colors)) +
   labs(
-    title = "Mean mass fraction of sectors across conditions",
-    x = "",
+    title = "Mean mass fraction of sectors per strain",
+    x = "Strain",
     y = "Mean mass fraction"
   ) +
   theme(legend.position = "right", aspect.ratio = 1)
@@ -563,6 +563,17 @@ print(ggarrange(plot_mass_frac_bars, plot_mass_frac_points, ncol = 2))
 - each subplot is scaled to a different, individual range
 
 ```{r, fig.width=10, fig.height=5.5}
+list_y_lims <- list(
+  sector_short == "Oth" ~ scale_y_continuous(limits = c(0, 0.5)),
+  sector_short == "Rib" ~ scale_y_continuous(limits = c(0, 0.65)),
+  sector_short == "Cbn" ~ scale_y_continuous(limits = c(0, 0.1)),
+  sector_short == "Aab" ~ scale_y_continuous(limits = c(0, 0.04)),
+  sector_short == "Etc" ~ scale_y_continuous(limits = c(0, 0.04)),
+  sector_short == "Lpb" ~ scale_y_continuous(limits = c(0, 0.04)),
+  sector_short == "Fla" ~ scale_y_continuous(limits = c(0, 0.07)),
+  sector_short == "Tra" ~ scale_y_continuous(limits = c(0, 0.04))
+)
+
 plot_mass_frac_sectors <- df_mass_frac %>%
   ggplot(aes(x = condition, y = mass_fraction, color = fct_rev(sector_short))) +
   geom_boxplot(position = "identity", outliers = FALSE, alpha = 0.5) +
@@ -570,24 +581,13 @@ plot_mass_frac_sectors <- df_mass_frac %>%
   custom_theme() +
   scale_color_manual(values = rev(custom_colors)) +
   labs(
-    title = "Mass fraction of sectors across conditions",
-    x = "",
+    title = "Mass fraction of sectors per strain",
+    x = "Strain",
     y = "Protein mass fraction"
   ) +
   theme(legend.position = "right", aspect.ratio = 1, axis.text.x = element_text(angle = 45, hjust = 1)) +
   facet_wrap(~sector_short, ncol = 4, scales = "free_y") +
-  ggh4x::facetted_pos_scales(
-    y = list(
-      sector_short == "Oth" ~ scale_y_continuous(limits = c(0.25, 0.45)),
-      sector_short == "Rib" ~ scale_y_continuous(limits = c(0.35, 0.65)),
-      sector_short == "Cbn" ~ scale_y_continuous(limits = c(0.025, 0.1)),
-      sector_short == "Aab" ~ scale_y_continuous(limits = c(0.015, 0.03)),
-      sector_short == "Etc" ~ scale_y_continuous(limits = c(0.015, 0.03)),
-      sector_short == "Lpb" ~ scale_y_continuous(limits = c(0, 0.03)),
-      sector_short == "Fla" ~ scale_y_continuous(limits = c(0, 0.045)),
-      sector_short == "Tra" ~ scale_y_continuous(limits = c(0, 0.02))
-    )
-  )
+  ggh4x::facetted_pos_scales(y = list_y_lims)
 
 save_plot(plot_mass_frac_sectors, width = 10, height = 5.5)
 print(plot_mass_frac_sectors)
@@ -624,8 +624,8 @@ plot_mass_frac_top10 <- df_mass_frac_top10 %>%
   custom_theme() +
   scale_fill_manual(values = rev(custom_colors)) +
   labs(
-    title = "Mass fraction of top 10 proteins per sector and condition",
-    x = "",
+    title = "Mass fraction of top 10 proteins per sector and strain",
+    x = "Strain",
     y = "Protein mass fraction"
   ) +
   theme(legend.position = "right", aspect.ratio = 1, axis.text.x = element_text(angle = 45, hjust = 1)) +
@@ -671,7 +671,7 @@ plot_mass_frac_ribo <- df_annotated %>%
   custom_theme() +
   scale_color_manual(values = colorspace::lighten(custom_colors[2], seq(0, 0.5, 0.1))) +
   labs(
-    title = "Mass fraction of ribosomal proteins per condition",
+    title = "Mass fraction of ribosomal proteins per strain",
     x = "",
     y = "Protein mass fraction"
   ) +
@@ -709,7 +709,7 @@ plot_mass_frac_flag <- df_annotated %>%
   custom_theme() +
   scale_color_manual(values = colorspace::lighten(custom_colors[7], seq(0, 0.5, 0.1))) +
   labs(
-    title = "Mass fraction of flagellar proteins per condition",
+    title = "Mass fraction of flagellar proteins per strain",
     x = "",
     y = "Protein mass fraction"
   ) +
@@ -731,10 +731,11 @@ print(plot_mass_frac_flag)
 
 ```{r, fig.width=10, fig.height=6}
 df_growth_rate <- read_csv("../tables/doubling_time.csv", show_col_types = FALSE) %>%
+  mutate(replicate = as.integer(str_remove(replicate, "R"))) %>%
   # we add dummy data for 1 missing condition, EM16223
   add_row(
     condition = "EM16223",
-    replicate = paste0("R", 1:3),
+    replicate = 1:3,
     doubling_time_min = round(rnorm(3, 25, sd = 1), 1)
   ) %>%
   mutate(growth_rate_1h = log(2) / doubling_time_min * 60) %>%
@@ -754,10 +755,10 @@ plot_growth_rate <- df_growth_rate %>%
       ymax = mean_mu + sd_mu
     )
   ) +
-  custom_theme() +
+  custom_theme(aspect.ratio = 1) +
   labs(
     title = "Growth rate of strains",
-    x = "",
+    x = "Strain",
     y = "Growth rate (1/h)"
   )
 
@@ -775,10 +776,10 @@ plot_doubling_time <- df_growth_rate %>%
       ymax = mean_dt + sd_dt
     )
   ) +
-  custom_theme() +
+  custom_theme(aspect.ratio = 1) +
   labs(
     title = "Doubling time of strains",
-    x = "",
+    x = "Strain",
     y = "Doubling time (min)"
   )
 
