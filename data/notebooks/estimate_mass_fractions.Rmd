@@ -369,16 +369,23 @@ df_sectors <- df_kegg %>%
 - prediction table is imported and merged with the KEGG annotation to yield `df_sectors`
 
 ```{r}
-df_protein_sector <- read_tsv("../tables/protein_sector_mapping.tsv", show_col_types = FALSE)
+include_protein_mapping <- FALSE
 
-df_sectors <- df_uniprot %>%
-  # left_join(select(df_protein_sector, -protein), by = "uniprot_id") %>%
+if (include_protein_mapping) {
+  df_protein_sector <- read_tsv("../tables/protein_sector_mapping.tsv", show_col_types = FALSE)
+  df_sectors <- df_uniprot %>%
+  left_join(select(df_protein_sector, -protein), by = "uniprot_id") %>%
   left_join(df_sectors, by = "kegg") %>%
-  # mutate(sector = coalesce(sector.x, sector.y)) %>%
-  # mutate(sector_short = coalesce(sector_short.x, sector_short.y)) %>%
-  # select(-sector.x, -sector.y, -sector_short.x, -sector_short.y) %>%
-  # mutate(sector = replace_na(sector, "Other")) %>%
+  mutate(sector = coalesce(sector.x, sector.y)) %>%
+  mutate(sector_short = coalesce(sector_short.x, sector_short.y)) %>%
+  select(-sector.x, -sector.y, -sector_short.x, -sector_short.y) %>%
+  mutate(sector = replace_na(sector, "Other")) %>%
   mutate(sector_short = replace_na(sector_short, "Oth"))
+} else {
+df_sectors <- df_uniprot %>%
+  left_join(df_sectors, by = "kegg") %>%
+  mutate(sector_short = replace_na(sector_short, "Oth"))
+}
 ```
 
 ### Combine proteomics data with annotation
@@ -401,6 +408,7 @@ df_annotated <- left_join(df, df_sectors, by = "uniprot_id") %>%
   mutate(mass_fraction = intensity / sum(intensity, na.rm = TRUE)) %>%
   ungroup()
 
+write_csv(df_annotated, "../tables/protein_massfrac_annotated.csv")
 head(df_annotated)
 ```
 

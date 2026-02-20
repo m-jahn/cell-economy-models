@@ -57,6 +57,7 @@ suppressPackageStartupMessages({
   library(ggrepel)
   library(grDevices)
   library(ggh4x)
+  library(colorspace)
 })
 ```
 
@@ -286,6 +287,7 @@ plot_model_strains <- ggarrange(
     ) +
     custom_theme() +
     scale_color_manual(values = rev(custom_colors)) +
+    scale_shape_manual(values = c(1, 2, 5, 6, 22, 12)) +
     coord_cartesian(ylim = c(0, 1.85)) +
     labs(
       title = "Growth rate depending on Flagella expression",
@@ -453,7 +455,7 @@ plot_rotation_penalty <- ggarrange(
     ggplot(aes(x = flagella, y = mu, fill = energy_cost)) +
     geom_col(position = "dodge", color = "white") +
     custom_theme(legend.position = "right", aspect.ratio = 1) +
-    scale_fill_manual(values = c(grey(0.4), grey(0.7))) +
+    scale_fill_manual(values = c(custom_colors[7], lighten(custom_colors[7], 0.5))) +
     labs(
       title = "Growth rate with increasing flagella expression",
       x = "Flagella mass fraction",
@@ -472,8 +474,8 @@ plot_rotation_penalty <- ggarrange(
     geom_col(position = "dodge", color = "white") +
     geom_text(position = position_dodge(width = 0.01), vjust = -0.5, size = 3.5, show.legend = FALSE) +
     custom_theme(legend.position = "right", aspect.ratio = 1) +
-    scale_fill_manual(values = c(grey(0.4), grey(0.7))) +
-    scale_color_manual(values = c(grey(0.4), grey(0.7))) +
+    scale_fill_manual(values = c(custom_colors[7], lighten(custom_colors[7], 0.5))) +
+    scale_color_manual(values = c(custom_colors[7], lighten(custom_colors[7], 0.5))) +
     labs(
       title = "Growth penalty compared to no flagella",
       x = "Flagella mass fraction",
@@ -491,8 +493,13 @@ print(plot_rotation_penalty)
 - experimental data shows that flagella confer a fitness advantage by moving inside a complex or viscous medium
 - the following section shows simulations of a **dynamic model**, where bacterial movement upwards a substrate gradient is simulated
 - the bacteria can, by optimizing swimming speed, move towards higher substrate concentration and increase growth and maximal final biomass
+- first step is to import data for the simulated gradient, and the simulation results
 
 ```{r}
+df_model_gradient <- read_csv(
+  "../../results/salmonella/swimming/8500/substrate_gradient.csv"
+)
+
 df_model_swimming <- read_model_results(
   list.files(
     path = "../../results/salmonella/swimming/8500",
@@ -500,6 +507,27 @@ df_model_swimming <- read_model_results(
     full.names = TRUE
   )
 )
+```
+
+- the substrate gradient is simulated using a classic diffusion model for glucose from Crank J, The Mathematics of Diffusion, Oxford University Press, 1979.
+- the substrate has an initial concentration of `r df_model_gradient$substrate_initial_mM[1]` mM, and diffusion time of `r df_model_gradient$time_h[1]` h
+- for simplicity, the gradient is not moving over simulation time
+- the total distance analyzed is `r max(df_model_gradient$dist_um)` μm
+
+```{r}
+plot_model_gradient <- ggplot(df_model_gradient, aes(x = dist_um, y = substrate_mM)) +
+  geom_area(fill = custom_colors[2], alpha = 0.5) +
+  custom_theme() +
+  lims(x = c(max(df_model_gradient$dist_um), 0)) +
+  labs(
+    title = "Simulated substrate gradient",
+    x = "Distance [µm]",
+    y = "Substrate concentration [mM]"
+  ) +
+  theme(legend.position = "right", aspect.ratio = 1)
+
+save_plot(plot_model_gradient, width = 4.5, height = 4.5)
+print(plot_model_gradient)
 ```
 
 - bacteria can travel faster depending on flagella expression
