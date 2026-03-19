@@ -1,0 +1,11 @@
+{
+  "tabWidth": 2,
+  "useTabs": false,
+  "plugins": ["prettier-plugin-toml"],
+  "overrides": [
+    {
+      "files": "*.toml",
+      "options": { "parser": "toml" }
+    }
+  ]
+}

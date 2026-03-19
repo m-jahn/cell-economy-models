@@ -32,3 +32,7 @@ data/figures/*
 results/*
 resources/*
 *.xlsx
+
+# pixi environments
+.pixi/*
+!.pixi/config.toml
