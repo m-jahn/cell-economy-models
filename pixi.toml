@@ -8,7 +8,7 @@ version = "1.0.0"
 [tasks]
 estimate-mass-fraction = { cmd = "R -e 'library(rmarkdown); rmarkdown::render(\"data/notebooks/estimate_mass_fractions.Rmd\")'" }
 plot-modeling-results = { cmd = "R -e 'library(rmarkdown); rmarkdown::render(\"data/notebooks/modeling_results.Rmd\")'" }
-run_salmonella_model = { cmd = "python run_salmonella_model.py" }
+salmonella-model = { cmd = "python run_salmonella_model.py" }
 
 [dependencies]
 matplotlib = ">=3.10.8,<4"

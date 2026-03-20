@@ -38,12 +38,14 @@ The functional groups we are interested in are major protein sectors such as:
 
 ## Mutant strains used for modeling
 
-- `EM16223`: 0 flagella (null mutant)
-- `EM9662`: 0-1 flagellum
-- `EM9661`: mostly 1 flagellum
+- `EM16223`: △flhDC, 0 flagella (null mutant)
+- `EM16224`: motB D33N (rotation-deficient mutant)
+- `EM9662`: Ppro1-flhDC, 0-1 flagellum
+- `EM9661`: PproA-flhDC, mostly 1 flagellum
 - `TH9677`: **WT**, 3-4 flagella on average
-- `EM9660`: 5-6 flagella 
-- `EM8513`: 7-8 flagella 
+- `TH5861`: **WT**, (fliC ON background, for comparison to motB mutant)
+- `EM9660`: PproB-flhDC, 5-6 flagella
+- `EM8513`: PproD-flhDC, 7-8 flagella
 
 # Prerequisites
 
@@ -137,18 +139,21 @@ save_plot <- function(
 
 ## Data import
 
-- define order of sectors, strains, and knockouts for plotting
+- define order of sectors, strains, and mutants for plotting
 - import experimental mass fraction data for KO strains
 
 ```{r}
 sectors_sorted <- c("Oth", "Rib", "Cbn", "Aab", "Etc", "Lpb", "Fla", "Tra")
-strains_sorted <- c("EM16223", "EM9662", "EM9661", "TH9677", "EM9660", "EM8513")
-knockouts_sorted <- c()
+strains_sorted <- c("EM16223", "EM9662", "EM9661", "TH9677", "EM9660", "EM8513", "TH5861", "EM16224")
+mutants_sorted <- c("ΔflhDC", "Ppro1-flhDC", "PproA-flhDC", "WT", "PproB-flhDC", "PproD-flhDC", "WT-(fliC ON)", "motB-D33N")
+linebreak <- function(x) {
+  str_replace(x, "-", "-\n")
+}
 
 df_mass_frac <- read_tsv("../tables/sector_mass_fractions.tsv", show_col_types = FALSE) %>%
   mutate(
     sector_short = factor(sector_short, levels = sectors_sorted),
-    condition = factor(condition, levels = strains_sorted)
+    mutant = factor(mutant, levels = mutants_sorted)
   )
 ```
 
@@ -253,8 +258,10 @@ print(plot_model_sublim)
 selected_time <- 10
 
 df_overlay <- df_mass_frac %>%
-  group_by(condition, sector_short) %>%
+  filter(mutant %in% mutants_sorted[1:6]) %>%
+  group_by(mutant, sector_short) %>%
   summarize(
+    .groups = "drop_last",
     value = mean(mass_fraction, na.rm = TRUE),
     mu = mean_growth_rate[1],
   ) %>%
@@ -282,7 +289,7 @@ plot_model_strains <- ggarrange(
     geom_point(size = 1) +
     geom_point(
       data = filter(df_overlay, sector_short == "Rib"),
-      mapping = aes(shape = condition),
+      mapping = aes(shape = mutant),
       size = 3
     ) +
     custom_theme() +
@@ -302,7 +309,7 @@ plot_model_strains <- ggarrange(
     geom_point(size = 1) +
     geom_point(
       data = df_overlay,
-      mapping = aes(shape = condition),
+      mapping = aes(shape = mutant),
       size = 3
     ) +
     custom_theme() +
@@ -328,13 +335,15 @@ print(plot_model_strains)
 
 ```{r, fig.width=10, fig.height=5.5}
 plot_mass_frac_bars <- df_mass_frac %>%
-  group_by(condition, sector_short) %>%
+  filter(mutant %in% mutants_sorted[1:6]) %>%
+  group_by(mutant, sector_short) %>%
   summarize(
     .groups = "drop",
     mean_mass_fraction = mean(mass_fraction, na.rm = TRUE),
     sd_mass_fraction = sd(mass_fraction, na.rm = TRUE)
   ) %>%
-  ggplot(aes(x = condition, y = mean_mass_fraction, fill = fct_rev(sector_short))) +
+  mutate(mutant = factor(linebreak(mutant), linebreak(mutants_sorted))) %>%
+  ggplot(aes(x = mutant, y = mean_mass_fraction, fill = fct_rev(sector_short))) +
   geom_bar(stat = "identity", position = "stack") +
   custom_theme() +
   scale_fill_manual(values = rev(custom_colors)) +
@@ -398,7 +407,7 @@ plot_model_rib <- df_model_sublim %>%
   geom_point(size = 2) +
   geom_point(
     data = filter(df_overlay, sector_short == "Rib"),
-    mapping = aes(shape = condition),
+    mapping = aes(shape = mutant),
     size = 3
   ) +
   # linear model fit to the experimental data points
@@ -432,9 +441,9 @@ In the next section we investigate if **protein cost or energy cost** (ATP drivi
 - energy cost can also be estimated from literature, and was incorporated into the model
 - the flagellum in the model is an enzyme with a fixed activity which consumes ATP and 'produces' swimming speed
 - the key numbers for the flagellar machinery are:
-  - a flagellar rotation frequency, we assume f = 100 s^-1, (Magariyama et al. 2001,PMID:11356579)
-  - a flagellar rotation cost of 400 ATP per rotation (Schavemaker & Lynch 2022, PMID:35881430)
-  - a maximal swimming speed of 30-40 µm s^-1 (Macnab & Koshland 1972; Harshey & Matsuyama 1994,Bionumbers ID:106818)
+  - a flagellar rotation frequency, we assume f = 100 s^-1, (Magariyama et al. 2001, PMID:11356579)
+  - a flagellar rotation cost of 172-360 ATP per rotation (used average: 250, Schavemaker & Lynch 2022, PMID: 35881430; Wang et al. 2022, PMID: 35699374; Reid et al. 2006, PMID: 16698936)
+  - a maximal swimming speed of 30-40 µm s^-1 (Macnab & Koshland 1972; Harshey & Matsuyama 1994, Bionumbers ID:106818)
   - a run-and-tumble efficiency (drift), of 0.01-0.05 (Mattingly et al. 2021, PMID:35035514; figure 3C)
   - the swimming speed follows a half-maximal saturation curve, depending on number of flagella
 
@@ -446,42 +455,96 @@ df_model_rotation <- read_model_results(
   mutate(energy_cost = ifelse(energy_cost == "no_ATP", "without ATP cost\n(no rotation)", "with ATP cost\n(rotation)"))
 ```
 
+- in addition to the modeling results for simulated flagella expression, we can also overlay experimental data from flagella mutants
+- particularly interesting are assembly mutants which produce flagella without the capacity to rotate and to hydrolyze ATP as energy donor
+- hence it is possible to separate protein cost from energy cost and see if growth rate of these strains correspond to simulated results
 
 ```{r}
+df_rotation_mutants <- df_mass_frac %>%
+  filter(mutant %in% mutants_sorted[c(1, 7, 8)]) %>%
+  select(matches("mutant|growth|doubling")) %>%
+  distinct()
+```
+
+- first we prepare a combined data frame for modeling and experimental results (rotation-data only)
+
+```{r}
+df_rotation_combined <- bind_rows(
+  df_model_rotation %>%
+    filter(
+      variable == "a", time == selected_time,
+      sector_short == "Rib", flagella %in% c(0.00, 0.05)
+    ) %>%
+    select(flagella, mu, energy_cost) %>%
+    mutate(type = "model") %>%
+    filter(!(flagella == 0 & energy_cost == "with ATP cost\n(rotation)")) %>%
+    mutate(
+      cost = ifelse(mu == max(mu), "without ATP/protein cost\n(no flagellum)", energy_cost),
+      mu_sd = 0,
+      mutant = paste0("Fla=", flagella * 100, "%"),
+      mutant = ifelse(str_starts(cost, "without"), paste(mutant, "R-"), paste(mutant, "R+"))
+    ) %>%
+    select(type, mutant, cost, mu, mu_sd),
+  df_rotation_mutants %>%
+    rename(mu = mean_growth_rate, mu_sd = sd_growth_rate) %>%
+    select(mutant, mu, mu_sd) %>%
+    mutate(
+      cost = case_when(
+        mutant == "ΔflhDC" ~ "without ATP/protein cost\n(no flagellum)",
+        mutant == "WT-(fliC ON)" ~ "with ATP cost\n(rotation)",
+        mutant == "motB-D33N" ~ "without ATP cost\n(no rotation)"
+      ),
+      mutant = linebreak(mutant),
+      type = "experiment"
+    ) %>%
+    select(type, mutant, cost, mu, mu_sd)
+)
+
+df_rotation_combined <- df_rotation_combined %>%
+  group_by(type) %>%
+  arrange(type, mu) %>%
+  mutate(penalty = (max(mu) - mu) / max(mu) * 100)
+```
+
+```{r, fig.width=5, fig.height=5}
+plot_model_rotation <- df_model_rotation %>%
+  filter(variable == "a", time == selected_time, sector_short == "Rib") %>%
+  ggplot(aes(x = flagella, y = mu, color = energy_cost)) +
+  geom_line() +
+  geom_point(size = 2) +
+  custom_theme(legend.position = "bottom", aspect.ratio = 1) +
+  scale_color_manual(values = c(custom_colors[2], lighten(custom_colors[2], 0.3))) +
+  labs(
+    title = "Rotation mutant simulation",
+    x = "Flagella mass fraction",
+    y = "Growth rate (1/h)",
+    color = "Energy cost"
+  )
+
+plot_mutants_rotation <- df_rotation_combined %>%
+  mutate(mutant = fct_inorder(mutant)) %>%
+  ggplot(aes(
+    x = mutant, y = mu,
+    color = cost, fill = cost,
+    label = paste0(round(penalty, 1), "%")
+  )) +
+  geom_col(position = "dodge", color = "white") +
+  geom_text(position = position_dodge(width = 0.01), vjust = -0.5, size = 3.5, show.legend = FALSE) +
+  scale_fill_manual(values = c(custom_colors[2], lighten(custom_colors[2], 0.3), lighten(custom_colors[2], 0.6))) +
+  scale_color_manual(values = c(custom_colors[2], lighten(custom_colors[2], 0.3), lighten(custom_colors[2], 0.6))) +
+  facet_wrap(~ type, scales = "free_x") +
+  custom_theme(legend.position = "bottom", aspect.ratio = 1) +
+  labs(
+    title = "Growth penalty of rotation mutants",
+    x = "",
+    y = "growth rate (1/h)",
+    fill = "Energy cost"
+  )
+
 plot_rotation_penalty <- ggarrange(
-  ncol = 2, align = "hv",
-  df_model_rotation %>%
-    filter(variable == "a", time == selected_time, sector_short == "Rib") %>%
-    ggplot(aes(x = flagella, y = mu, fill = energy_cost)) +
-    geom_col(position = "dodge", color = "white") +
-    custom_theme(legend.position = "right", aspect.ratio = 1) +
-    scale_fill_manual(values = c(custom_colors[7], lighten(custom_colors[7], 0.5))) +
-    labs(
-      title = "Growth rate with increasing flagella expression",
-      x = "Flagella mass fraction",
-      y = "Growth rate (1/h)",
-      fill = "Energy cost"
-    ),
-  df_model_rotation %>%
-    filter(variable == "a", time == selected_time, sector_short == "Rib") %>%
-    group_by(energy_cost) %>%
-    mutate(penalty = (max(mu) - mu) / max(mu) * 100) %>%
-    ggplot(aes(
-      x = flagella, y = penalty,
-      color = energy_cost, fill = energy_cost,
-      label = paste0(round(penalty, 1), "%")
-    )) +
-    geom_col(position = "dodge", color = "white") +
-    geom_text(position = position_dodge(width = 0.01), vjust = -0.5, size = 3.5, show.legend = FALSE) +
-    custom_theme(legend.position = "right", aspect.ratio = 1) +
-    scale_fill_manual(values = c(custom_colors[7], lighten(custom_colors[7], 0.5))) +
-    scale_color_manual(values = c(custom_colors[7], lighten(custom_colors[7], 0.5))) +
-    labs(
-      title = "Growth penalty compared to no flagella",
-      x = "Flagella mass fraction",
-      y = "% loss in growth rate",
-      fill = "Energy cost"
-    )
+  ncol = 2, widths = c(0.36, 0.64),
+  plot_model_rotation,
+  plot_mutants_rotation
 )
 
 save_plot(plot_rotation_penalty, width = 10, height = 5.5)

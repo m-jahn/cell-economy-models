@@ -42,12 +42,14 @@ We hypothesize that the cost of the flagellum machinery must be offset by an imp
 
 ## Mutant strains used for modeling
 
-- `EM16223`: 0 flagella (null mutant)
-- `EM9662`: 0-1 flagellum
-- `EM9661`: mostly 1 flagellum
+- `EM16223`: △flhDC, 0 flagella (null mutant)
+- `EM16224`: motB D33N (rotation-deficient mutant)
+- `EM9662`: Ppro1-flhDC, 0-1 flagellum
+- `EM9661`: PproA-flhDC, mostly 1 flagellum
 - `TH9677`: **WT**, 3-4 flagella on average
-- `EM9660`: 5-6 flagella 
-- `EM8513`: 7-8 flagella 
+- `TH5861`: **WT**, (fliC ON background, for comparison to motB mutant)
+- `EM9660`: PproB-flhDC, 5-6 flagella
+- `EM8513`: PproD-flhDC, 7-8 flagella
 
 # Prerequisites
 
@@ -211,10 +213,12 @@ get_uniprot <- function(url, backup = NULL) {
 }
 
 # download Uniprot data, and save a local backup copy if it doesn't exist
-backup <- "../tables/uniprot_annotation_backup.csv"
-df_uniprot <- get_uniprot(uniprot_url, backup)
-if (!file.exists(backup)) {
-  write_csv(df_uniprot, backup)
+uniprot_backup <- "../tables/uniprot_annotation_backup.csv"
+if (file.exists(uniprot_backup)) {
+  df_uniprot <- read_csv(uniprot_backup, col_types = cols(), name_repair = tolower)
+} else {
+  df_uniprot <- get_uniprot(uniprot_url, uniprot_backup)
+  write_csv(df_uniprot, uniprot_backup)
 }
 ```
 
@@ -374,17 +378,17 @@ include_protein_mapping <- FALSE
 if (include_protein_mapping) {
   df_protein_sector <- read_tsv("../tables/protein_sector_mapping.tsv", show_col_types = FALSE)
   df_sectors <- df_uniprot %>%
-  left_join(select(df_protein_sector, -protein), by = "uniprot_id") %>%
-  left_join(df_sectors, by = "kegg") %>%
-  mutate(sector = coalesce(sector.x, sector.y)) %>%
-  mutate(sector_short = coalesce(sector_short.x, sector_short.y)) %>%
-  select(-sector.x, -sector.y, -sector_short.x, -sector_short.y) %>%
-  mutate(sector = replace_na(sector, "Other")) %>%
-  mutate(sector_short = replace_na(sector_short, "Oth"))
+    left_join(select(df_protein_sector, -protein), by = "uniprot_id") %>%
+    left_join(df_sectors, by = "kegg") %>%
+    mutate(sector = coalesce(sector.x, sector.y)) %>%
+    mutate(sector_short = coalesce(sector_short.x, sector_short.y)) %>%
+    select(-sector.x, -sector.y, -sector_short.x, -sector_short.y) %>%
+    mutate(sector = replace_na(sector, "Other")) %>%
+    mutate(sector_short = replace_na(sector_short, "Oth"))
 } else {
-df_sectors <- df_uniprot %>%
-  left_join(df_sectors, by = "kegg") %>%
-  mutate(sector_short = replace_na(sector_short, "Oth"))
+  df_sectors <- df_uniprot %>%
+    left_join(df_sectors, by = "kegg") %>%
+    mutate(sector_short = replace_na(sector_short, "Oth"))
 }
 ```
 
@@ -395,13 +399,18 @@ df_sectors <- df_uniprot %>%
 
 ```{r}
 sectors_sorted <- c("Oth", "Rib", "Cbn", "Aab", "Etc", "Lpb", "Fla", "Tra")
-strains_sorted <- c("EM16223", "EM9662", "EM9661", "TH9677", "EM9660", "EM8513")
-knockouts_sorted <- c()
+strains_sorted <- c("EM16223", "EM9662", "EM9661", "TH9677", "EM9660", "EM8513", "TH5861", "EM16224")
+mutants_sorted <- c("ΔflhDC", "Ppro1-flhDC", "PproA-flhDC", "WT", "PproB-flhDC", "PproD-flhDC", "WT-(fliC ON)", "motB-D33N")
+linebreak <- function(x) {
+  str_replace(x, "-", "-\n")
+}
 
 df_annotated <- left_join(df, df_sectors, by = "uniprot_id") %>%
   mutate(
     sector_short = factor(sector_short, sectors_sorted),
     condition = factor(condition, strains_sorted),
+    mutant = recode_values(condition, from = strains_sorted, to = mutants_sorted),
+    mutant = factor(mutant, mutants_sorted),
     gene_name_short = str_remove(gene_name_long, " .*")
   ) %>%
   group_by(condition, replicate) %>%
@@ -520,7 +529,7 @@ for (sect in sectors_sorted[-1]) {
 
 ```{r}
 df_mass_frac <- df_annotated %>%
-  group_by(condition, replicate, sector_short) %>%
+  group_by(mutant, replicate, sector_short) %>%
   summarize(mass_fraction = sum(mass_fraction, na.rm = TRUE), .groups = "drop") %>%
   ungroup()
 ```
@@ -530,13 +539,14 @@ df_mass_frac <- df_annotated %>%
 
 ```{r}
 plot_mass_frac_bars <- df_mass_frac %>%
-  group_by(condition, sector_short) %>%
+  group_by(mutant, sector_short) %>%
   summarize(
     .groups = "drop",
     mean_mass_fraction = mean(mass_fraction, na.rm = TRUE),
     sd_mass_fraction = sd(mass_fraction, na.rm = TRUE)
   ) %>%
-  ggplot(aes(x = condition, y = mean_mass_fraction, fill = fct_rev(sector_short))) +
+  mutate(mutant = factor(linebreak(mutant), linebreak(mutants_sorted))) %>%
+  ggplot(aes(x = mutant, y = mean_mass_fraction, fill = fct_rev(sector_short))) +
   geom_bar(stat = "identity", position = "stack") +
   custom_theme() +
   scale_fill_manual(values = rev(custom_colors)) +
@@ -549,7 +559,8 @@ plot_mass_frac_bars <- df_mass_frac %>%
   theme(legend.position = "right", aspect.ratio = 1)
 
 plot_mass_frac_points <- df_mass_frac %>%
-  ggplot(aes(x = condition, y = mass_fraction, color = fct_rev(sector_short))) +
+  mutate(mutant = factor(linebreak(mutant), linebreak(mutants_sorted))) %>%
+  ggplot(aes(x = mutant, y = mass_fraction, color = fct_rev(sector_short))) +
   geom_boxplot(position = "identity", outliers = FALSE, median.linetype = NA, alpha = 0.5) +
   geom_point(position = position_jitter(width = 0.2, height = 0)) +
   custom_theme() +
@@ -582,7 +593,7 @@ list_y_lims <- list(
 )
 
 plot_mass_frac_sectors <- df_mass_frac %>%
-  ggplot(aes(x = condition, y = mass_fraction, color = fct_rev(sector_short))) +
+  ggplot(aes(x = mutant, y = mass_fraction, color = fct_rev(sector_short))) +
   geom_boxplot(position = "identity", outliers = FALSE, alpha = 0.5) +
   geom_point(position = position_jitter(width = 0.1, height = 0)) +
   custom_theme() +
@@ -609,7 +620,7 @@ print(plot_mass_frac_sectors)
 
 ```{r, fig.width=10, fig.height=5.5}
 df_mass_frac_top10 <- df_annotated %>%
-  group_by(uniprot_id, gene_name_short, sector, sector_short, condition) %>%
+  group_by(uniprot_id, gene_name_short, sector, sector_short, mutant) %>%
   summarize(
     .groups = "drop",
     mean_mass_fraction = mean(mass_fraction, na.rm = TRUE),
@@ -625,7 +636,7 @@ df_mass_frac_top10 <- df_annotated %>%
   ungroup()
 
 plot_mass_frac_top10 <- df_mass_frac_top10 %>%
-  ggplot(aes(x = condition, y = mean_mass_fraction, fill = fct_rev(sector_short))) +
+  ggplot(aes(x = mutant, y = mean_mass_fraction, fill = fct_rev(sector_short))) +
   geom_col(position = "stack", col = grey(0.95), alpha = 0.75, linewidth = 0.5) +
   geom_text(aes(label = gene_name_short), color = grey(0.95), position = position_stack(vjust = 0.5), size = 2.5) +
   custom_theme() +
@@ -655,7 +666,7 @@ print(plot_mass_frac_top10)
 
 ```{r, fig.width=10, fig.height=6.5}
 plot_mass_frac_ribo <- df_annotated %>%
-  group_by(uniprot_id, gene_name_short, sector, sector_short, condition) %>%
+  group_by(uniprot_id, gene_name_short, sector, sector_short, mutant) %>%
   summarize(
     .groups = "drop",
     mean_mass_fraction = mean(mass_fraction, na.rm = TRUE),
@@ -666,7 +677,7 @@ plot_mass_frac_ribo <- df_annotated %>%
     gene_name_short,
     unique(gene_name_short[order(mean_mass_fraction, decreasing = TRUE)])
   )) %>%
-  ggplot(aes(x = condition, y = mean_mass_fraction, color = condition)) +
+  ggplot(aes(x = mutant, y = mean_mass_fraction, color = mutant)) +
   geom_errorbar(
     width = 0.2, position = position_dodge(width = 0.75),
     aes(
@@ -693,7 +704,7 @@ print(plot_mass_frac_ribo)
 
 ```{r, fig.width=8, fig.height=8}
 plot_mass_frac_flag <- df_annotated %>%
-  group_by(uniprot_id, gene_name_short, sector, sector_short, condition) %>%
+  group_by(uniprot_id, gene_name_short, sector, sector_short, mutant) %>%
   summarize(
     .groups = "drop",
     mean_mass_fraction = mean(mass_fraction, na.rm = TRUE),
@@ -704,7 +715,7 @@ plot_mass_frac_flag <- df_annotated %>%
     gene_name_short,
     unique(gene_name_short[order(mean_mass_fraction, decreasing = TRUE)])
   )) %>%
-  ggplot(aes(x = condition, y = mean_mass_fraction, color = condition)) +
+  ggplot(aes(x = mutant, y = mean_mass_fraction, color = mutant)) +
   geom_errorbar(
     width = 0.2, position = position_dodge(width = 0.75),
     aes(
@@ -731,29 +742,33 @@ print(plot_mass_frac_flag)
 
 ### Import growth rate data
 
-- we can also compare the mass fraction of sectors to the growth rate of the strains
-- growth rates were experimentally determined from microscopy (single-cell) and bulk growth assays
-- average growth rate is imported as doubling time in `data/tables/doubling_time.csv`
-- **NOTE**: data from `EM16223` (flagella null mutant) is currently missing, will be added later
+- we can also correlate the mass fraction of sectors to the growth rate of the strains
+- will higher flagella expression lead to reduced growth rate?
+- doubling times were experimentally determined from microscopy (single-cell) and bulk growth assays
+- doubling time data is imported from `data/tables/population-growth_Ppro-mutants.csv` and converted to growth rate
 
 ```{r, fig.width=10, fig.height=6}
-df_growth_rate <- read_csv("../tables/doubling_time.csv", show_col_types = FALSE) %>%
-  mutate(replicate = as.integer(str_remove(replicate, "R"))) %>%
-  # we add dummy data for 1 missing condition, EM16223
-  add_row(
-    condition = "EM16223",
-    replicate = 1:3,
-    doubling_time_min = round(rnorm(3, 25, sd = 1), 1)
+df_growth_rate <- read_csv("../tables/population_growth_mutants.csv", show_col_types = FALSE) %>%
+  select(strain, experiment_day, tech_rep, doubling_time_min) %>%
+  rename(replicate = experiment_day) %>%
+  mutate(
+    replicate = as.integer(str_remove(replicate, "R")),
+    mutant = recode_values(strain, from = strains_sorted, to = mutants_sorted),
+    mutant = factor(mutant, mutants_sorted)
   ) %>%
-  mutate(growth_rate_1h = log(2) / doubling_time_min * 60) %>%
-  mutate(condition = factor(condition, levels = strains_sorted))
+  filter(!is.na(mutant)) %>%
+  group_by(strain, mutant, replicate) %>%
+  summarize(doubling_time_min = mean(doubling_time_min, na.rm = TRUE), .groups = "drop") %>%
+  mutate(growth_rate_1h = log(2) / doubling_time_min * 60)
 
 plot_growth_rate <- df_growth_rate %>%
-  group_by(condition) %>%
+  filter(mutant %in% mutants_sorted[1:6]) %>%
+  group_by(mutant) %>%
   mutate(mean_mu = mean(growth_rate_1h), sd_mu = sd(growth_rate_1h)) %>%
-  ggplot(aes(x = condition, y = growth_rate_1h)) +
+  mutate(mutant = factor(linebreak(mutant), linebreak(mutants_sorted))) %>%
+  ggplot(aes(x = mutant, y = growth_rate_1h)) +
   geom_point(color = grey(0.7), position = position_jitter(width = 0.2, height = 0)) +
-  geom_point(aes(x = condition, y = mean_mu), color = grey(0.3)) +
+  geom_point(aes(x = mutant, y = mean_mu), color = grey(0.3)) +
   geom_errorbar(
     color = grey(0.3),
     width = 0.2, position = position_dodge(width = 0.75),
@@ -770,11 +785,13 @@ plot_growth_rate <- df_growth_rate %>%
   )
 
 plot_doubling_time <- df_growth_rate %>%
-  group_by(condition) %>%
+  filter(mutant %in% mutants_sorted[1:6]) %>%
+  group_by(mutant) %>%
   mutate(mean_dt = mean(doubling_time_min), sd_dt = sd(doubling_time_min)) %>%
-  ggplot(aes(x = condition, y = doubling_time_min)) +
+  mutate(mutant = factor(linebreak(mutant), linebreak(mutants_sorted))) %>%
+  ggplot(aes(x = mutant, y = doubling_time_min)) +
   geom_point(color = grey(0.7), position = position_jitter(width = 0.2, height = 0)) +
-  geom_point(aes(x = condition, y = mean_dt), color = grey(0.3)) +
+  geom_point(aes(x = mutant, y = mean_dt), color = grey(0.3)) +
   geom_errorbar(
     color = grey(0.3),
     width = 0.2, position = position_dodge(width = 0.75),
@@ -803,24 +820,24 @@ print(plot_mu_dt)
 
 ```{r, fig.width=8, fig.height=5}
 plot_mass_vs_mu <- df_mass_frac %>%
-  group_by(condition, sector_short) %>%
+  group_by(mutant, sector_short) %>%
   summarize(mean_mass_fraction = mean(mass_fraction, na.rm = TRUE)) %>%
   left_join(
-    by = "condition",
+    by = "mutant",
     df_growth_rate %>%
-      group_by(condition) %>%
-      summarize(mean_growth_rate = mean(growth_rate_1h, na.rm = TRUE))
+      group_by(mutant) %>%
+      summarize(mean_doubling_time = mean(doubling_time_min, na.rm = TRUE))
   ) %>%
   filter(sector_short %in% c("Rib", "Fla")) %>%
-  ggplot(aes(x = mean_mass_fraction, y = mean_growth_rate, color = sector_short)) +
+  ggplot(aes(x = mean_mass_fraction, y = mean_doubling_time, color = sector_short)) +
   geom_point(size = 3) +
-  ggrepel::geom_text_repel(aes(label = condition, color = sector_short), size = 3) +
+  ggrepel::geom_text_repel(aes(label = mutant, color = sector_short), size = 3) +
   custom_theme() +
   scale_color_manual(values = custom_colors[c(2, 7)]) +
   labs(
     title = "Correlation of sector mass fraction and growth rate",
     x = "Mean mass fraction",
-    y = "Mean growth rate (1/h)",
+    y = "Mean doubling time (min)",
     color = "Sector"
   ) +
   theme(legend.position = "right", aspect.ratio = 1) +
@@ -836,11 +853,16 @@ print(plot_mass_vs_mu)
 
 ```{r}
 df_mass_frac %>%
-  left_join(
-    by = "condition",
+  full_join(
+    by = "mutant",
     df_growth_rate %>%
-      group_by(condition) %>%
-      summarize(mean_growth_rate = mean(growth_rate_1h, na.rm = TRUE))
+      group_by(mutant) %>%
+      summarize(
+        mean_growth_rate = mean(growth_rate_1h, na.rm = TRUE),
+        sd_growth_rate = sd(growth_rate_1h, na.rm = TRUE),
+        mean_doubling_time = mean(doubling_time_min, na.rm = TRUE),
+        sd_doubling_time = sd(doubling_time_min, na.rm = TRUE)
+      )
   ) %>%
   write_tsv("../tables/sector_mass_fractions.tsv")
 ```
@@ -850,4 +872,3 @@ df_mass_frac %>%
 ```{r}
 sessionInfo()
 ```
-
