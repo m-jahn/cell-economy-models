@@ -288,7 +288,7 @@ plot_model_strains <- ggarrange(
     geom_line() +
     geom_point(size = 1) +
     geom_point(
-      data = filter(df_overlay, sector_short == "Rib"),
+      data = filter(df_overlay, sector_short == "Rib", mutant %in% mutants_sorted[2:6]),
       mapping = aes(shape = mutant),
       size = 3
     ) +
@@ -308,7 +308,7 @@ plot_model_strains <- ggarrange(
     geom_line() +
     geom_point(size = 1) +
     geom_point(
-      data = df_overlay,
+      data = filter(df_overlay, mutant %in% mutants_sorted[2:6]),
       mapping = aes(shape = mutant),
       size = 3
     ) +

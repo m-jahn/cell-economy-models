@@ -762,7 +762,7 @@ df_growth_rate <- read_csv("../tables/population_growth_mutants.csv", show_col_t
   mutate(growth_rate_1h = log(2) / doubling_time_min * 60)
 
 plot_growth_rate <- df_growth_rate %>%
-  filter(mutant %in% mutants_sorted[1:6]) %>%
+  filter(mutant %in% mutants_sorted[2:6]) %>%
   group_by(mutant) %>%
   mutate(mean_mu = mean(growth_rate_1h), sd_mu = sd(growth_rate_1h)) %>%
   mutate(mutant = factor(linebreak(mutant), linebreak(mutants_sorted))) %>%
@@ -785,7 +785,7 @@ plot_growth_rate <- df_growth_rate %>%
   )
 
 plot_doubling_time <- df_growth_rate %>%
-  filter(mutant %in% mutants_sorted[1:6]) %>%
+  filter(mutant %in% mutants_sorted[2:6]) %>%
   group_by(mutant) %>%
   mutate(mean_dt = mean(doubling_time_min), sd_dt = sd(doubling_time_min)) %>%
   mutate(mutant = factor(linebreak(mutant), linebreak(mutants_sorted))) %>%
@@ -826,10 +826,11 @@ plot_mass_vs_mu <- df_mass_frac %>%
     by = "mutant",
     df_growth_rate %>%
       group_by(mutant) %>%
-      summarize(mean_doubling_time = mean(doubling_time_min, na.rm = TRUE))
+      summarize(mean_growth_rate = mean(growth_rate_1h, na.rm = TRUE))
   ) %>%
   filter(sector_short %in% c("Rib", "Fla")) %>%
-  ggplot(aes(x = mean_mass_fraction, y = mean_doubling_time, color = sector_short)) +
+  filter(mutant %in% mutants_sorted[2:6]) %>%
+  ggplot(aes(x = mean_mass_fraction, y = mean_growth_rate, color = sector_short)) +
   geom_point(size = 3) +
   ggrepel::geom_text_repel(aes(label = mutant, color = sector_short), size = 3) +
   custom_theme() +
@@ -837,7 +838,7 @@ plot_mass_vs_mu <- df_mass_frac %>%
   labs(
     title = "Correlation of sector mass fraction and growth rate",
     x = "Mean mass fraction",
-    y = "Mean doubling time (min)",
+    y = "Mean growth rate (1/h)",
     color = "Sector"
   ) +
   theme(legend.position = "right", aspect.ratio = 1) +
