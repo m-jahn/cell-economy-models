@@ -506,14 +506,14 @@ df_rotation_combined <- df_rotation_combined %>%
   mutate(penalty = (max(mu) - mu) / max(mu) * 100)
 ```
 
-```{r, fig.width=5, fig.height=5}
+```{r, fig.width=10, fig.height=5.5}
 plot_model_rotation <- df_model_rotation %>%
   filter(variable == "a", time == selected_time, sector_short == "Rib") %>%
   ggplot(aes(x = flagella, y = mu, color = energy_cost)) +
   geom_line() +
   geom_point(size = 2) +
   custom_theme(legend.position = "bottom", aspect.ratio = 1) +
-  scale_color_manual(values = c(custom_colors[2], lighten(custom_colors[2], 0.3))) +
+  scale_color_manual(values = c(custom_colors[7], lighten(custom_colors[7], 0.3))) +
   labs(
     title = "Rotation mutant simulation",
     x = "Flagella mass fraction",
@@ -526,14 +526,16 @@ plot_mutants_rotation <- df_rotation_combined %>%
   ggplot(aes(
     x = mutant, y = mu,
     color = cost, fill = cost,
-    label = paste0(round(penalty, 1), "%")
+    label = paste0("-", round(penalty, 1), "%")
   )) +
   geom_col(position = "dodge", color = "white") +
-  geom_text(position = position_dodge(width = 0.01), vjust = -0.5, size = 3.5, show.legend = FALSE) +
-  scale_fill_manual(values = c(custom_colors[2], lighten(custom_colors[2], 0.3), lighten(custom_colors[2], 0.6))) +
-  scale_color_manual(values = c(custom_colors[2], lighten(custom_colors[2], 0.3), lighten(custom_colors[2], 0.6))) +
-  facet_wrap(~ type, scales = "free_x") +
+  geom_errorbar(aes(ymin = mu - mu_sd, ymax = mu + mu_sd), position = position_dodge(width = 0.01), width = 0.2, show.legend = FALSE) +
+  geom_text(position = position_dodge(width = 0.01), vjust = -1.0, size = 3.5, show.legend = FALSE) +
+  scale_fill_manual(values = c(custom_colors[7], lighten(custom_colors[7], 0.3), lighten(custom_colors[7], 0.6))) +
+  scale_color_manual(values = c(custom_colors[7], lighten(custom_colors[7], 0.3), lighten(custom_colors[7], 0.6))) +
+  facet_wrap(~type, scales = "free_x") +
   custom_theme(legend.position = "bottom", aspect.ratio = 1) +
+  coord_cartesian(ylim = c(0.0, 2.0)) +
   labs(
     title = "Growth penalty of rotation mutants",
     x = "",
@@ -579,7 +581,7 @@ df_model_swimming <- read_model_results(
 
 ```{r}
 plot_model_gradient <- ggplot(df_model_gradient, aes(x = dist_um, y = substrate_mM)) +
-  geom_area(fill = custom_colors[2], alpha = 0.5) +
+  geom_area(fill = "darkgrey", alpha = 0.5) +
   custom_theme() +
   lims(x = c(max(df_model_gradient$dist_um), 0)) +
   labs(
@@ -616,7 +618,7 @@ calculate_biomass <- function(mu, bm_start = 1) {
   return(bm_final)
 }
 
-plot_model_swimming_props <- df_model_swimming %>%
+df_model_swimsummary <- df_model_swimming %>%
   filter(variable == "a", sector_short == "Rib") %>%
   select(time, flagella, v_swim, distance, mu) %>%
   group_by(flagella) %>%
@@ -628,6 +630,9 @@ plot_model_swimming_props <- df_model_swimming %>%
     name == "mu" ~ "growth rate [1/h]",
     name == "biomass" ~ "final biomass [relative units]"
   ) %>% fct_inorder()) %>%
+  ungroup()
+
+plot_model_swimming_props <- df_model_swimsummary %>%
   ggplot(aes(x = time, y = value, color = factor(flagella))) +
   geom_line() +
   geom_text_repel(
@@ -641,7 +646,7 @@ plot_model_swimming_props <- df_model_swimming %>%
     values = colorRampPalette(custom_colors[c(4, 7, 3)])(length(unique(df_model_swimming$flagella)))
   ) +
   labs(
-    title = "Simulation for swimming up substrate gradient, increasing flagella expression",
+    title = "Simulation: swimming up substrate gradient, increasing flagella expression",
     x = "time [h]",
     y = ""
   ) +
@@ -652,7 +657,94 @@ save_plot(plot_model_swimming_props, width = 10, height = 3.5)
 print(plot_model_swimming_props)
 ```
 
-Next, we look at the mass fraction of the different sectors over time.
+- to break down the results to the most concise representation, we plot swimming distance on the x-axis overlaid on substrate the gradient
+- then additionally growth rate over time as line plot and final biomass as bar chart
+
+```{r}
+df_swimming_dist <- df_model_swimsummary %>%
+  filter(time == max(time), name == "distance travelled [µm]") %>%
+  mutate(
+    dist_um = 8500 - value,
+    flagella_pct = flagella * 100
+  )
+
+plot_swimming_dist <- df_swimming_dist %>%
+  ggplot(aes(x = dist_um, y = flagella_pct, color = factor(flagella))) +
+  geom_segment(aes(x = dist_um, xend = 0, y = flagella_pct, yend = flagella_pct)) +
+  geom_point() +
+  geom_area(
+    data = df_model_gradient,
+    aes(x = 8500 - dist_um, y = substrate_mM),
+    inherit.aes = FALSE,
+    fill = "darkgrey", alpha = 0.5
+  ) +
+  custom_theme() +
+  scale_color_manual(
+    values = colorRampPalette(custom_colors[c(4, 7, 3)])(length(unique(df_model_swimming$flagella)))
+  ) +
+  scale_y_continuous(
+    name = "flagella mass fraction [%]",
+    breaks = sort(unique(df_swimming_dist$flagella_pct)),
+    sec.axis = sec_axis(~., name = "Substrate concentration [mM]")
+  ) +
+  labs(
+    title = "Swimming up substrate gradient",
+    x = "distance travelled [µm]",
+    y = "flagella mass fraction [%]"
+  ) +
+  coord_cartesian(xlim = c(0, 8500)) +
+  theme(legend.position = "none", aspect.ratio = 1)
+```
+
+```{r, fig.width=11, fig.height=5.5}
+plot_swimming_mu <- df_model_swimsummary %>%
+  filter(name == "growth rate [1/h]") %>%
+  ggplot(aes(x = time, y = value, color = factor(flagella))) +
+  geom_line() +
+  custom_theme(legend.position = "bottom", aspect.ratio = 1) +
+  scale_color_manual(
+    values = colorRampPalette(custom_colors[c(4, 7, 3)])(length(unique(df_model_swimming$flagella)))
+  ) +
+  labs(
+    title = "Growth rate",
+    x = "time [h]",
+    y = "growth rate [1/h]"
+  )
+
+plot_swimming_biomass <- df_model_swimsummary %>%
+  filter(name == "final biomass [relative units]", time == max(time)) %>%
+  mutate(bm = value / max(value)) %>%
+  ggplot(aes(x = factor(flagella), y = bm, fill = factor(flagella))) +
+  geom_col() +
+  geom_text(
+    aes(label = round(bm, 2), color = factor(flagella)),
+    position = position_stack(vjust = 1.1), size = 3.5, show.legend = FALSE
+  ) +
+  custom_theme(legend.position = "none", aspect.ratio = 1) +
+  scale_fill_manual(
+    values = colorRampPalette(custom_colors[c(4, 7, 3)])(length(unique(df_model_swimming$flagella)))
+  ) +
+  scale_color_manual(
+    values = colorRampPalette(custom_colors[c(4, 7, 3)])(length(unique(df_model_swimming$flagella)))
+  ) +
+  labs(
+    title = "Final biomass",
+    x = "flagella mass fraction",
+    y = "final biomass [relative units]"
+  )
+
+plot_swimming_summary <- ggarrange(
+  ncol = 3, align = "hv",
+  plot_swimming_dist,
+  plot_swimming_mu,
+  plot_swimming_biomass
+)
+save_plot(plot_swimming_summary, width = 11, height = 5.5)
+print(plot_swimming_summary)
+```
+
+
+Finally, we look at the mass fraction of the different sectors over time.
 
 ```{r, fig.width=10, fig.height=5.5}
 plot_model_swimming_enz <- df_model_swimming %>%

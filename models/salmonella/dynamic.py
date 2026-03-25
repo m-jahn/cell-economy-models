@@ -18,16 +18,18 @@ import numpy as np
 from models import common
 
 
-# INITIALIZE STEADY STATE MODEL ----------------------------------------
+# INITIALIZE DYNAMIC MODEL ----------------------------------------
 def simulate(time, time_init, dist_init, c_init, c_ub, a_fla, kcat=None, Km=None, hc=None, c=None, remote=False):
 
     m = GEKKO(remote = remote)
-    m.options.IMODE = 5
+    m.options.IMODE = 6  # dynamic optimization
     m.options.REDUCE = 1
-    m.options.MAX_ITER = 1000
-    m.options.RTOL = 1e-4
-    m.options.OTOL = 1e-4
+    m.options.MAX_ITER = 2000
+    m.options.RTOL = 1e-5
+    m.options.OTOL = 1e-5
     m.options.SCALING = 1
+    m.options.SOLVER = 3
+    m.options.TIME_SHIFT = 1
     m.time = time
 
     # organize variables in sets to simplify indexing
@@ -46,14 +48,14 @@ def simulate(time, time_init, dist_init, c_init, c_ub, a_fla, kcat=None, Km=None
     # enzyme kinetic parameters as pandas series
     # kcat [molec/s], Km [mM], Hill coefficient [dimensionless]
     if kcat is None:
-        kcat = pd.Series([200, 500, 100, 10, 22, 20, 400 * 100], index = enz)
+        kcat = pd.Series([200, 500, 100, 10, 22, 20, 250 * 100], index = enz)
     if Km is None:
         Km = pd.Series([20, 0.05, 0.03, 1, 1, 0.5, 1.0], index = enz)
     if hc is None:
         hc = pd.Series([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], index = enz)
 
     # protein size [1000 aa]
-    pro_size = pd.Series([1, 10, 10, 5, 7.5, 2, 5e3, 0.35], index = pro)
+    pro_size = pd.Series([1, 10, 10, 5, 7.5, 2, 7.2e3, 0.35], index = pro)
 
     # reaction stoichiometry matrix of met x enz
     stoich = pd.DataFrame([
@@ -198,15 +200,17 @@ def simulate(time, time_init, dist_init, c_init, c_ub, a_fla, kcat=None, Km=None
     # RATE OF CHANGE CONSTRAINTS
     #
     # limit how fast cell dimensions can change in [µm/h], to prevent unrealistic step changes
-    m.Equation(abs(length.dt()) <= 0.25)
-    m.Equation(abs(radius.dt()) <= 0.05)
+    m.Equation(length.dt() <= mu * length * 0.5)
+    m.Equation(length.dt() >= 0)
+    m.Equation(radius.dt() <= mu * radius * 0.5)
+    m.Equation(radius.dt() >= 0)
 
     # limit growth rate change to only increase when moving up gradient
     m.Equations([mu.dt() >= 0])
 
-    # constrain protein concentration changes based on biological limits
+    # optional constraint on protein concentration changes based on biological limits, can make simulation more stable
     # lower bound: proteins can decrease at most by growth-related dilution
-    m.Equations([c[i].dt() >= -mu * c[i] for i in pro])
+    # m.Equations([c[i].dt() >= -mu * c[i] for i in pro])
 
 
     # SOLVING ----------------------------------------------------------

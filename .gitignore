@@ -32,6 +32,7 @@ data/figures/*
 results/*
 resources/*
 *.xlsx
+.backup/*
 
 # pixi environments
 .pixi/*

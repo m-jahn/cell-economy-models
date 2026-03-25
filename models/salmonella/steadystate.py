@@ -22,12 +22,13 @@ from models import common
 def simulate(time, c_ex, c_ub, a_fla, kcat=None, Km=None, hc=None, remote=False):
 
     m = GEKKO(remote = remote)
-    m.options.IMODE = 5
+    m.options.IMODE = 5  # 3 = steady-state, or 5 = dynamic with fixed time
     m.options.REDUCE = 1
-    m.options.MAX_ITER = 1000
-    m.options.RTOL = 1e-4
-    m.options.OTOL = 1e-4
+    m.options.MAX_ITER = 2000
+    m.options.RTOL = 1e-5
+    m.options.OTOL = 1e-5
     m.options.SCALING = 1
+    m.options.SOLVER = 3
     m.time = time
 
     # organize variables in sets to simplify indexing
@@ -46,14 +47,14 @@ def simulate(time, c_ex, c_ub, a_fla, kcat=None, Km=None, hc=None, remote=False)
     # enzyme kinetic parameters as pandas series
     # kcat [molec/s], Km [mM], Hill coefficient [dimensionless]
     if kcat is None:
-        kcat = pd.Series([200, 500, 100, 10, 22, 20, 400 * 100], index = enz)
+        kcat = pd.Series([200, 500, 100, 10, 22, 20, 250 * 100], index = enz)
     if Km is None:
         Km = pd.Series([20, 0.05, 0.03, 1, 1, 0.5, 1.0], index = enz)
     if hc is None:
         hc = pd.Series([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], index = enz)
 
     # protein size [1000 aa]
-    pro_size = pd.Series([1, 10, 10, 5, 7.5, 2, 5e3, 0.35], index = pro)
+    pro_size = pd.Series([1, 10, 10, 5, 7.5, 2, 7.2e3, 0.35], index = pro)
 
     # reaction stoichiometry matrix of met x enz
     stoich = pd.DataFrame([

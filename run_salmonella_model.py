@@ -23,9 +23,10 @@ from models import common
 # ----------------------------
 importlib.reload(steadystate)
 remote = True
-c_ex = np.round(2 ** np.arange(-6, 1, 0.5), 3)
+c_ex = np.round(2 ** np.arange(-5, 1, 0.5), 3)
 time = np.arange(0, len(c_ex), 1)
 max_retries = 3
+params_set = "results/salmonella/sampling/top/kinetic_params_2026.csv"
 
 # define sets
 enz = ["Tra", "Cbn", "Etc", "Aab", "Rib", "Lpb", "Fla"]
@@ -34,9 +35,9 @@ met = ["cin", "cpre", "aa", "lip", "e"]
 mem = ["cpm"]
 
 # upper boundaries
-c_ub_pro = pd.Series([1e6, 1e6, 1e6, 1e6, 1e6, 1e6, 1e3, 1e7], index=pro)
-c_ub_met = pd.Series([1e5, 1e5, 1e5, 1e6, 1e6], index=met)
-c_ub_mem = pd.Series([1e6], index=mem)
+c_ub_pro = pd.Series([1e6, 1e6, 1e6, 1e6, 2e6, 1e6, 1e3, 5e7], index=pro)
+c_ub_met = pd.Series([1e5, 1e5, 1e5, 2e6, 1e6], index=met)
+c_ub_mem = pd.Series([2e6], index=mem)
 c_ub = pd.concat([c_ub_pro, c_ub_met, c_ub_mem])
 
 
@@ -52,78 +53,99 @@ c_ub = pd.concat([c_ub_pro, c_ub_met, c_ub_mem])
 #
 # Strategy: fit data to the Null mutant condition (no flagella expression)
 # First import proteomics data:
-df_mf = pd.read_csv("data/tables/sector_mass_fractions.tsv", delimiter="\t")
-df_mf = (df_mf.groupby(["condition", "sector_short"])
-    .agg("mean")
-    .reset_index()
-    .query("condition == 'EM16223'")
-    .filter(["sector_short", "mass_fraction", "mean_growth_rate"])
-)
+if params_set is None or not os.path.exists(params_set):
 
-# perform parameter sampling to find stable sets and
-# improve solver performance (typical problem is over-constrainment)
-n_iterations = 0
-outdir = "results/salmonella/sampling/"
-kcat = pd.Series([185, 102, 22, 122, 7.5, 5.5, 4e4], index=enz)
-Km = pd.Series([2.5, 0.02, 0.08, 0.3, 1.50, 0.35, 1.0], index=enz)
-hc = pd.Series([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], index=enz)
-a_fla = 0.002
-best_error = np.inf
+    df_mf = pd.read_csv("data/tables/sector_mass_fractions.tsv", delimiter="\t")
+    df_mf = (df_mf.groupby(["mutant", "sector_short"])
+        .agg("mean")
+        .reset_index()
+        .query("mutant == 'ΔflhDC'")
+        .filter(["sector_short", "mass_fraction", "mean_growth_rate"])
+    )
 
-while n_iterations <= 50:
-    n_iterations += 1
-    iter = "{0:03d}".format(n_iterations)
-    try:
-        result_ss = steadystate.simulate(time, c_ex, c_ub, a_fla, kcat, Km, hc, remote)
-        mass_predicted = result_ss.table.query("cex == 1.0").filter(["a_aab", "a_cbn", "a_etc", "a_fla", "a_lpb", "a_oth","a_rib", "a_tra"])
-        mass_measured = df_mf.set_index("sector_short").loc[["Aab", "Cbn", "Etc", "Fla", "Lpb", "Oth", "Rib", "Tra"], "mass_fraction"]
-        mu_pred = result_ss.table.query("cex == 1.0")["mu"].values[0]
-        df_sampling = pd.DataFrame({"sector": mass_measured.index, "predicted": mass_predicted.values.flatten(), "measured": mass_measured.values.flatten()})
-        df_sampling = pd.concat([df_sampling, pd.DataFrame({"sector": ["mu"], "predicted": mu_pred, "measured": [df_mf["mean_growth_rate"].values[0]]})], ignore_index=True)
-        df_sampling["abs_error"] = abs(df_sampling["predicted"] - df_sampling["measured"])
-        df_sampling["rel_error"] = list(map(lambda x: log2(x[0] / x[1]), zip(df_sampling["predicted"], df_sampling["measured"])))
-        error = np.sum(abs(df_sampling["rel_error"]))
-        if  (error < best_error and mu_pred < 2.0):
-            best_error = error.copy()
-            msg_error = f"""
-            ---
-            iteration {iter} with flagella {a_fla:.3f} and final
-            growth rate {mu_pred:.2f}
-            has error {error:.2f}
-            """
-            print(msg_error)
-            # save current best parameter set and adjust kinetic parameters
-            result_ss.table.to_csv(outdir + "steady_state_iter_" + iter + "_flag_" + str(a_fla) + ".csv")
-            df_kinetic_params = pd.DataFrame({"kcat": kcat, "Km": Km, "hc": hc})
-            df_kinetic_params.to_csv(outdir + "kinetic_params.csv")
-            # write msg to log_file
-            with open(outdir + "parameter_sampling.log", "a") as log_file:
-                log_file.write(msg_error + "\n")
-                log_file.write(str(df_sampling) + "\n")
-                log_file.write(str(df_kinetic_params) + "\n")
-            kcat = pd.Series(common.randomize(kcat, 0.85, 1.15), index=enz)
-            Km = pd.Series(common.randomize(Km, 0.85, 1.15), index=enz)
+    # perform parameter sampling to find stable sets and
+    # improve solver performance (typical problem is over-constrainment)
+    # we run i epochs, each with j randomizations of kinetic parameters
+    # we use the best parameter set of each epoch as start for the next epoch
+    n_epochs = 0
+    outdir = "results/salmonella/sampling/"
+    a_fla = round(df_mf.query("sector_short == 'Fla'")["mass_fraction"].values[0], 4)
+    best_error = np.inf
+    
+    while n_epochs < 5:
+        n_epochs += 1
+        if n_epochs > 1:
+            best_params = outdir + "kinetic_params.csv"
+            if not os.path.exists(best_params):
+                best_params = outdir + "top/kinetic_params.csv"
         else:
-            print(f"iteration {iter} with growth rate {mu_pred:.3f} has error {error:.2f}, not improving")
-            raise ValueError("not improving")
-    except:
-        print("\n---\nmodel not solvable, trying next parameter set")
-        kcat = pd.Series(common.randomize([185, 102, 22, 122, 7.5, 5.5, 4e4], 0.75, 1.25), index=enz)
-        Km = pd.Series(common.randomize([2.5, 0.02, 0.08, 0.3, 1.50, 0.35, 1.0], 0.75, 1.25), index=enz)
+            best_params = outdir + "top/kinetic_params.csv"
+        df_params = pd.read_csv(best_params, index_col=0)
+        kcat = df_params.kcat
+        Km = df_params.Km
+        hc = df_params.hc
+        n_iterations = 0
+        #
+        while n_iterations < 20:
+            n_iterations += 1
+            iter = "{0:03d}".format(n_iterations)
+            try:
+                result_ss = steadystate.simulate(time, c_ex, c_ub, a_fla, kcat, Km, hc, remote)
+                mass_predicted = result_ss.table.query("cex == 1.0").filter(["a_aab", "a_cbn", "a_etc", "a_fla", "a_lpb", "a_oth","a_rib", "a_tra"])
+                mass_measured = df_mf.set_index("sector_short").loc[["Aab", "Cbn", "Etc", "Fla", "Lpb", "Oth", "Rib", "Tra"], "mass_fraction"]
+                mu_pred = result_ss.table.query("cex == 1.0")["mu"].values[0]
+                df_sampling = pd.DataFrame({"sector": mass_measured.index, "predicted": mass_predicted.values.flatten(), "measured": mass_measured.values.flatten()})
+                df_sampling = pd.concat([df_sampling, pd.DataFrame({"sector": ["mu"], "predicted": mu_pred, "measured": [df_mf["mean_growth_rate"].values[0]]})], ignore_index=True)
+                df_sampling["abs_error"] = abs(df_sampling["predicted"] - df_sampling["measured"])
+                df_sampling["rel_error"] = list(map(lambda x: log2(x[0] / x[1]), zip(df_sampling["predicted"], df_sampling["measured"])))
+                error = np.sum(abs(df_sampling["rel_error"]))
+                if  (error < best_error and mu_pred < 2.0):
+                    best_error = error.copy()
+                    msg_error = f"""
+                    ---
+                    epoch {n_epochs} iteration {iter} with flagella {a_fla:.3f} and final
+                    growth rate {mu_pred:.2f}
+                    has error {error:.2f}
+                    """
+                    print(msg_error)
+                    # save current best parameter set and adjust kinetic parameters
+                    result_ss.table.to_csv(outdir + "steady_state_iter_" + iter + "_flag_" + str(a_fla) + ".csv")
+                    df_kinetic_params = pd.DataFrame({"kcat": kcat, "Km": Km, "hc": hc})
+                    df_kinetic_params.to_csv(outdir + "kinetic_params.csv")
+                    # write msg to log_file
+                    with open(outdir + "parameter_sampling.log", "a") as log_file:
+                        log_file.write(msg_error + "\n")
+                        log_file.write(str(df_sampling) + "\n")
+                        log_file.write(str(df_kinetic_params) + "\n")
+                    kcat = pd.Series(common.randomize(kcat, 0.85, 1.15), index=enz)
+                    Km = pd.Series(common.randomize(Km, 0.85, 1.15), index=enz)
+                else:
+                    print(f"iteration {iter} with growth rate {mu_pred:.3f} has error {error:.2f}, not improving")
+                    raise ValueError("not improving")
+            except:
+                print(f"\n---\nmodel not solvable, trying next parameter set (epoch {n_epochs} iteration {iter})")
+                kcat = pd.Series(common.randomize(df_params.kcat, 0.8, 1.2), index=enz)
+                Km = pd.Series(common.randomize(df_params.Km, 0.8, 1.2), index=enz)
+                kcat["Fla"] = 25000
+
+    params_set = outdir + "kinetic_params.csv"
+    if not os.path.exists(params_set):
+        params_set = outdir + "kinetic_params_start.csv"
 
 
-# 4. run steady state model simulations
-# -------------------------------------
-#
-# import desired parameter set
-df_top_params = pd.read_csv("results/salmonella/sampling/top/kinetic_params_2026.csv", index_col=0)
+# import best parameter set
+df_top_params = pd.read_csv(params_set, index_col=0)
 kcat = df_top_params.kcat
 Km = df_top_params.Km
 hc = df_top_params.hc
 
 
+# 4. run steady state model simulations
+# -------------------------------------
+#
 # 4.1 simulate substrate limitation with different amount of flagella
 outdir = "results/salmonella/c_limitation/"
+os.makedirs(outdir, exist_ok=True)
 retries = 0
 for a_fla in np.arange(0, 0.06, 0.01):
     while retries <= max_retries:
@@ -156,6 +178,7 @@ common.plot_rates(df_climitation, outdir)
 # 4.2 simulate substrate limitation with and without rotational ATP cost for flagella
 # (set kcat of flagella to 0, but force protein cost)
 outdir = "results/salmonella/rotation/"
+os.makedirs(outdir, exist_ok=True)
 for k, v in {"ATP": 4e4, "no_ATP": 0}.items():
     kcat["Fla"] = v
     retries = 0
@@ -230,28 +253,22 @@ plt.savefig(outdir + "energy_vs_protein_cost.svg")
 #
 # 5.1 simulate swimming at variable speed, depending on number of flagella
 importlib.reload(dynamic)
-for dist_init in [8500]:
+for dist_init in [7500, 8000, 8500]:
     outdir = f"results/salmonella/swimming/{dist_init}/"
     os.makedirs(outdir, exist_ok=True)
     c_init = 5.0 # [mM] max substrate conc at gradient boundary
     time_init = 3 * 3600 # [sec] time for establishing substrate gradient
-    time =  np.concatenate([[0, 0.1], np.arange(0.5, 10, 0.5)]) # [h]
-    retries = 0
+    time =  np.concatenate([[0, 0.1], np.arange(0.5, 8.5, 0.5)]) # [h]
     for a_fla in np.concatenate([[0.005], np.arange(0.01, 0.06, 0.01)]):
         # pre-run steady state model to find good starting values for dynamic model (fix length and radius!)
         c_ex = round(common.diffusion_model(dist_init, time_init, 600, c_init), 3) # [mM]
         result_ss = steadystate.simulate(time, c_ex, c_ub, a_fla, kcat, Km, hc, remote)
         c_start = result_ss.c.apply(lambda x: round(x[1], 3))
-        while retries <= max_retries:
-            try:
-                result_dy = dynamic.simulate(time, time_init, dist_init, c_init, c_ub, a_fla, kcat, Km, hc, c_start, remote)
-                result_dy.table.to_csv(outdir + "dynamic_flag_" + "{0:02.3f}".format(a_fla) + ".csv")
-                break
-            except:
-                print("\n---\nmodel not solvable, varying parameter")
-                c_init = c_init + round(abs(np.random.normal(1)) / 100, 3)
-                retries += 1
-        retries = 0
+        try:
+            result_dy = dynamic.simulate(time, time_init, dist_init, c_init, c_ub, a_fla, kcat, Km, hc, c_start, remote)
+            result_dy.table.to_csv(outdir + "dynamic_flag_" + "{0:02.3f}".format(a_fla) + ".csv")
+        except:
+            print("\n---\nmodel not solvable, varying parameter")
     # 
     # import result tables
     df_dynamic = []
