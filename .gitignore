@@ -33,6 +33,7 @@ results/*
 resources/*
 *.xlsx
 .backup/*
+.Rhistory
 
 # pixi environments
 .pixi/*
