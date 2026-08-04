@@ -1,0 +1,814 @@
+---
+title: "Analyze modeling results for *Salmonella typhimurium*"
+author: "`r sessionInfo()$platform`"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_depth: '2'
+    df_print: paged
+  html_notebook:
+    theme: cosmo
+    toc: true
+    number_sections: true
+    toc_depth: 2
+    df_print: paged
+---
+
+----------
+
+# Background
+
+## Coarse-grained cellular economy model
+
+This notebook analyzes predictions from a _Salmonella typhimurium_ coarse-grained cellular economy model.
+The goal is to derive insights into the optimal allocation of protein resources.
+A focus of this analysis is the cost and benefit of the flagellum, an immense protein machinery which consumes both protein resources (10,000s of subunits) and ATP-derived rotational energy.
+We hypothesize that the cost of the flagellum machinery must be offset by an important benefit, such as increased motility in the gut lumen, and/or ability to break free from trapped states in the mucosa.
+The functional groups we are interested in are major protein sectors such as:
+
+- carbon and nutrient import ("Tra")
+- carbon metabolism to produce precursors such as Acetyl-CoA  ("Cbn")
+- amino acid biosynthesis ("Aab")
+- translation and protein homeostasis ("Rib")
+- lipid and cell wall component biosynthesis ("Lpb")
+- Electron transport chain to re-generate ATP ("Etc")
+- Flagella and related motility proteins ("Fla")
+- All other proteins, which are not directly related to above groups ("Oth")
+
+## Mutant strains used for modeling
+
+- `EM16223`: △flhDC, 0 flagella (null mutant)
+- `EM16224`: motB D33N (rotation-deficient mutant)
+- `EM9662`: Ppro1-flhDC, 0-1 flagellum
+- `EM9661`: PproA-flhDC, mostly 1 flagellum
+- `TH9677`: **WT**, 3-4 flagella on average
+- `TH5861`: **WT**, (fliC ON background, for comparison to motB mutant)
+- `EM9660`: PproB-flhDC, 5-6 flagella
+- `EM8513`: PproD-flhDC, 7-8 flagella
+
+# Prerequisites
+
+- load required packages
+- either download and install in RStudio or set up an appropriate conda environment
+
+```{r, message = FALSE }
+suppressPackageStartupMessages({
+  library(tidyverse)
+  library(ggpubr)
+  library(ggrepel)
+  library(grDevices)
+  library(ggh4x)
+  library(colorspace)
+})
+```
+
+Define global figure style, default colors, and a plot saving function (hidden chunk).
+
+```{r, echo = FALSE}
+# default chunk options
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 10,
+  fig.height = 6,
+  fig.align = "center",
+  dpi = 120
+)
+
+# custom ggplot2 theme that is reused for all later plots
+custom_colors <- c("#B3B3B3", "#A6761D", "#E6AB02", "#7570B3", "#66A61E", "#1B9E77", "#E7298A", "#DF9359")
+custom_range <- function(n = 5) {
+  colorRampPalette(custom_colors[c(2, 1, 4)])(n)
+}
+
+custom_theme <- function(base_size = 12, base_line_size = 1.0, base_rect_size = 1.0, ...) {
+  theme_light(base_size = base_size, base_line_size = base_line_size, base_rect_size = base_rect_size) + theme(
+    title = element_text(colour = grey(0.4), size = 10),
+    plot.margin = unit(c(12, 12, 12, 12), "points"),
+    axis.ticks.length = unit(0.2, "cm"),
+    axis.ticks = element_line(colour = grey(0.4), linetype = "solid", lineend = "round"),
+    axis.text.x = element_text(colour = grey(0.4), size = 10),
+    axis.text.y = element_text(colour = grey(0.4), size = 10),
+    panel.grid.major = element_line(linewidth = 0.6, linetype = "solid", colour = grey(0.9)),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(linetype = "solid", colour = grey(0.4), fill = NA, linewidth = 1.0),
+    panel.background = element_blank(),
+    strip.background = element_blank(),
+    strip.text = element_text(colour = grey(0.4), size = 10, margin = margin(3, 3, 3, 3, "pt")),
+    legend.text = element_text(colour = grey(0.4), size = 10),
+    legend.title = element_blank(),
+    legend.background = element_blank(),
+    ...
+  )
+}
+
+# set graphical parameter for subfigure labels
+list_fontpars <- list(face = "plain", size = 14)
+
+# function to export an image as svg and png
+save_plot <- function(
+    pl, path = "../figures/", width = 6, height = 6,
+    export_pdf = FALSE, pl_name = NULL) {
+  if (is.null(pl_name)) {
+    pl_name <- deparse(substitute(pl))
+  }
+  svg(
+    filename = paste0(path, pl_name, ".svg"),
+    width = width, height = height
+  )
+  print(pl)
+  dev.off()
+  if (export_pdf) {
+    pdf(
+      file = paste0(path, pl_name, ".pdf"),
+      width = width, height = height
+    )
+    print(pl)
+    dev.off()
+  }
+  png(
+    filename = paste0(path, pl_name, ".png"),
+    width = width * 125, height = height * 125, res = 120
+  )
+  print(pl)
+  invisible(capture.output(dev.off()))
+}
+```
+
+## Data import
+
+- define order of sectors, strains, and mutants for plotting
+- import experimental mass fraction data for KO strains
+
+```{r}
+sectors_sorted <- c("Oth", "Rib", "Cbn", "Aab", "Etc", "Lpb", "Fla", "Tra")
+strains_sorted <- c("EM16223", "EM9662", "EM9661", "TH9677", "EM9660", "EM8513", "TH5861", "EM16224")
+mutants_sorted <- c("ΔflhDC", "Ppro1-flhDC", "PproA-flhDC", "WT", "PproB-flhDC", "PproD-flhDC", "WT-(fliC ON)", "motB-D33N")
+linebreak <- function(x) {
+  str_replace(x, "-", "-\n")
+}
+
+df_mass_frac <- read_tsv("../tables/sector_mass_fractions.tsv", show_col_types = FALSE) %>%
+  mutate(
+    sector_short = factor(sector_short, levels = sectors_sorted),
+    mutant = factor(mutant, levels = mutants_sorted)
+  )
+```
+
+# Cell economy model
+
+- the model was fitted with proteomics data for one single condition, the flagella null mutant (`EM16223`) with saturated substrate concentration
+- all other predictions for different amounts of flagella, different substrate concentrations, and +/- ATP consumption were then solely obtained by model simulation without additional training data
+- the parameters that are adjusted in model fitting process were the enzymatic properties `kcat` and `Km` for the 8 enzymes
+- these were fitted by choosing reasonable starting ranges (see table `models/salmonella/parameters.csv`), followed by randomly sampled variation around the starting value (+/- 50% )
+- random sampling was performed up to 1000 times and the parameter set with least error waws chosen for all further simulations
+
+## Modeling results (steady state)
+
+- different types of simulations were carried out:
+  - **steady state simulation** where maximal growth rate was the objective, achieved by optimizing protein concentrations
+  - different amounts of flagella were simulated similar to the range observed in mutants (0-5% forced protein investment)
+  - **dynamic simulation** where also growth was maximized, but *over time* and with the goal to *move up a substrate gradient*
+  - different amounts of flagella demonstrate the trade-off between growth-rate and motility
+
+### Simulation of substrate limitation
+
+- substrate concentration was increasing over time
+- time has no particular meaning here, this is just a convention of the model
+- first we create a function to import and merge multiple tables from model simulations
+
+```{r, message=FALSE, warning=FALSE}
+read_model_results <- function(input_files) {
+  lapply(
+    input_files,
+    function(x) {
+      read_csv(x, show_col_types = FALSE, col_select = c(-1)) %>%
+        filter(time != 0)
+    }
+  ) %>%
+    setNames(str_extract(input_files, "flag_[0-9]\\.[0-9]+(\\_no)?(\\_ATP)?")) %>%
+    bind_rows(.id = "simulation") %>%
+    select(-matches("(^slk\\_)|(^p[0-9]$)|^v\\_ex|^c\\_")) %>%
+    pivot_longer(
+      cols = matches("^[av]\\_(tra|cbn|etc|aab|rib|lpb|fla|oth)"),
+      names_to = c("variable", "sector_short"),
+      names_pattern = "(.*)\\_(.*)",
+      values_to = "value"
+    ) %>%
+    mutate(
+      sector_short = factor(
+        str_to_title(sector_short),
+        levels = sectors_sorted
+      ),
+      flagella = as.numeric(str_extract(simulation, "[0-9]\\.[0-9]+"))
+    )
+}
+
+df_model_sublim <- read_model_results(
+  list.files("../../results/salmonella/c_limitation", pattern = ".csv", full.names = TRUE)
+)
+```
+
+```{r, fig.width=12, fig.height=6}
+plot_model_sublim <- ggarrange(
+  ncol = 2, widths = c(0.27, 0.73),
+  df_model_sublim %>%
+    filter(variable == "a", sector_short == "Rib") %>%
+    ggplot(aes(x = cex, y = mu, alpha = factor(flagella))) +
+    geom_line() +
+    custom_theme() +
+    scale_color_manual(values = rev(custom_colors)) +
+    scale_x_continuous(trans = "log10") +
+    coord_cartesian(ylim = c(0, 1.85)) +
+    labs(
+      title = "Growth rate over substrate limitation",
+      x = "log10 S [mM]",
+      y = "growth rate (1/h)"
+    ) +
+    theme(legend.position = "none", aspect.ratio = 1),
+  df_model_sublim %>%
+    filter(variable == "a") %>%
+    ggplot(aes(x = cex, y = value, color = fct_rev(sector_short), alpha = factor(flagella))) +
+    geom_line() +
+    custom_theme() +
+    scale_color_manual(values = rev(custom_colors)) +
+    scale_x_continuous(trans = "log10") +
+    labs(
+      title = "Sector mass (color) over substrate, variable flagella (shade)",
+      x = "log10 S [mM]",
+      y = "Protein mass fraction"
+    ) +
+    theme(legend.position = "right", aspect.ratio = 1) +
+    facet_wrap(~sector_short, ncol = 4, scales = "free_y")
+)
+
+save_plot(plot_model_sublim, width = 12, height = 6)
+print(plot_model_sublim)
+```
+
+### Simulated vs experimental protein allocation of flagella mutants
+
+- most interesting is the direct comparison of the simulated mass fraction of sectors to the experimentally observed mass fraction in the different flagella mutants
+- in order to do this, we select a condition with saturated substrate concentration from modeling results
+- we plot growth rate and mass fractions of sectors and overlay with experimental data points
+
+```{r}
+selected_time <- 10
+
+df_overlay <- df_mass_frac %>%
+  filter(mutant %in% mutants_sorted[1:6]) %>%
+  group_by(mutant, sector_short) %>%
+  summarize(
+    .groups = "drop_last",
+    value = mean(mass_fraction, na.rm = TRUE),
+    mu = mean_growth_rate[1],
+  ) %>%
+  mutate(flagella = value[which(sector_short == "Fla")])
+
+list_y_lims <- list(
+  sector_short == "Oth" ~ scale_y_continuous(limits = c(0, 0.5)),
+  sector_short == "Rib" ~ scale_y_continuous(limits = c(0, 0.65)),
+  sector_short == "Cbn" ~ scale_y_continuous(limits = c(0, 0.1)),
+  sector_short == "Aab" ~ scale_y_continuous(limits = c(0, 0.04)),
+  sector_short == "Etc" ~ scale_y_continuous(limits = c(0, 0.04)),
+  sector_short == "Lpb" ~ scale_y_continuous(limits = c(0, 0.04)),
+  sector_short == "Fla" ~ scale_y_continuous(limits = c(0, 0.07)),
+  sector_short == "Tra" ~ scale_y_continuous(limits = c(0, 0.04))
+)
+```
+
+```{r, fig.width=12, fig.height=6}
+plot_model_strains <- ggarrange(
+  ncol = 2, widths = c(0.3, 0.7),
+  df_model_sublim %>%
+    filter(variable == "a", sector_short == "Rib", time == selected_time) %>%
+    ggplot(aes(x = flagella, y = mu)) +
+    geom_line() +
+    geom_point(size = 1) +
+    geom_point(
+      data = filter(df_overlay, sector_short == "Rib", mutant %in% mutants_sorted[2:6]),
+      mapping = aes(shape = mutant),
+      size = 3
+    ) +
+    custom_theme() +
+    scale_color_manual(values = rev(custom_colors)) +
+    scale_shape_manual(values = c(1, 2, 5, 6, 22, 12)) +
+    coord_cartesian(ylim = c(0, 1.85)) +
+    labs(
+      title = "Growth rate depending on Flagella expression",
+      x = "Flagella mass fraction",
+      y = "growth rate (1/h)"
+    ) +
+    theme(legend.position = "none", aspect.ratio = 1),
+  df_model_sublim %>%
+    filter(variable == "a", time == selected_time) %>%
+    ggplot(aes(x = flagella, y = value, color = fct_rev(sector_short))) +
+    geom_line() +
+    geom_point(size = 1) +
+    geom_point(
+      data = filter(df_overlay, mutant %in% mutants_sorted[2:6]),
+      mapping = aes(shape = mutant),
+      size = 3
+    ) +
+    custom_theme() +
+    scale_color_manual(values = rev(custom_colors)) +
+    scale_shape_manual(values = c(1, 2, 5, 6, 22, 12)) +
+    labs(
+      title = "Mass fraction of sectors (color) depending on Flagella expression",
+      x = "Flagella mass fraction",
+      y = "Protein mass fraction"
+    ) +
+    theme(legend.position = "right", aspect.ratio = 1) +
+    facet_wrap(~sector_short, ncol = 4, scales = "free_y") +
+    ggh4x::facetted_pos_scales(y = list_y_lims)
+)
+
+save_plot(plot_model_strains, width = 12, height = 6)
+print(plot_model_strains)
+```
+
+- the following figure shows similar information but simply as bar chart
+- subfigure 1 was already shown before, but is included here again for comparison
+- subfigure 2 shows the mass fraction of sectors for increasing flagella expression
+
+```{r, fig.width=10, fig.height=5.5}
+plot_mass_frac_bars <- df_mass_frac %>%
+  filter(mutant %in% mutants_sorted[1:6]) %>%
+  group_by(mutant, sector_short) %>%
+  summarize(
+    .groups = "drop",
+    mean_mass_fraction = mean(mass_fraction, na.rm = TRUE),
+    sd_mass_fraction = sd(mass_fraction, na.rm = TRUE)
+  ) %>%
+  mutate(mutant = factor(linebreak(mutant), linebreak(mutants_sorted))) %>%
+  ggplot(aes(x = mutant, y = mean_mass_fraction, fill = fct_rev(sector_short))) +
+  geom_bar(stat = "identity", position = "stack") +
+  custom_theme() +
+  scale_fill_manual(values = rev(custom_colors)) +
+  labs(
+    title = "Mean mass fraction of sectors per strain",
+    x = "Strain",
+    y = "Mean mass fraction",
+    fill = "Sector"
+  ) +
+  theme(legend.position = "right", aspect.ratio = 1)
+
+plot_mass_frac_bars_model <- df_model_sublim %>%
+  filter(variable == "a", time == selected_time) %>%
+  ggplot(aes(x = factor(flagella), y = value, fill = fct_rev(sector_short))) +
+  geom_bar(stat = "identity", position = "stack") +
+  custom_theme() +
+  scale_fill_manual(values = rev(custom_colors)) +
+  labs(
+    title = "Simulation of increasing flagella expression",
+    x = "Flagella mass fraction (model)",
+    y = "Mean mass fraction",
+    fill = "Sector"
+  ) +
+  theme(legend.position = "right", aspect.ratio = 1)
+
+plot_model_strains_bars <- ggarrange(
+  ncol = 2,
+  plot_mass_frac_bars,
+  plot_mass_frac_bars_model
+)
+
+save_plot(plot_model_strains_bars, width = 10, height = 5.5)
+print(plot_model_strains_bars)
+```
+
+- the following figure shows the same information but with a pie chart instead
+
+```{r, fig.width=10, fig.height=5.5}
+plot_model_strains_pie <- ggarrange(
+  ncol = 2, align = "hv",
+  plot_mass_frac_bars +
+    coord_polar(theta = "y"),
+  plot_mass_frac_bars_model +
+    coord_polar(theta = "y")
+)
+
+save_plot(plot_model_strains_pie, width = 10, height = 5.5)
+print(plot_model_strains_pie)
+```
+
+- we can also plot ribosome and flagella mass fraction specifically
+- plot it versus growth rate, as overlay of model predictions and experimental data
+- the result is not as convincing as the model captures the overall trend but underestimates the growth rate changes of the mutants
+
+```{r, fig.width=5, fig.height=5}
+df_model_ribfla <- df_mass_frac %>%
+  group_by(mutant, sector_short) %>%
+  summarize(
+    mean_mass_fraction = mean(mass_fraction, na.rm = TRUE),
+    mean_growth_rate = mean(mean_growth_rate, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  filter(sector_short %in% c("Rib", "Fla")) %>%
+  filter(mutant %in% mutants_sorted[2:6]) %>%
+  bind_rows(df_model_sublim %>%
+    filter(variable == "a", time == selected_time, sector_short %in% c("Rib", "Fla")) %>%
+    select(flagella, mu, sector_short, value) %>%
+    mutate(mutant = "") %>%
+    rename(mean_mass_fraction = value, mean_growth_rate = mu)
+  )
+
+plot_mass_vs_mu_model <- df_model_ribfla %>%
+  ggplot(aes(x = mean_mass_fraction, y = mean_growth_rate, color = sector_short, shape = mutant == "")) +
+  geom_point(size = 3) +
+  ggrepel::geom_text_repel(aes(label = mutant, color = sector_short), size = 3) +
+  custom_theme() +
+  scale_shape_manual(values = c(19, 1), guide = "none") +
+  scale_color_manual(values = custom_colors[c(2, 7)]) +
+  labs(
+    title = "Correlation of sector mass fraction and growth rate",
+    x = "Mean mass fraction",
+    y = "Mean growth rate (1/h)",
+    color = "Sector"
+  ) +
+  theme(legend.position = "right", aspect.ratio = 1) +
+  facet_wrap(~sector_short, ncol = 2, scales = "free_x")
+
+save_plot(plot_mass_vs_mu_model, width = 8, height = 5)
+print(plot_mass_vs_mu_model)
+```
+
+
+### Simulated vs experimental protein allocation for ribosomes
+
+- this plot shows a more detailed view on the anti-correlation of flagella and ribosome mass
+- the model captures the trend quite accurately, but the experimental data show an even stronger decline of ribosomal mass
+
+```{r, fig.width=5, fig.height=5}
+plot_model_rib <- df_model_sublim %>%
+  filter(variable == "a", time == selected_time, sector_short == "Rib") %>%
+  ggplot(aes(x = flagella, y = value, color = fct_rev(sector_short))) +
+  geom_line() +
+  geom_point(size = 2) +
+  geom_point(
+    data = filter(df_overlay, sector_short == "Rib"),
+    mapping = aes(shape = mutant),
+    size = 3
+  ) +
+  # linear model fit to the experimental data points
+  geom_smooth(
+    data = filter(df_overlay, sector_short == "Rib"),
+    method = "lm", se = FALSE, linetype = "dashed", linewidth = 1, fullrange = TRUE
+  ) +
+  custom_theme() +
+  scale_color_manual(values = custom_colors[2]) +
+  scale_shape_manual(values = c(1, 2, 5, 6, 22, 12)) +
+  coord_cartesian(ylim = c(0.45, 0.53)) +
+  labs(
+    title = "Mass fraction, Ribosomes vs Flagella",
+    x = "Flagella mass fraction",
+    y = "Ribosome mass fraction"
+  ) +
+  theme(legend.position = "right", aspect.ratio = 1)
+
+save_plot(plot_model_rib, width = 5, height = 5)
+print(plot_model_rib)
+```
+
+### Protein cost vs. rotational cost of flagella
+
+The model also allows to investigate the **trade-off between growth rate and motility** in more detail.
+Essentially, flagella expression is costly and reduces growth rate in a significant way.
+Therefore, flagella must confer a fitness advantage to bacteria: the ability to move in (complex) environments.
+In the next section we investigate if **protein cost or energy cost** (ATP driving the rotational movement) is more significant.
+
+- protein cost is --as shown experimentally-- high with 1-3% protein mass dedicated to flagella under natural conditions and up to 5% with certain mutations
+- energy cost can also be estimated from literature, and was incorporated into the model
+- the flagellum in the model is an enzyme with a fixed activity which consumes ATP and 'produces' swimming speed
+- the key numbers for the flagellar machinery are:
+  - a flagellar rotation frequency, we assume f = 100 s^-1, (Magariyama et al. 2001, PMID:11356579)
+  - a flagellar rotation cost of 172-360 ATP per rotation (used average: 250, Schavemaker & Lynch 2022, PMID: 35881430; Wang et al. 2022, PMID: 35699374; Reid et al. 2006, PMID: 16698936)
+  - a maximal swimming speed of 30-40 µm s^-1 (Macnab & Koshland 1972; Harshey & Matsuyama 1994, Bionumbers ID:106818)
+  - a run-and-tumble efficiency (drift), of 0.01-0.05 (Mattingly et al. 2021, PMID:35035514; figure 3C)
+  - the swimming speed follows a half-maximal saturation curve, depending on number of flagella
+
+```{r}
+df_model_rotation <- read_model_results(
+  list.files("../../results/salmonella/rotation", pattern = ".csv", full.names = TRUE)
+) %>%
+  mutate(energy_cost = str_extract(simulation, "(no_)?ATP")) %>%
+  mutate(energy_cost = ifelse(energy_cost == "no_ATP", "without ATP cost\n(no rotation)", "with ATP cost\n(rotation)"))
+```
+
+- in addition to the modeling results for simulated flagella expression, we can also overlay experimental data from flagella mutants
+- particularly interesting are assembly mutants which produce flagella without the capacity to rotate and to hydrolyze ATP as energy donor
+- hence it is possible to separate protein cost from energy cost and see if growth rate of these strains correspond to simulated results
+
+```{r}
+df_rotation_mutants <- df_mass_frac %>%
+  filter(mutant %in% mutants_sorted[c(1, 7, 8)]) %>%
+  select(matches("mutant|growth|doubling")) %>%
+  distinct()
+```
+
+- first we prepare a combined data frame for modeling and experimental results (rotation-data only)
+
+```{r}
+df_rotation_combined <- bind_rows(
+  df_model_rotation %>%
+    filter(
+      variable == "a", time == selected_time,
+      sector_short == "Rib", flagella %in% c(0.00, 0.05)
+    ) %>%
+    select(flagella, mu, energy_cost) %>%
+    mutate(type = "model") %>%
+    filter(!(flagella == 0 & energy_cost == "with ATP cost\n(rotation)")) %>%
+    mutate(
+      cost = ifelse(mu == max(mu), "without ATP/protein cost\n(no flagellum)", energy_cost),
+      mu_sd = 0,
+      mutant = paste0("Fla=", flagella * 100, "%"),
+      mutant = ifelse(str_starts(cost, "without"), paste(mutant, "R-"), paste(mutant, "R+"))
+    ) %>%
+    select(type, mutant, cost, mu, mu_sd),
+  df_rotation_mutants %>%
+    rename(mu = mean_growth_rate, mu_sd = sd_growth_rate) %>%
+    select(mutant, mu, mu_sd) %>%
+    mutate(
+      cost = case_when(
+        mutant == "ΔflhDC" ~ "without ATP/protein cost\n(no flagellum)",
+        mutant == "WT-(fliC ON)" ~ "with ATP cost\n(rotation)",
+        mutant == "motB-D33N" ~ "without ATP cost\n(no rotation)"
+      ),
+      mutant = linebreak(mutant),
+      type = "experiment"
+    ) %>%
+    select(type, mutant, cost, mu, mu_sd)
+)
+
+df_rotation_combined <- df_rotation_combined %>%
+  group_by(type) %>%
+  arrange(type, mu) %>%
+  mutate(penalty = (max(mu) - mu) / max(mu) * 100)
+```
+
+```{r, fig.width=10, fig.height=5.5}
+plot_model_rotation <- df_model_rotation %>%
+  filter(variable == "a", time == selected_time, sector_short == "Rib") %>%
+  ggplot(aes(x = flagella, y = mu, color = energy_cost)) +
+  geom_line() +
+  geom_point(size = 2) +
+  custom_theme(legend.position = "bottom", aspect.ratio = 1) +
+  scale_color_manual(values = c(custom_colors[7], lighten(custom_colors[7], 0.3))) +
+  labs(
+    title = "Rotation mutant simulation",
+    x = "Flagella mass fraction",
+    y = "Growth rate (1/h)",
+    color = "Energy cost"
+  )
+
+plot_mutants_rotation <- df_rotation_combined %>%
+  mutate(mutant = fct_inorder(mutant)) %>%
+  ggplot(aes(
+    x = mutant, y = mu,
+    color = cost, fill = cost,
+    label = paste0("-", round(penalty, 1), "%")
+  )) +
+  geom_col(position = "dodge", color = "white") +
+  geom_errorbar(aes(ymin = mu - mu_sd, ymax = mu + mu_sd), position = position_dodge(width = 0.01), width = 0.2, show.legend = FALSE) +
+  geom_text(position = position_dodge(width = 0.01), vjust = -1.0, size = 3.5, show.legend = FALSE) +
+  scale_fill_manual(values = c(custom_colors[7], lighten(custom_colors[7], 0.3), lighten(custom_colors[7], 0.6))) +
+  scale_color_manual(values = c(custom_colors[7], lighten(custom_colors[7], 0.3), lighten(custom_colors[7], 0.6))) +
+  facet_wrap(~type, scales = "free_x") +
+  custom_theme(legend.position = "bottom", aspect.ratio = 1) +
+  coord_cartesian(ylim = c(0.0, 2.0)) +
+  labs(
+    title = "Growth penalty of rotation mutants",
+    x = "",
+    y = "growth rate (1/h)",
+    fill = "Energy cost"
+  )
+
+plot_rotation_penalty <- ggarrange(
+  ncol = 2, widths = c(0.36, 0.64),
+  plot_model_rotation,
+  plot_mutants_rotation
+)
+
+save_plot(plot_rotation_penalty, width = 10, height = 5.5)
+print(plot_rotation_penalty)
+```
+
+## Dynamic simulation of growth-motility trade-off
+
+- experimental data shows that flagella confer a fitness advantage by moving inside a complex or viscous medium
+- the following section shows simulations of a **dynamic model**, where bacterial movement upwards a substrate gradient is simulated
+- the bacteria can, by optimizing swimming speed, move towards higher substrate concentration and increase growth and maximal final biomass
+- first step is to import data for the simulated gradient, and the simulation results
+
+```{r}
+df_model_gradient <- read_csv(
+  "../../results/salmonella/swimming/8500/substrate_gradient.csv"
+)
+
+df_model_swimming <- read_model_results(
+  list.files(
+    path = "../../results/salmonella/swimming/8500",
+    pattern = "dynamic_flag_[0-9]\\.[0-9]+\\.csv",
+    full.names = TRUE
+  )
+)
+```
+
+- the substrate gradient is simulated using a classic diffusion model for glucose from Crank J, The Mathematics of Diffusion, Oxford University Press, 1979.
+- the substrate has an initial concentration of `r df_model_gradient$substrate_initial_mM[1]` mM, and diffusion time of `r df_model_gradient$time_h[1]` h
+- for simplicity, the gradient is not moving over simulation time
+- the total distance analyzed is `r max(df_model_gradient$dist_um)` μm
+
+```{r}
+plot_model_gradient <- ggplot(df_model_gradient, aes(x = dist_um, y = substrate_mM)) +
+  geom_area(fill = "darkgrey", alpha = 0.5) +
+  custom_theme() +
+  lims(x = c(max(df_model_gradient$dist_um), 0)) +
+  labs(
+    title = "Simulated substrate gradient",
+    x = "Distance [µm]",
+    y = "Substrate concentration [mM]"
+  ) +
+  theme(legend.position = "right", aspect.ratio = 1)
+
+save_plot(plot_model_gradient, width = 4.5, height = 4.5)
+print(plot_model_gradient)
+```
+
+- bacteria can travel faster depending on flagella expression
+- more flagella means faster initial speed and thus covering a larger distance
+- but more flagella also means lower final growth rate due to additional protein/energy cost
+- the central question is, what amount of flagella is optimal for travelling, without compromising growth too much?
+
+First, we look at central properties of the cell when simulating swimming with increasing amount of flagella expression (0-5% of proteome mass):
+
+- swimming speed (probaly also rate of flagellum),
+- distance travelled
+- growth rate
+- final biomass (derived from growth rate over time: `Δbm/Δt = mu[t] * bm[t]`)
+
+```{r, fig.width=10, fig.height=3.5}
+calculate_biomass <- function(mu, bm_start = 1) {
+  bm <- bm_start
+  bm_final <- c()
+  for (i in mu) {
+    bm <- bm + i * bm
+    bm_final <- append(bm_final, bm)
+  }
+  return(bm_final)
+}
+
+df_model_swimsummary <- df_model_swimming %>%
+  filter(variable == "a", sector_short == "Rib") %>%
+  select(time, flagella, v_swim, distance, mu) %>%
+  group_by(flagella) %>%
+  mutate(biomass = calculate_biomass(mu) * 1e-8) %>%
+  pivot_longer(cols = v_swim:biomass) %>%
+  mutate(name = case_when(
+    name == "v_swim" ~ "swimming speed [µm/s]",
+    name == "distance" ~ "distance travelled [µm]",
+    name == "mu" ~ "growth rate [1/h]",
+    name == "biomass" ~ "final biomass [relative units]"
+  ) %>% fct_inorder()) %>%
+  ungroup()
+
+plot_model_swimming_props <- df_model_swimsummary %>%
+  ggplot(aes(x = time, y = value, color = factor(flagella))) +
+  geom_line() +
+  geom_text_repel(
+    data = . %>% group_by(name, flagella) %>% slice_tail(n = 1),
+    aes(label = paste0(round(value, 1), " (", flagella * 100, "%)")),
+    size = 3, show.legend = FALSE, nudge_x = 5.0,
+    direction = "y", hjust = 0, min.segment.length = 2.0
+  ) +
+  custom_theme() +
+  scale_color_manual(
+    values = colorRampPalette(custom_colors[c(4, 7, 3)])(length(unique(df_model_swimming$flagella)))
+  ) +
+  labs(
+    title = "Simulation: swimming up substrate gradient, increasing flagella expression",
+    x = "time [h]",
+    y = ""
+  ) +
+  theme(legend.position = "right", aspect.ratio = 1) +
+  facet_wrap(~name, ncol = 4, scales = "free_y")
+
+save_plot(plot_model_swimming_props, width = 10, height = 3.5)
+print(plot_model_swimming_props)
+```
+
+- to break down the results to the most concise representation, we plot swimming distance on the x-axis overlaid on substrate the gradient
+- then additionally growth rate over time as line plot and final biomass as bar chart
+
+```{r}
+df_swimming_dist <- df_model_swimsummary %>%
+  filter(time == max(time), name == "distance travelled [µm]") %>%
+  mutate(
+    dist_um = 8500 - value,
+    flagella_pct = flagella * 100
+  )
+
+plot_swimming_dist <- df_swimming_dist %>%
+  ggplot(aes(x = dist_um, y = flagella_pct, color = factor(flagella))) +
+  geom_segment(aes(x = dist_um, xend = 0, y = flagella_pct, yend = flagella_pct)) +
+  geom_point() +
+  geom_area(
+    data = df_model_gradient,
+    aes(x = 8500 - dist_um, y = substrate_mM),
+    inherit.aes = FALSE,
+    fill = "darkgrey", alpha = 0.5
+  ) +
+  custom_theme() +
+  scale_color_manual(
+    values = colorRampPalette(custom_colors[c(4, 7, 3)])(length(unique(df_model_swimming$flagella)))
+  ) +
+  scale_y_continuous(
+    name = "flagella mass fraction [%]",
+    breaks = sort(unique(df_swimming_dist$flagella_pct)),
+    sec.axis = sec_axis(~., name = "Substrate concentration [mM]")
+  ) +
+  labs(
+    title = "Swimming up substrate gradient",
+    x = "distance travelled [µm]",
+    y = "flagella mass fraction [%]"
+  ) +
+  coord_cartesian(xlim = c(0, 8500)) +
+  theme(legend.position = "none", aspect.ratio = 1)
+```
+
+```{r, fig.width=11, fig.height=5.5}
+plot_swimming_mu <- df_model_swimsummary %>%
+  filter(name == "growth rate [1/h]") %>%
+  ggplot(aes(x = time, y = value, color = factor(flagella))) +
+  geom_line() +
+  custom_theme(legend.position = "bottom", aspect.ratio = 1) +
+  scale_color_manual(
+    values = colorRampPalette(custom_colors[c(4, 7, 3)])(length(unique(df_model_swimming$flagella)))
+  ) +
+  labs(
+    title = "Growth rate",
+    x = "time [h]",
+    y = "growth rate [1/h]"
+  )
+
+plot_swimming_biomass <- df_model_swimsummary %>%
+  filter(name == "final biomass [relative units]", time == max(time)) %>%
+  mutate(bm = value / max(value)) %>%
+  ggplot(aes(x = factor(flagella), y = bm, fill = factor(flagella))) +
+  geom_col() +
+  geom_text(
+    aes(label = round(bm, 2), color = factor(flagella)),
+    position = position_stack(vjust = 1.1), size = 3.5, show.legend = FALSE
+  ) +
+  custom_theme(legend.position = "none", aspect.ratio = 1) +
+  scale_fill_manual(
+    values = colorRampPalette(custom_colors[c(4, 7, 3)])(length(unique(df_model_swimming$flagella)))
+  ) +
+  scale_color_manual(
+    values = colorRampPalette(custom_colors[c(4, 7, 3)])(length(unique(df_model_swimming$flagella)))
+  ) +
+  labs(
+    title = "Final biomass",
+    x = "flagella mass fraction",
+    y = "final biomass [relative units]"
+  )
+
+plot_swimming_summary <- ggarrange(
+  ncol = 3, align = "hv",
+  plot_swimming_dist,
+  plot_swimming_mu,
+  plot_swimming_biomass
+)
+save_plot(plot_swimming_summary, width = 11, height = 5.5)
+print(plot_swimming_summary)
+```
+
+
+Finally, we look at the mass fraction of the different sectors over time.
+
+```{r, fig.width=10, fig.height=5.5}
+plot_model_swimming_enz <- df_model_swimming %>%
+  filter(variable == "a") %>%
+  ggplot(aes(x = time, y = value, color = fct_rev(sector_short), alpha = factor(flagella))) +
+  geom_line() +
+  custom_theme() +
+  scale_color_manual(values = rev(custom_colors)) +
+  labs(
+    title = "Protein mass fraction by sector (color), variable flagella (shade)",
+    x = "time [h]",
+    y = "Protein mass fraction"
+  ) +
+  theme(legend.position = "right", aspect.ratio = 1) +
+  facet_wrap(~sector_short, ncol = 4, scales = "free_y")
+
+save_plot(plot_model_swimming_enz, width = 10, height = 5.5)
+print(plot_model_swimming_enz)
+```
+
+# Session Info
+
+```{r}
+sessionInfo()
+```

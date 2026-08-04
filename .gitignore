@@ -27,5 +27,14 @@ MANIFEST
 # Custom
 ODE_plotting.py
 ODE_test.py
+data/tables/*
+data/figures/*
 results/*
-*.csv
+resources/*
+*.xlsx
+.backup/*
+.Rhistory
+
+# pixi environments
+.pixi/*
+!.pixi/config.toml

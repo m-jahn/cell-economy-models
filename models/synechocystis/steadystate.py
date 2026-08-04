@@ -18,13 +18,12 @@ from models import common
 
 
 # INITIALIZE STEADY STATE MODEL ----------------------------------------
-def simulate(time, light, sub, c_upper, reserve, mumax, Ki):
+def simulate(time, light, sub, ub, reserve, mumax, Ki, remote = False):
     
-    #m = GEKKO(remote = True, server = 'http://xps.apmonitor.com')
-    m = GEKKO(remote = False)
+    m = GEKKO(remote = remote)
     m.options.IMODE = 5
     m.options.REDUCE = 1
-    m.options.MAX_ITER = 300
+    m.options.MAX_ITER = 1000
     m.time = time
     
 
@@ -44,7 +43,6 @@ def simulate(time, light, sub, c_upper, reserve, mumax, Ki):
     kcat = pd.Series([172, 35, 6, 6, 11], index = enz)
     Km = pd.Series([58, 108, 229, 13, 128], index = enz)
     hc = pd.Series([2.0043, 1.3989, 2.2477, 0.6744, 0.8659], index = enz)
-    ub = pd.Series(c_upper, index = pro + met + mem)
     reserve = pd.Series(reserve, index = enz)
 
     KmATP = 1   # affinity constant of CBM for ATP

@@ -1,0 +1,875 @@
+---
+title: "Estimate protein mass fractions for *Salmonella typhimurium*"
+author: "`r sessionInfo()$platform`"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_depth: '2'
+    df_print: paged
+  html_notebook:
+    theme: cosmo
+    toc: true
+    number_sections: true
+    toc_depth: 2
+    df_print: paged
+---
+
+----------
+
+# Background
+
+## Coarse-grained cellular economy model
+
+This notebook analyzes mass spectrometry-based proteomics data for _Salmonella typhimurium_.
+The goal is to estimate relative mass fraction (percentage) of protein dedicated to particular functional groups.
+The functional groups we are interested in are major protein sectors such as:
+
+- carbon and nutrient import ("Tra")
+- carbon metabolism to produce precursors such as Acetyl-CoA  ("Cbn")
+- amino acid biosynthesis ("Aab")
+- translation and protein homeostasis ("Rib")
+- lipid and cell wall component biosynthesis ("Lpb")
+- Electron transport chain to re-generate ATP ("Etc")
+- Flagella and related motility proteins ("Fla")
+- All other proteins, which are not directly related to above groups ("Oth")
+
+Protein mass fractions are used to constrain a simplified cellular economy model of _Salmonella_.
+In particular, we want to calculate the protein investment of the above listed sectors.
+Then we can determine if, and how, experimentally observed protein allocation corresponds to optimal protein investment as predicted by the model.
+A focus of this analysis is the cost and benefit of the flagellum, an immense protein machinery which consumes both protein resources (10,000s of subunits) and ATP-derived rotational energy.
+We hypothesize that the cost of the flagellum machinery must be offset by an important benefit, such as increased motility in the gut lumen, and/or ability to break free from trapped states in the mucosa.
+
+## Mutant strains used for modeling
+
+- `EM16223`: △flhDC, 0 flagella (null mutant)
+- `EM16224`: motB D33N (rotation-deficient mutant)
+- `EM9662`: Ppro1-flhDC, 0-1 flagellum
+- `EM9661`: PproA-flhDC, mostly 1 flagellum
+- `TH9677`: **WT**, 3-4 flagella on average
+- `TH5861`: **WT**, (fliC ON background, for comparison to motB mutant)
+- `EM9660`: PproB-flhDC, 5-6 flagella
+- `EM8513`: PproD-flhDC, 7-8 flagella
+
+# Prerequisites
+
+- load required packages
+- either download and install in RStudio or set up an appropriate conda environment
+
+```{r, message = FALSE }
+suppressPackageStartupMessages({
+  library(tidyverse)
+  library(KEGGREST)
+  library(ggpubr)
+  library(ggrepel)
+  library(grDevices)
+  library(ggh4x)
+  library(colorspace)
+})
+```
+
+Define global figure style, default colors, and a plot saving function (hidden chunk).
+
+```{r, echo = FALSE}
+# default chunk options
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 10,
+  fig.height = 6,
+  fig.align = "center",
+  dpi = 120
+)
+
+# custom ggplot2 theme that is reused for all later plots
+custom_colors <- c("#B3B3B3", "#A6761D", "#E6AB02", "#7570B3", "#66A61E", "#1B9E77", "#E7298A", "#DF9359")
+custom_range <- function(n = 5) {
+  colorRampPalette(custom_colors[c(2, 1, 4)])(n)
+}
+
+custom_theme <- function(base_size = 12, base_line_size = 1.0, base_rect_size = 1.0, ...) {
+  theme_light(base_size = base_size, base_line_size = base_line_size, base_rect_size = base_rect_size) + theme(
+    title = element_text(colour = grey(0.4), size = 10),
+    plot.margin = unit(c(12, 12, 12, 12), "points"),
+    axis.ticks.length = unit(0.2, "cm"),
+    axis.ticks = element_line(colour = grey(0.4), linetype = "solid", lineend = "round"),
+    axis.text.x = element_text(colour = grey(0.4), size = 10),
+    axis.text.y = element_text(colour = grey(0.4), size = 10),
+    panel.grid.major = element_line(linewidth = 0.6, linetype = "solid", colour = grey(0.9)),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(linetype = "solid", colour = grey(0.4), fill = NA, linewidth = 1.0),
+    panel.background = element_blank(),
+    strip.background = element_blank(),
+    strip.text = element_text(colour = grey(0.4), size = 10, margin = margin(3, 3, 3, 3, "pt")),
+    legend.text = element_text(colour = grey(0.4), size = 10),
+    legend.title = element_blank(),
+    legend.background = element_blank(),
+    ...
+  )
+}
+
+# set graphical parameter for subfigure labels
+list_fontpars <- list(face = "plain", size = 14)
+
+# function to export an image as svg and png
+save_plot <- function(
+    pl, path = "../figures/", width = 6, height = 6,
+    export_pdf = FALSE, pl_name = NULL) {
+  if (is.null(pl_name)) {
+    pl_name <- deparse(substitute(pl))
+  }
+  svg(
+    filename = paste0(path, pl_name, ".svg"),
+    width = width, height = height
+  )
+  print(pl)
+  dev.off()
+  if (export_pdf) {
+    pdf(
+      file = paste0(path, pl_name, ".pdf"),
+      width = width, height = height
+    )
+    print(pl)
+    dev.off()
+  }
+  png(
+    filename = paste0(path, pl_name, ".png"),
+    width = width * 125, height = height * 125, res = 120
+  )
+  print(pl)
+  invisible(capture.output(dev.off()))
+}
+```
+
+## Data import
+
+Load raw data and reformat if needed.
+
+```{r}
+df <- read_csv("../tables/maxLFQ_protein_intensity_data.csv",
+  show_col_types = FALSE,
+  name_repair = function(x) {
+    gsub("[._]", "_", tolower(x))
+  }
+) %>%
+  select(-r_filename, -intensity_rank, -raw_protein_intensity) %>%
+  rename(uniprot_id = pg_proteingroups, intensity = protein_intensity) %>%
+  separate_longer_delim(uniprot_id, ";") %>%
+  rename_with(function(x) {
+    gsub("^r\\_", "", x)
+  })
+
+head(df)
+```
+
+## Data annotation
+
+### Download pathway data from Uniprot
+
+- different annotation columns are added to the main data frame, primarily genome annotation from [Uniprot](https://www.uniprot.org/) and [KEGG](https://www.genome.jp/kegg/)
+- annotation data is dynamically downloaded for every update of this pipeline using the API
+- full list of Uniprot metadata that can be queried is available [here](https://www.uniprot.org/help/api_queries)
+- for Salmonella typhimurium LT2, the **taxonomy ID is 99287**
+
+```{r}
+taxid <- 99287
+uniprot_columns <- c(
+  "accession", "id", "protein_name", "gene_names", "organism_name",
+  "length", "xref_kegg", "gene_oln", "cc_pathway",
+  "go_id", "cc_subcellular_location"
+)
+uniprot_url <- paste0(
+  "https://rest.uniprot.org/uniprotkb/stream?fields=",
+  paste0(uniprot_columns, collapse = "%2C"),
+  "&format=tsv&query=%28%28taxonomy_id%3A", taxid, "%29%29"
+)
+
+get_uniprot <- function(url, backup = NULL) {
+  server_error <- simpleError("")
+  df_uniprot <- tryCatch(
+    {
+      df <- read_tsv(url, col_types = cols()) %>%
+        rename_with(tolower) %>%
+        rename(
+          uniprot_id = entry,
+          uniprot_name = `entry name`,
+          locus_tag = `gene names (ordered locus)`,
+          gene_name_long = `gene names`,
+          protein = `protein names`,
+          gene_ontology_ids = `gene ontology ids`
+        )
+      return(df)
+    },
+    error = function(server_error) {
+      if (file.exists(backup)) {
+        warning("Uniprot server not available, falling back to import local Uniprot annotation.")
+        return(read_csv(backup, col_types = cols(), name_repair = tolower))
+      } else {
+        warning("Uniprot server not available, and local uniprot file can't be found.")
+      }
+    }
+  )
+}
+
+# download Uniprot data, and save a local backup copy if it doesn't exist
+uniprot_backup <- "../tables/uniprot_annotation_backup.csv"
+if (file.exists(uniprot_backup)) {
+  df_uniprot <- read_csv(uniprot_backup, col_types = cols(), name_repair = tolower)
+} else {
+  df_uniprot <- get_uniprot(uniprot_url, uniprot_backup)
+  write_csv(df_uniprot, uniprot_backup)
+}
+```
+
+```{r}
+df_uniprot <- df_uniprot %>%
+  filter(organism == "Salmonella typhimurium (strain LT2 / SGSC1412 / ATCC 700720)") %>%
+  mutate(kegg = str_remove_all(kegg, "stm:|;.*"))
+
+head(df_uniprot)
+```
+
+- inspect Uniprot pathway annotation as we need to assign each protein unambiguosly to one pathway
+- the protein allocation modeling does not effectively support shared genes that are assigned to multiple pathways
+- this is a simplification which is tolerable given that the model features less than 10 sectors (metabolic functions)
+
+```{r}
+df_uniprot %>%
+  group_by(pathway) %>%
+  summarize(genes = n()) %>%
+  arrange(desc(genes)) %>%
+  head()
+```
+
+- the overview shows us that the pathway annotation is too detailed and fine-grained
+- we need to re-assign the detailed pathways to our coarse-grained sectors
+- consider KEGG (Brite) as another, alternative source of pathway annotation
+- it provides a hierarchical classification of pathways that can be mapped to our sectors
+
+### Download pathway data from KEGG
+
+- for Salmonella typhimurium LT2, the KEGG ID is **stm**
+- we use the `KEGGREST` R package to dynamically download pathway annotation from KEGG
+
+```{r}
+get_kegg <- function(id, backup = NULL) {
+  server_error <- simpleError("")
+  tryCatch(
+    {
+      df <- keggLink("pathway", id) %>%
+        enframe(name = "locus", value = "kegg_pathway_id") %>%
+        mutate(kegg_pathway_id = str_remove(kegg_pathway_id, "path:| ")) %>%
+        # get list of pathways with name/ID pairs
+        left_join(
+          by = "kegg_pathway_id",
+          keggList("pathway", id) %>%
+            enframe(name = "kegg_pathway_id", value = "kegg_pathway")
+        ) %>%
+        # trim useless prefixes
+        mutate(
+          kegg = str_remove(locus, paste0(id, ":")),
+          kegg_pathway_id = str_remove(kegg_pathway_id, "path:"),
+          kegg_pathway = str_remove(kegg_pathway, " \\- .*$")
+        )
+      return(df)
+    },
+    error = function(server_error) {
+      if (file.exists(backup)) {
+        warning("KEGG server not available, falling back to import local KEGG annotation.")
+        return(read_csv(backup, col_types = cols(), name_repair = tolower))
+      } else {
+        warning("KEGG server not available, and local KEGG file can't be found.")
+      }
+    }
+  )
+}
+
+# kegg ID for Salmonella Typhimurium LT2
+keggid <- "stm"
+backup <- "../tables/kegg_annotation_backup.csv"
+df_kegg <- get_kegg(keggid, backup)
+if (!file.exists(backup)) {
+  write_csv(df_kegg, backup)
+}
+```
+
+- how many pathways do we have in total?
+- overview about the most abundant pathways in KEGG annotation
+
+```{r}
+print(df_kegg %>% summarize(n_pathways = n_distinct(kegg_pathway)))
+
+df_kegg %>%
+  group_by(kegg_pathway) %>%
+  summarize(genes = n()) %>%
+  arrange(desc(genes)) %>%
+  head(10)
+```
+
+- it's also important to investigate if genes are assigned to multiple pathways
+- if this is the case, we need to decide how to handle these genes
+- below is an overview of number of pathways assigned to each gene
+- the majority is of genes is associated to >1 pathway
+
+```{r}
+df_kegg %>%
+  group_by(kegg) %>%
+  summarize(pathways_per_gene = n_distinct(kegg_pathway)) %>%
+  count(pathways_per_gene)
+```
+
+- are the multiple pathways per gene related to each other, or completely different?
+- we can investigate some random examples to get a feeling for the data
+- the examples picked here have 3, 4, and 5 pathways assigned to them, and all are stringly related to each other
+
+```{r}
+filter(df_kegg, kegg == "PSLT064")
+filter(df_kegg, kegg == "STM0008")
+filter(df_kegg, kegg == "STM0227")
+```
+
+- in order to assign genes (pathways) to sectors, a list of pathway-to-sector mappings was generated
+- currently, the `r length(unique(df_kegg$kegg_pathway))` unique pathways were mapped to 8 model sectors using LLM-assisted manual curation
+- the mapping table is imported from `data/tables/pathway_sector_mapping.tsv`
+- then we combine it with the KEGG annotation table
+
+```{r}
+df_pathway_sector <- read_tsv("../tables/pathway_sector_mapping.tsv", show_col_types = FALSE)
+df_kegg <- left_join(df_kegg, df_pathway_sector)
+```
+
+- we need to condense the KEGG pathway annotation to 1 pathway per gene
+- this is done by majority decision, meaning the most frequently assigned sector is picked
+- for the following gene with KEGG-ID `STM0002`, it will be `Aab` (4x) over `Oth` (4x) which has same number but is less informative
+- generally speaking, all non-`Other` pathways are prioritized over `Other`
+
+```{r}
+sort_sectors <- function(sector) {
+  sorted <- sort(table(sector), decreasing = TRUE)
+  sorted <- setNames(seq_along(sorted), names(sorted))
+  if ("Oth" %in% names(sorted) && length(sorted) > 1) {
+    sorted["Oth"] <- max(sorted) + 1
+  }
+  return(sorted[sector])
+}
+
+df_sectors <- df_kegg %>%
+  group_by(kegg) %>%
+  mutate(sector_rank = sort_sectors(sector_short)) %>%
+  filter(sector_rank == min(sector_rank)) %>%
+  summarize(
+    sector = first(sector),
+    sector_short = first(sector_short),
+    kegg_pathways = paste0(unique(kegg_pathway), collapse = ";"),
+    kegg_pathway_ids = paste0(unique(kegg_pathway_id), collapse = ";")
+  )
+```
+
+### Complete non-annotated proteins with manual sector assignments
+
+- many proteins are not assigned to a KEGG pathway, and hence also not to a sector
+- in order to reduce the number of unassigned proteins, sectors were assigned by manual curation and prediction from a LLM, where possible
+- prediction table is imported and merged with the KEGG annotation to yield `df_sectors`
+
+```{r}
+include_protein_mapping <- FALSE
+
+if (include_protein_mapping) {
+  df_protein_sector <- read_tsv("../tables/protein_sector_mapping.tsv", show_col_types = FALSE)
+  df_sectors <- df_uniprot %>%
+    left_join(select(df_protein_sector, -protein), by = "uniprot_id") %>%
+    left_join(df_sectors, by = "kegg") %>%
+    mutate(sector = coalesce(sector.x, sector.y)) %>%
+    mutate(sector_short = coalesce(sector_short.x, sector_short.y)) %>%
+    select(-sector.x, -sector.y, -sector_short.x, -sector_short.y) %>%
+    mutate(sector = replace_na(sector, "Other")) %>%
+    mutate(sector_short = replace_na(sector_short, "Oth"))
+} else {
+  df_sectors <- df_uniprot %>%
+    left_join(df_sectors, by = "kegg") %>%
+    mutate(sector_short = replace_na(sector_short, "Oth"))
+}
+```
+
+### Combine proteomics data with annotation
+
+- finally combine proteomics results with complete sector annotation
+- sector and strain names are factors sorted by importance and number of flagella, respectively
+
+```{r}
+sectors_sorted <- c("Oth", "Rib", "Cbn", "Aab", "Etc", "Lpb", "Fla", "Tra")
+strains_sorted <- c("EM16223", "EM9662", "EM9661", "TH9677", "EM9660", "EM8513", "TH5861", "EM16224")
+mutants_sorted <- c("ΔflhDC", "Ppro1-flhDC", "PproA-flhDC", "WT", "PproB-flhDC", "PproD-flhDC", "WT-(fliC ON)", "motB-D33N")
+linebreak <- function(x) {
+  str_replace(x, "-", "-\n")
+}
+
+df_annotated <- left_join(df, df_sectors, by = "uniprot_id") %>%
+  mutate(
+    sector_short = factor(sector_short, sectors_sorted),
+    condition = factor(condition, strains_sorted),
+    mutant = recode_values(condition, from = strains_sorted, to = mutants_sorted),
+    mutant = factor(mutant, mutants_sorted),
+    gene_name_short = str_remove(gene_name_long, " .*")
+  ) %>%
+  group_by(condition, replicate) %>%
+  mutate(mass_fraction = intensity / sum(intensity, na.rm = TRUE)) %>%
+  ungroup()
+
+write_csv(df_annotated, "../tables/protein_massfrac_annotated.csv")
+head(df_annotated)
+```
+
+- inspect how many proteins could be annotated with a sector
+- this is important as mainly proteins with assigned sectors can be used for the protein allocation modeling
+- all non-annotated proteins will be assigned to the `Other` sector
+- for this summary we fully disregard conditions and replicates, and simply make averages over all intensity measurements
+
+```{r}
+df_summary <- df_annotated %>%
+  group_by(uniprot_id) %>%
+  summarize(
+    mean_intensity = mean(intensity, na.rm = TRUE),
+    sector = first(sector),
+    sector_short = first(sector_short)
+  )
+
+df_summary %>%
+  summarize(
+    n_proteins = n(),
+    n_annotated = sum(!is.na(sector)),
+    percent_annotated = round(n_annotated / n_proteins * 100, 1),
+    percent_mass_fraction = round(
+      sum(mean_intensity[!is.na(sector)], na.rm = TRUE) /
+        sum(mean_intensity, na.rm = TRUE) * 100, 1
+    )
+  )
+```
+
+- now look at average mass fraction *per sector*
+- non-annotated proteins (which are assigned to `Other` sector hereafter) are excluded from the following summary
+
+```{r}
+df_summary %>%
+  filter(!is.na(sector)) %>%
+  group_by(sector_short) %>%
+  summarize(
+    n_annotated = n(),
+    percent_annotated = n_annotated / nrow(df_summary) * 100,
+    percent_mass_fraction = round(
+      sum(mean_intensity, na.rm = TRUE) /
+        sum(df_summary$mean_intensity) * 100, 1
+    )
+  ) %>%
+  arrange(desc(percent_mass_fraction))
+```
+
+## Investigate protein allocation over sectors
+
+### Trends in protein allocation across conditions (fold change)
+
+- before analyzing mass fraction of sectors in detail, we can visualize trends using fold-change
+- fold-change and other statistics were already calculated by the QC pipeline ([SpectroPiper](https://stemicha.github.io/SpectroPipeR/))
+
+```{r}
+df_fc <- read_csv("../tables/statistical_analysis.csv", show_col_types = FALSE) %>%
+  separate_longer_delim(PG.ProteinGroups, ";") %>%
+  rename(uniprot_id = PG.ProteinGroups) %>%
+  dplyr::select(uniprot_id, group1, group2, fold_change, p.fdr) %>%
+  rename(p_fdr = p.fdr) %>%
+  left_join(df_sectors, by = "uniprot_id") %>%
+  mutate(gene_name_short = str_remove(gene_name_long, " .*"))
+```
+
+- volcano plot of fold-change between two conditions, colored by sector
+- note that plotting area has been confined to a fixed range, some point lie outside of that
+
+```{r, fig.height=3}
+for (sect in sectors_sorted[-1]) {
+  sector_col <- match(sect, sectors_sorted[-1]) + 1
+  plot_sector_fc <- df_fc %>%
+    filter(group2 == "TH9677") %>%
+    mutate(comparison = factor(paste(group1, "vs", group2), paste(strains_sorted, "vs TH9677"))) %>%
+    mutate(sector_color = factor(ifelse(sector_short == sect, sect, "Other"), c("Other", sect))) %>%
+    arrange(fct_relevel(sector_short, sect, after = Inf)) %>%
+    ggplot(aes(
+      x = fold_change,
+      y = -log10(p_fdr),
+      color = sector_color,
+      label = ifelse(sector_short == sect & p_fdr < 0.05 & abs(fold_change) >= 1, gene_name_short, "")
+    )) +
+    geom_point(alpha = 0.5) +
+    geom_text_repel(size = 3, max.overlaps = 1) +
+    custom_theme() +
+    scale_color_manual(values = custom_colors[c(1, sector_col)]) +
+    labs(
+      title = paste0("Volcano Plot for sector: ", sect),
+      x = "log2 Fold Change",
+      y = "-log10(FDR)",
+      color = "Sector"
+    ) +
+    theme(legend.position = "right", aspect.ratio = 1) +
+    facet_wrap(~comparison, ncol = 5) +
+    coord_cartesian(xlim = c(-10, 10), ylim = c(0, 20))
+
+  print(plot_sector_fc)
+  save_plot(
+    plot_sector_fc,
+    width = 10, height = 3,
+    pl_name = paste0("plot_fc_", sect)
+  )
+}
+```
+
+### Trends in protein allocation (mass fraction)
+
+- calculate mass fractions for each protein and condition
+- then aggregate mass fractions of all proteins assigned to a sector
+
+```{r}
+df_mass_frac <- df_annotated %>%
+  group_by(mutant, replicate, sector_short) %>%
+  summarize(mass_fraction = sum(mass_fraction, na.rm = TRUE), .groups = "drop") %>%
+  ungroup()
+```
+
+- these figures give a first, broad overview about shifts in mass fractions
+- we can clearly see that the `Fla` sector (flagella) and the Ribosome sector (`Rib`) are anti-correlated
+
+```{r}
+plot_mass_frac_bars <- df_mass_frac %>%
+  group_by(mutant, sector_short) %>%
+  summarize(
+    .groups = "drop",
+    mean_mass_fraction = mean(mass_fraction, na.rm = TRUE),
+    sd_mass_fraction = sd(mass_fraction, na.rm = TRUE)
+  ) %>%
+  mutate(mutant = factor(linebreak(mutant), linebreak(mutants_sorted))) %>%
+  ggplot(aes(x = mutant, y = mean_mass_fraction, fill = fct_rev(sector_short))) +
+  geom_bar(stat = "identity", position = "stack") +
+  custom_theme() +
+  scale_fill_manual(values = rev(custom_colors)) +
+  labs(
+    title = "Mean mass fraction of sectors per strain",
+    x = "Strain",
+    y = "Mean mass fraction",
+    fill = "Sector"
+  ) +
+  theme(legend.position = "right", aspect.ratio = 1)
+
+plot_mass_frac_points <- df_mass_frac %>%
+  mutate(mutant = factor(linebreak(mutant), linebreak(mutants_sorted))) %>%
+  ggplot(aes(x = mutant, y = mass_fraction, color = fct_rev(sector_short))) +
+  geom_boxplot(position = "identity", outliers = FALSE, median.linetype = NA, alpha = 0.5) +
+  geom_point(position = position_jitter(width = 0.2, height = 0)) +
+  custom_theme() +
+  scale_color_manual(values = rev(custom_colors)) +
+  labs(
+    title = "Mean mass fraction of sectors per strain",
+    x = "Strain",
+    y = "Mean mass fraction"
+  ) +
+  theme(legend.position = "right", aspect.ratio = 1)
+
+save_plot(plot_mass_frac_bars, width = 6, height = 6)
+save_plot(plot_mass_frac_points, width = 6, height = 6)
+print(ggarrange(plot_mass_frac_bars, plot_mass_frac_points, ncol = 2))
+```
+
+- this is a more detailed view on the mass fraction per sector across conditions (strains)
+- each subplot is scaled to a different, individual range
+
+```{r, fig.width=10, fig.height=5.5}
+list_y_lims <- list(
+  sector_short == "Oth" ~ scale_y_continuous(limits = c(0, 0.5)),
+  sector_short == "Rib" ~ scale_y_continuous(limits = c(0, 0.65)),
+  sector_short == "Cbn" ~ scale_y_continuous(limits = c(0, 0.1)),
+  sector_short == "Aab" ~ scale_y_continuous(limits = c(0, 0.04)),
+  sector_short == "Etc" ~ scale_y_continuous(limits = c(0, 0.04)),
+  sector_short == "Lpb" ~ scale_y_continuous(limits = c(0, 0.04)),
+  sector_short == "Fla" ~ scale_y_continuous(limits = c(0, 0.07)),
+  sector_short == "Tra" ~ scale_y_continuous(limits = c(0, 0.04))
+)
+
+plot_mass_frac_sectors <- df_mass_frac %>%
+  ggplot(aes(x = mutant, y = mass_fraction, color = fct_rev(sector_short))) +
+  geom_boxplot(position = "identity", outliers = FALSE, alpha = 0.5) +
+  geom_point(position = position_jitter(width = 0.1, height = 0)) +
+  custom_theme() +
+  scale_color_manual(values = rev(custom_colors)) +
+  labs(
+    title = "Mass fraction of sectors per strain",
+    x = "Strain",
+    y = "Protein mass fraction"
+  ) +
+  theme(legend.position = "right", aspect.ratio = 1, axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(~sector_short, ncol = 4, scales = "free_y") +
+  ggh4x::facetted_pos_scales(y = list_y_lims)
+
+save_plot(plot_mass_frac_sectors, width = 10, height = 5.5)
+print(plot_mass_frac_sectors)
+```
+
+### Most abundant proteins per sector
+
+- sector overviews are already informative, but it is also necessary to look at the most important single proteins
+- we need to know which proteins in which sector are most abundant by mass (thus also contribute most to sector changes)
+- for this purpose, all proteins are summarized by the mean mass fraction over all replicates and conditions, and then ranked
+- the top 10 proteins per sector are visualized as bar chart
+
+```{r, fig.width=10, fig.height=5.5}
+df_mass_frac_top10 <- df_annotated %>%
+  group_by(uniprot_id, gene_name_short, sector, sector_short, mutant) %>%
+  summarize(
+    .groups = "drop",
+    mean_mass_fraction = mean(mass_fraction, na.rm = TRUE),
+    sd_mass_fraction = sd(mass_fraction, na.rm = TRUE)
+  ) %>%
+  group_by(sector_short, uniprot_id) %>%
+  mutate(condsum_mass_fraction = sum(mean_mass_fraction, na.rm = TRUE)) %>%
+  group_by(sector_short) %>%
+  mutate(rank_mass_fraction = rank(condsum_mass_fraction)) %>%
+  filter(rank_mass_fraction >= sort(unique(rank_mass_fraction), decreasing = TRUE)[10]) %>%
+  arrange(desc(rank_mass_fraction)) %>%
+  select(-condsum_mass_fraction, -rank_mass_fraction) %>%
+  ungroup()
+
+plot_mass_frac_top10 <- df_mass_frac_top10 %>%
+  ggplot(aes(x = mutant, y = mean_mass_fraction, fill = fct_rev(sector_short))) +
+  geom_col(position = "stack", col = grey(0.95), alpha = 0.75, linewidth = 0.5) +
+  geom_text(aes(label = gene_name_short), color = grey(0.95), position = position_stack(vjust = 0.5), size = 2.5) +
+  custom_theme() +
+  scale_fill_manual(values = rev(custom_colors)) +
+  labs(
+    title = "Mass fraction of top 10 proteins per sector and strain",
+    x = "Strain",
+    y = "Protein mass fraction"
+  ) +
+  theme(legend.position = "right", aspect.ratio = 1, axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(~sector_short, ncol = 4, scales = "free_y")
+
+save_plot(plot_mass_frac_top10, width = 10, height = 5.5)
+print(plot_mass_frac_top10)
+```
+
+### Trends for specific sectors or groups
+
+- two sectors of particular interest are the `Fla` (flagella) and `Rib` (ribosome) sectors, as they show strong anti-correlation across conditions
+- we can visualize the mass fraction of these two sectors across conditions on protein level
+
+#### Ribosomal proteins
+
+- it becomes clear that ribosomal mass is not dependent on single changed protein
+- rather a general, slight shift in abundance of all R-proteins together creates the effect on the sector level
+- this is in line with previous literature
+
+```{r, fig.width=10, fig.height=6.5}
+plot_mass_frac_ribo <- df_annotated %>%
+  group_by(uniprot_id, gene_name_short, sector, sector_short, mutant) %>%
+  summarize(
+    .groups = "drop",
+    mean_mass_fraction = mean(mass_fraction, na.rm = TRUE),
+    sd_mass_fraction = sd(mass_fraction, na.rm = TRUE)
+  ) %>%
+  filter(sector_short == "Rib", str_detect(gene_name_short, "[Rr]ps|[Rr]pl")) %>%
+  mutate(gene_name_short = fct_relevel(
+    gene_name_short,
+    unique(gene_name_short[order(mean_mass_fraction, decreasing = TRUE)])
+  )) %>%
+  ggplot(aes(x = mutant, y = mean_mass_fraction, color = mutant)) +
+  geom_errorbar(
+    width = 0.2, position = position_dodge(width = 0.75),
+    aes(
+      ymin = mean_mass_fraction - sd_mass_fraction,
+      ymax = mean_mass_fraction + sd_mass_fraction
+    )
+  ) +
+  geom_point(position = position_dodge(width = 0.75)) +
+  custom_theme() +
+  scale_color_manual(values = colorspace::lighten(custom_colors[2], seq(0, 0.5, 0.1))) +
+  labs(
+    title = "Mass fraction of ribosomal proteins per strain",
+    x = "",
+    y = "Protein mass fraction"
+  ) +
+  theme(legend.position = "right", aspect.ratio = 1, axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(~gene_name_short)
+
+save_plot(plot_mass_frac_ribo, width = 8, height = 8)
+print(plot_mass_frac_ribo)
+```
+
+#### Flagellar proteins
+
+```{r, fig.width=8, fig.height=8}
+plot_mass_frac_flag <- df_annotated %>%
+  group_by(uniprot_id, gene_name_short, sector, sector_short, mutant) %>%
+  summarize(
+    .groups = "drop",
+    mean_mass_fraction = mean(mass_fraction, na.rm = TRUE),
+    sd_mass_fraction = sd(mass_fraction, na.rm = TRUE)
+  ) %>%
+  filter(sector_short == "Fla") %>%
+  mutate(gene_name_short = fct_relevel(
+    gene_name_short,
+    unique(gene_name_short[order(mean_mass_fraction, decreasing = TRUE)])
+  )) %>%
+  ggplot(aes(x = mutant, y = mean_mass_fraction, color = mutant)) +
+  geom_errorbar(
+    width = 0.2, position = position_dodge(width = 0.75),
+    aes(
+      ymin = mean_mass_fraction - sd_mass_fraction,
+      ymax = mean_mass_fraction + sd_mass_fraction
+    )
+  ) +
+  geom_point(position = position_dodge(width = 0.75)) +
+  custom_theme() +
+  scale_color_manual(values = colorspace::lighten(custom_colors[7], seq(0, 0.5, 0.1))) +
+  labs(
+    title = "Mass fraction of flagellar proteins per strain",
+    x = "",
+    y = "Protein mass fraction"
+  ) +
+  theme(legend.position = "right", aspect.ratio = 1, axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(~gene_name_short)
+
+save_plot(plot_mass_frac_flag, width = 8, height = 8)
+print(plot_mass_frac_flag)
+```
+
+## Comparison of mass fraction and growth rate
+
+### Import growth rate data
+
+- we can also correlate the mass fraction of sectors to the growth rate of the strains
+- will higher flagella expression lead to reduced growth rate?
+- doubling times were experimentally determined from microscopy (single-cell) and bulk growth assays
+- doubling time data is imported from `data/tables/population-growth_Ppro-mutants.csv` and converted to growth rate
+
+```{r, fig.width=10, fig.height=6}
+df_growth_rate <- read_csv("../tables/population_growth_mutants.csv", show_col_types = FALSE) %>%
+  select(strain, experiment_day, tech_rep, doubling_time_min) %>%
+  rename(replicate = experiment_day) %>%
+  mutate(
+    replicate = as.integer(str_remove(replicate, "R")),
+    mutant = recode_values(strain, from = strains_sorted, to = mutants_sorted),
+    mutant = factor(mutant, mutants_sorted)
+  ) %>%
+  filter(!is.na(mutant)) %>%
+  group_by(strain, mutant, replicate) %>%
+  summarize(doubling_time_min = mean(doubling_time_min, na.rm = TRUE), .groups = "drop") %>%
+  mutate(growth_rate_1h = log(2) / doubling_time_min * 60)
+
+plot_growth_rate <- df_growth_rate %>%
+  filter(mutant %in% mutants_sorted[2:6]) %>%
+  group_by(mutant) %>%
+  mutate(mean_mu = mean(growth_rate_1h), sd_mu = sd(growth_rate_1h)) %>%
+  mutate(mutant = factor(linebreak(mutant), linebreak(mutants_sorted))) %>%
+  ggplot(aes(x = mutant, y = growth_rate_1h)) +
+  geom_point(color = grey(0.7), position = position_jitter(width = 0.2, height = 0)) +
+  geom_point(aes(x = mutant, y = mean_mu), color = grey(0.3)) +
+  geom_errorbar(
+    color = grey(0.3),
+    width = 0.2, position = position_dodge(width = 0.75),
+    aes(
+      ymin = mean_mu - sd_mu,
+      ymax = mean_mu + sd_mu
+    )
+  ) +
+  custom_theme(aspect.ratio = 1) +
+  labs(
+    title = "Growth rate of strains",
+    x = "Strain",
+    y = "Growth rate (1/h)"
+  )
+
+plot_doubling_time <- df_growth_rate %>%
+  filter(mutant %in% mutants_sorted[2:6]) %>%
+  group_by(mutant) %>%
+  mutate(mean_dt = mean(doubling_time_min), sd_dt = sd(doubling_time_min)) %>%
+  mutate(mutant = factor(linebreak(mutant), linebreak(mutants_sorted))) %>%
+  ggplot(aes(x = mutant, y = doubling_time_min)) +
+  geom_point(color = grey(0.7), position = position_jitter(width = 0.2, height = 0)) +
+  geom_point(aes(x = mutant, y = mean_dt), color = grey(0.3)) +
+  geom_errorbar(
+    color = grey(0.3),
+    width = 0.2, position = position_dodge(width = 0.75),
+    aes(
+      ymin = mean_dt - sd_dt,
+      ymax = mean_dt + sd_dt
+    )
+  ) +
+  custom_theme(aspect.ratio = 1) +
+  labs(
+    title = "Doubling time of strains",
+    x = "Strain",
+    y = "Doubling time (min)"
+  )
+
+plot_mu_dt <- ggpubr::ggarrange(plot_growth_rate, plot_doubling_time, ncol = 2)
+save_plot(plot_mu_dt, width = 10, height = 6)
+print(plot_mu_dt)
+```
+
+### Correlation of growth rate and mass sector_mass_fractions
+
+- previous analysis showed that the `Fla` and `Rib` sectors are strongly anti-correlated across conditions
+- ribosome mass decreases with increasing flagella mass
+- since ribosome mass is known to be positively correlated with growth rate, we expect decline of growth rate with increasing flagella
+
+```{r, fig.width=8, fig.height=5}
+plot_mass_vs_mu <- df_mass_frac %>%
+  group_by(mutant, sector_short) %>%
+  summarize(mean_mass_fraction = mean(mass_fraction, na.rm = TRUE)) %>%
+  left_join(
+    by = "mutant",
+    df_growth_rate %>%
+      group_by(mutant) %>%
+      summarize(mean_growth_rate = mean(growth_rate_1h, na.rm = TRUE))
+  ) %>%
+  filter(sector_short %in% c("Rib", "Fla")) %>%
+  filter(mutant %in% mutants_sorted[2:6]) %>%
+  ggplot(aes(x = mean_mass_fraction, y = mean_growth_rate, color = sector_short)) +
+  geom_point(size = 3) +
+  ggrepel::geom_text_repel(aes(label = mutant, color = sector_short), size = 3) +
+  custom_theme() +
+  scale_color_manual(values = custom_colors[c(2, 7)]) +
+  labs(
+    title = "Correlation of sector mass fraction and growth rate",
+    x = "Mean mass fraction",
+    y = "Mean growth rate (1/h)",
+    color = "Sector"
+  ) +
+  theme(legend.position = "right", aspect.ratio = 1) +
+  facet_wrap(~sector_short, ncol = 2, scales = "free_x")
+
+save_plot(plot_mass_vs_mu, width = 8, height = 5)
+print(plot_mass_vs_mu)
+```
+
+## Data export
+
+- in order to fit the cell economy model to experimental data, we export sector mass fraction to a TSV table
+
+```{r}
+df_mass_frac %>%
+  full_join(
+    by = "mutant",
+    df_growth_rate %>%
+      group_by(mutant) %>%
+      summarize(
+        mean_growth_rate = mean(growth_rate_1h, na.rm = TRUE),
+        sd_growth_rate = sd(growth_rate_1h, na.rm = TRUE),
+        mean_doubling_time = mean(doubling_time_min, na.rm = TRUE),
+        sd_doubling_time = sd(doubling_time_min, na.rm = TRUE)
+      )
+  ) %>%
+  write_tsv("../tables/sector_mass_fractions.tsv")
+```
+
+# Session Info
+
+```{r}
+sessionInfo()
+```

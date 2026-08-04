@@ -1,0 +1,26 @@
+[workspace]
+authors = ["m-jahn <jahn@mpusp.mpg.de>"]
+channels = ["conda-forge", "bioconda", "PyPI"]
+name = "cell-economy-models"
+platforms = ["linux-64"]
+version = "1.0.0"
+
+[tasks]
+estimate-mass-fraction = { cmd = "R -e 'library(rmarkdown); rmarkdown::render(\"data/notebooks/estimate_mass_fractions.Rmd\")'" }
+salmonella-model = { cmd = "python run_salmonella_model.py" }
+plot-modeling-results = { cmd = "R -e 'library(rmarkdown); rmarkdown::render(\"data/notebooks/modeling_results.Rmd\")'" }
+
+[dependencies]
+matplotlib = ">=3.10.8,<4"
+python = ">=3.14.3,<3.15"
+r-tidyverse = ">=2.0.0,<3"
+bioconductor-keggrest = ">=1.50.0,<2"
+r-ggpubr = ">=0.6.3,<0.7"
+r-ggrepel = ">=0.9.6,<0.10"
+r-ggh4x = ">=0.3.1,<0.4"
+r-colorspace = ">=2.1_2,<3"
+pandas = ">=3.0.1,<4"
+seaborn = ">=0.13.2,<0.14"
+
+[pypi-dependencies]
+gekko = ">=1.3.2, <2"

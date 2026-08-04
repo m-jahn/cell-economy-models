@@ -16,7 +16,7 @@ Cellular economy models for simulation of biological optimization problems
 
 ## Getting started
 
-The structure and programmatic details of the model are outlined below. However, if you just want to get started and play around with the model, you need a working python installation and install the [GEKKO optimization framework](https://gekko.readthedocs.io/en/latest/).
+The structure and programmatic details of the models are outlined below. To work with the model, you need a working python installation and have to install the [GEKKO optimization framework](https://gekko.readthedocs.io/en/latest/).
 
 In a linux terminal, run:
 
@@ -29,15 +29,20 @@ The different models of this repository can be found in the `models/` dir. Curre
 
 - *Synechocystis* sp. PCC6803
   - steady state resource allocation model (7 components)
-  - dynamic, time-dependent variant of the resource allocation model
+  - a dynamic, time-dependent variant of the model
+  - simulation of CO2 and light limitation, and interdependency of these two 'substrates'
+- *Salmonella typhimurium*
+  - steady state resource allocation model (8 components)
+  - a dynamic, time-dependent variant of the model
+  - simulation of cost-benefit tradeoffs for flagellum expression and motility
 
-To run a simulation, open `run_model.py` and execute the desired sections to import and start the model.
+To run a simulation, open `run_<species>_model.py` and execute the desired sections to import and start the model.
 A basic example looks like this:
 
 ```python
 # libraries
 import numpy as np
-from models import synechocystis_steadystate
+from models.synechocystis import steadystate
 
 # parameters
 light = np.round((np.sin(np.arange(0, 4*3.1415, 4*3.1415/96))+1)*50)+1
@@ -49,7 +54,26 @@ mumax = 0.11                                    # maximum growth rate, used to c
 Ki = 5000                                       # light inhibition constant for photosystems
 
 # start model
-result = synechocystis_steadystate.simulate(time, light, sub, c_upper, reserve, mumax, Ki)
+result = steadystate.simulate(time, light, sub, c_upper, reserve, mumax, Ki)
+print(result.table)
+```
+
+Example of the results:
+
+```
+>>> result.table
+    time    hv     v_lhc    v_pset     v_cbm  ...     u_rib        mu         bm  slk_25  slk_26
+0    0.0  51.0  1.000000  1.000000  1.000000  ...  1.000000  1.000000   1.000000     0.0     0.0
+1    0.5  58.0  8.840161  1.441499  0.612974  ...  0.216906  0.112616   1.059668     0.0     0.0
+2    1.0  64.0  8.906297  1.448354  0.615008  ...  0.217147  0.112879   1.123052     0.0     0.0
+3    1.5  70.0  8.841499  1.441638  0.613015  ...  0.216911  0.112621   1.190065     0.0     0.0
+4    2.0  76.0  8.680329  1.424801  0.607999  ...  0.216317  0.111972   1.260643     0.0     0.0
+..   ...   ...       ...       ...       ...  ...       ...       ...        ...     ...     ...
+91  45.5  21.0  3.778939  0.800450  0.398832  ...  0.191825  0.083835  56.741750     0.0     0.0
+92  46.0  26.0  4.939555  0.971810  0.461374  ...  0.199171  0.092535  59.494415     0.0     0.0
+93  46.5  32.0  6.182199  1.137082  0.517702  ...  0.205731  0.100127  62.629902     0.0     0.0
+94  47.0  38.0  7.198307  1.260579  0.557572  ...  0.210384  0.105398  66.114041     0.0     0.0
+95  47.5  44.0  7.962775  1.347478  0.584604  ...  0.213556  0.108933  69.922467     0.0     0.0
 ```
 
 The results can be exported as `*.csv` table and can be visualized e.g. with R or python. This plot shows how a step change in light intensity (grey area) affects size/expression of different proteome sectors over time (RIB, ribosome, LHC, light harvesting complex, CBM, carbon metabolism, PSET, photosynthesis and electron transport). You can see different dynamic simulations and the steady state optimal protein allocation (yellow line).
@@ -62,7 +86,7 @@ The cellular economy models deposited here are 'coarse-grained' metabolic models
 
 ## Previous models
 
-These models are based on previous work by Molenaar et al. (2009) and Burnap (2015). Molenaar and co-authors initially established equations for simple optimization models and implemented it programmatically in GAMS. The original model simulates a simple heterotrophic cell with only four components ('super-enzymes'): A substrate transporter, a metabolic enzyme turning substrate into precursors, a lipid biosynthesis enzyme consuming precursors and producing lipids, and a ribosome consuming precursors and synthesizing all proteins including itself. The model, its features and behavior under different nutrient conditions are excellently described in the original publication. A similar implementation by R. Burnap (2015) extended the model towards the simulation of a photoautotrophic cell. Instead of a single carbon and energy source, it contained one substrate as the carbon source (e.g. CO2) and another, light, as the energy source.
+These models are based on previous work by Molenaar et al. (2009) and Burnap (2015). Molenaar and co-authors initially established equations for simple optimization models and implemented it programmatically in GAMS. The original model simulates a simple heterotrophic cell with only four components ('super-enzymes'): A substrate transporter, a metabolic enzyme turning substrate into precursors, a lipid biosynthesis enzyme consuming precursors and producing lipids, and a ribosome consuming precursors and synthesizing all proteins including itself. The model, its features and behavior under different nutrient conditions are excellently described in the original publication. A similar implementation by R. Burnap (2015) extended this model towards the simulation of a photoautotrophic cell. Instead of a single carbon and energy source, it contained one substrate as the carbon source (e.g. CO2) and another, light, as the energy source.
 
 ## The *Synechocystis* model
 
