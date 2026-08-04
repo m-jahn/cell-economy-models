@@ -394,6 +394,48 @@ save_plot(plot_model_strains_pie, width = 10, height = 5.5)
 print(plot_model_strains_pie)
 ```
 
+- we can also plot ribosome and flagella mass fraction specifically
+- plot it versus growth rate, as overlay of model predictions and experimental data
+- the result is not as convincing as the model captures the overall trend but underestimates the growth rate changes of the mutants
+
+```{r, fig.width=5, fig.height=5}
+df_model_ribfla <- df_mass_frac %>%
+  group_by(mutant, sector_short) %>%
+  summarize(
+    mean_mass_fraction = mean(mass_fraction, na.rm = TRUE),
+    mean_growth_rate = mean(mean_growth_rate, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  filter(sector_short %in% c("Rib", "Fla")) %>%
+  filter(mutant %in% mutants_sorted[2:6]) %>%
+  bind_rows(df_model_sublim %>%
+    filter(variable == "a", time == selected_time, sector_short %in% c("Rib", "Fla")) %>%
+    select(flagella, mu, sector_short, value) %>%
+    mutate(mutant = "") %>%
+    rename(mean_mass_fraction = value, mean_growth_rate = mu)
+  )
+
+plot_mass_vs_mu_model <- df_model_ribfla %>%
+  ggplot(aes(x = mean_mass_fraction, y = mean_growth_rate, color = sector_short, shape = mutant == "")) +
+  geom_point(size = 3) +
+  ggrepel::geom_text_repel(aes(label = mutant, color = sector_short), size = 3) +
+  custom_theme() +
+  scale_shape_manual(values = c(19, 1), guide = "none") +
+  scale_color_manual(values = custom_colors[c(2, 7)]) +
+  labs(
+    title = "Correlation of sector mass fraction and growth rate",
+    x = "Mean mass fraction",
+    y = "Mean growth rate (1/h)",
+    color = "Sector"
+  ) +
+  theme(legend.position = "right", aspect.ratio = 1) +
+  facet_wrap(~sector_short, ncol = 2, scales = "free_x")
+
+save_plot(plot_mass_vs_mu_model, width = 8, height = 5)
+print(plot_mass_vs_mu_model)
+```
+
+
 ### Simulated vs experimental protein allocation for ribosomes
 
 - this plot shows a more detailed view on the anti-correlation of flagella and ribosome mass
